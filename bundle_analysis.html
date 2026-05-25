@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moca, analisi bundle 2025-2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Figtree', system-ui, sans-serif;
+    background: #FFFFFF;
+    color: #595959;
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 56px 80px 56px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #F4F5F6;
+    margin-bottom: 48px;
+  }
+  .header img { height: 28px; }
+  .header .meta {
+    font-size: 11px;
+    color: #595959;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* INTESTAZIONI */
+  h1 {
+    font-family: 'Figtree', sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    color: #191919;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #595959;
+    margin-bottom: 48px;
+  }
+
+  h2 {
+    font-family: 'Figtree', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: #191919;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 56px 0 8px 0;
+    line-height: 1.3;
+  }
+  h2 .num {
+    color: #E52217;
+    margin-right: 12px;
+  }
+  h2 + .h2-sub {
+    font-size: 13px;
+    color: #595959;
+    margin-bottom: 28px;
+  }
+
+  h3 {
+    font-family: 'Figtree', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #191919;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 32px 0 12px 0;
+  }
+
+  p { font-size: 12px; color: #595959; margin-bottom: 12px; }
+  p strong { color: #595959; font-weight: 700; }
+  p .red { color: #E52217; font-weight: 700; }
+
+  /* SEZIONE INTRO HERO */
+  .hero {
+    background: #F4F5F6;
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 48px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .hero-card .label {
+    font-size: 11px;
+    color: #595959;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .hero-card .value {
+    font-size: 28px;
+    font-weight: 500;
+    color: #191919;
+    line-height: 1.1;
+  }
+  .hero-card .delta {
+    font-size: 11px;
+    color: #595959;
+    margin-top: 4px;
+  }
+
+  /* CHARTS */
+  .chart-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 16px 0 24px 0;
+  }
+  .chart-wrapper canvas {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: #595959;
+  }
+  .chart-legend .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chart-legend .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* TABLES (uso minimo) */
+  .data-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #F4F5F6;
+    font-size: 12px;
+  }
+  .data-row:last-child { border-bottom: none; }
+  .data-row .label { color: #595959; }
+  .data-row .value { color: #191919; font-weight: 500; }
+
+  /* AOV BLOCK */
+  .aov-block {
+    background: #F4F5F6;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0 24px 0;
+  }
+  .aov-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .aov-grid .item .lab {
+    font-size: 11px;
+    color: #595959;
+    margin-bottom: 4px;
+  }
+  .aov-grid .item .val {
+    font-size: 18px;
+    font-weight: 500;
+    color: #191919;
+  }
+
+  /* PATTERN CARDS */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .pattern-card {
+    background: #FFFFFF;
+    border: 1px solid #F4F5F6;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .pattern-card.var { border-color: #E52217; }
+  .pattern-card.stock { border-color: #484848; }
+  .pattern-card.look { border-color: #118541; }
+  .pattern-card .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .pattern-card .tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pattern-card.var .tag { color: #E52217; }
+  .pattern-card.var .dot { background: #E52217; }
+  .pattern-card.stock .tag { color: #484848; }
+  .pattern-card.stock .dot { background: #484848; }
+  .pattern-card.look .tag { color: #118541; }
+  .pattern-card.look .dot { background: #118541; }
+  .pattern-card .desc {
+    font-size: 11px;
+    color: #595959;
+    margin-bottom: 12px;
+  }
+  .pattern-card .pct {
+    font-size: 24px;
+    font-weight: 500;
+    color: #191919;
+    line-height: 1.1;
+  }
+  .pattern-card .meta {
+    font-size: 11px;
+    color: #595959;
+    margin-top: 4px;
+  }
+
+  /* EXAMPLE BUNDLES */
+  .example {
+    background: #F4F5F6;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .example.var { border-left: 3px solid #E52217; }
+  .example.stock { border-left: 3px solid #484848; }
+  .example.look { border-left: 3px solid #118541; }
+  .example .head {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .example.var .head { color: #E52217; }
+  .example.stock .head { color: #484848; }
+  .example.look .head { color: #118541; }
+  .example .body {
+    font-size: 12px;
+    color: #191919;
+  }
+
+  /* SIZE CARDS */
+  .size-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .size-card {
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+  .size-card.base { background: #F4F5F6; }
+  .size-card.boost { background: #FFE7E6; }
+  .size-card .head {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .size-card.base .head { color: #595959; }
+  .size-card.boost .head { color: #E52217; }
+  .size-card .val-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .size-card .val {
+    font-size: 28px;
+    font-weight: 500;
+    color: #191919;
+  }
+  .size-card .delta {
+    font-size: 12px;
+    color: #E52217;
+    font-weight: 500;
+  }
+  .size-card .divider {
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 8px 0 10px 0;
+  }
+  .size-card.boost .divider { background: rgba(229,34,23,0.15); }
+  .size-card .line {
+    font-size: 11px;
+    color: #595959;
+    margin-bottom: 2px;
+  }
+
+  /* SYNTHESIS */
+  .synth-section {
+    margin-bottom: 32px;
+  }
+  ul.bullet {
+    list-style: none;
+    padding: 0;
+  }
+  ul.bullet li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #595959;
+    line-height: 1.6;
+  }
+  ul.bullet li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 5px;
+    height: 5px;
+    background: #E52217;
+    border-radius: 50%;
+  }
+  ul.bullet li strong {
+    color: #191919;
+    font-weight: 700;
+  }
+
+  /* RACCOMANDAZIONI */
+  .reco-card {
+    background: #FFFFFF;
+    border: 1px solid #F4F5F6;
+    border-left: 3px solid #E52217;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .reco-card .reco-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #E52217;
+    margin-bottom: 6px;
+  }
+  .reco-card .reco-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #191919;
+    margin-bottom: 4px;
+  }
+  .reco-card .reco-desc {
+    font-size: 12px;
+    color: #595959;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid #F4F5F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #595959;
+  }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .container { padding: 24px; max-width: 100%; }
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 32px 24px; }
+    .hero-grid, .aov-grid { grid-template-columns: repeat(2, 1fr); }
+    .pattern-grid { grid-template-columns: 1fr; }
+    .size-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img src="https://mocainteractive.com/assets/svg/logo.svg" alt="Moca">
+    <div class="meta">
+      Analisi prodotti acquistati in bundle<br>
+      Periodo 2025-2026
+    </div>
+  </div>
+
+  <h1>Analisi bundle, abitudini d'acquisto</h1>
+  <p class="subtitle">Insights sul comportamento d'acquisto in bundle a supporto dell'architettura UX del nuovo sito</p>
+
+  <!-- HERO METRICS -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="label">Bundle unici</div>
+        <div class="value">684</div>
+        <div class="delta">Combinazioni distinte rilevate</div>
+      </div>
+      <div class="hero-card">
+        <div class="label">Ordini totali</div>
+        <div class="value">1.511</div>
+        <div class="delta">Volume in transazioni</div>
+      </div>
+      <div class="hero-card">
+        <div class="label">Revenue</div>
+        <div class="value">€ 123.711</div>
+        <div class="delta">Valore generato dai bundle</div>
+      </div>
+      <div class="hero-card">
+        <div class="label">AOV bundle</div>
+        <div class="value">€ 81,87</div>
+        <div class="delta">Scontrino medio per bundle</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- INSIGHT 1: MACRO CATEGORIE -->
+  <!-- ============================================ -->
+  <h2><span class="num">01</span>Distribuzione per macro categoria</h2>
+  <div class="h2-sub">Volume e valore di ciascuna macro categoria nei bundle</div>
+
+  <div class="chart-legend">
+    <span class="item"><span class="swatch" style="background:#E52217"></span>Donna 51,0%</span>
+    <span class="item"><span class="swatch" style="background:#5781FF"></span>Uomo 29,6%</span>
+    <span class="item"><span class="swatch" style="background:#551FC4"></span>Misto 6,0%</span>
+    <span class="item"><span class="swatch" style="background:#DB5E29"></span>Bambini 1,5%</span>
+    <span class="item"><span class="swatch" style="background:#484848"></span>Indeterminato 11,9%</span>
+  </div>
+
+  <div class="chart-wrapper" style="height: 300px;">
+    <canvas id="genderChart"></canvas>
+  </div>
+
+  <div class="aov-block">
+    <h3 style="margin-top:0;">AOV per macro categoria</h3>
+    <div class="aov-grid">
+      <div class="item"><div class="lab">Donna</div><div class="val">€ 75,76</div></div>
+      <div class="item"><div class="lab">Uomo</div><div class="val">€ 91,61</div></div>
+      <div class="item"><div class="lab">Misto</div><div class="val">€ 90,18</div></div>
+      <div class="item"><div class="lab">Bambini</div><div class="val">€ 75,14</div></div>
+    </div>
+  </div>
+
+  <h3>Insight chiave</h3>
+  <p>La <span class="red">donna traina il volume</span> con il 51% degli ordini in bundle, ma è l'<strong>uomo a generare lo scontrino medio più alto</strong> (€ 91,61 contro € 75,76, +21%). Bambini è marginale (1,5% degli ordini): conviene valutare se mantenere la macro categoria con piena dignità di navigazione o trattarla come hub secondario nella nuova architettura.</p>
+
+  <!-- ============================================ -->
+  <!-- INSIGHT 2: TOP COMBINAZIONI -->
+  <!-- ============================================ -->
+  <h2><span class="num">02</span>Top combinazioni tipologiche</h2>
+  <div class="h2-sub">Quali categorie merceologiche compaiono insieme nello stesso bundle</div>
+
+  <div class="chart-wrapper" style="height: 480px;">
+    <canvas id="comboChart"></canvas>
+  </div>
+
+  <h3>Insight chiave</h3>
+  <p>Le coppie <strong>calzature + calzature</strong> (322 ordini) e <strong>pantaloni + pantaloni</strong> (145 ordini) dominano la classifica. Subito dopo emerge la prima vera combinazione "outfit": <span class="red">capispalla + pantaloni</span> con 126 ordini, segnale forte del comportamento "completo coordinato".</p>
+
+  <!-- ============================================ -->
+  <!-- INSIGHT 3: TRE PATTERN -->
+  <!-- ============================================ -->
+  <h2><span class="num">03</span>Tre pattern di acquisto in bundle</h2>
+  <div class="h2-sub">Decomposizione dei 1.511 ordini bundle per logica di acquisto</div>
+
+  <div class="pattern-grid">
+    <div class="pattern-card var">
+      <div class="tag"><span class="dot"></span>Variant buying</div>
+      <div class="desc">Stesso prodotto, colori o lavaggi diversi</div>
+      <div class="pct">14,2%</div>
+      <div class="meta">215 ordini, € 12.595</div>
+    </div>
+    <div class="pattern-card stock">
+      <div class="tag"><span class="dot"></span>Category stocking</div>
+      <div class="desc">Prodotti diversi nella stessa categoria</div>
+      <div class="pct">43,0%</div>
+      <div class="meta">649 ordini, € 51.339</div>
+    </div>
+    <div class="pattern-card look">
+      <div class="tag"><span class="dot"></span>Look building</div>
+      <div class="desc">Cross category, outfit completo</div>
+      <div class="pct">42,8%</div>
+      <div class="meta">647 ordini, € 59.778</div>
+    </div>
+  </div>
+
+  <h3>Esempi reali dal catalogo</h3>
+
+  <div class="example var">
+    <div class="head">Variant buying, 17 ordini</div>
+    <div class="body">Friulane in velluto blu + Friulane in velluto bordeaux</div>
+  </div>
+  <div class="example stock">
+    <div class="head">Category stocking, 4 ordini</div>
+    <div class="body">T-shirt Manuel Ritz nera + T-shirt Manuel Ritz verde scuro (uomo)</div>
+  </div>
+  <div class="example look">
+    <div class="head">Look building, 7 ordini</div>
+    <div class="body">Gonna midi avorio Patrizia Pepe + Blusa avorio Patrizia Pepe (donna)</div>
+  </div>
+  <div class="example look">
+    <div class="head">Look building coordinato, 9 ordini</div>
+    <div class="body">Blazer color gesso effetto satin + Pantaloni palazzo color gesso satin (donna, completo)</div>
+  </div>
+
+  <h3>Insight chiave</h3>
+  <p>Il <span class="red">total look coordinato</span> è il bundle più prezioso: si tratta di completi (blazer + pantalone, blusa + gonna, abito + coprispalle) dello <strong>stesso brand e stesso colore</strong>, con AOV € 200-400. L'utente arriva sulla scheda con un'aspettativa molto chiara: vuole sapere subito quale capo si abbina a quale.</p>
+
+  <!-- ============================================ -->
+  <!-- INSIGHT 4: BUNDLE 2 VS 3 -->
+  <!-- ============================================ -->
+  <h2><span class="num">04</span>Bundle 2 prodotti vs 3 prodotti</h2>
+  <div class="h2-sub">Il salto sullo scontrino quando l'utente aggiunge il terzo articolo</div>
+
+  <div class="size-grid">
+    <div class="size-card base">
+      <div class="head">Bundle 2 prodotti</div>
+      <div class="val-row">
+        <span class="val">€ 73,74</span>
+        <span style="font-size:11px; color:#595959;">AOV</span>
+      </div>
+      <div class="divider"></div>
+      <div class="line">543 bundle unici</div>
+      <div class="line">1.224 ordini, 81,0% del totale</div>
+      <div class="line">Revenue € 90.262</div>
+    </div>
+    <div class="size-card boost">
+      <div class="head">Bundle 3 prodotti</div>
+      <div class="val-row">
+        <span class="val">€ 116,55</span>
+        <span class="delta">+58%</span>
+      </div>
+      <div class="divider"></div>
+      <div class="line">141 bundle unici</div>
+      <div class="line">287 ordini, 19,0% del totale</div>
+      <div class="line">Revenue € 33.449</div>
+    </div>
+  </div>
+
+  <h3>Insight chiave</h3>
+  <p>L'AOV passa da € 73,74 a € 116,55 (<span class="red">+58%</span>) quando il bundle ha 3 prodotti invece di 2. Solo il <strong>19% degli ordini bundle</strong> oggi raggiunge i 3 prodotti: questo è uno dei punti di leva più chiari per la nuova UX. L'add-to-cart deve avere un meccanismo che incentivi il salto da 2 a 3 (kit, capsule, "completa il look", soglia free shipping pensata sul bundle a 3).</p>
+
+  <!-- ============================================ -->
+  <!-- INSIGHT 5: PRESENZA TIPOLOGIE -->
+  <!-- ============================================ -->
+  <h2><span class="num">05</span>Presenza tipologie nei bundle</h2>
+  <div class="h2-sub">Quante volte ogni categoria compare come slot all'interno di un bundle</div>
+
+  <div class="chart-wrapper" style="height: 380px;">
+    <canvas id="typesChart"></canvas>
+  </div>
+
+  <h3>Insight chiave</h3>
+  <p>Calzature, Pantaloni e Top/Camicie da soli pesano per il <span class="red">63% degli slot bundle</span>. Maglieria/Felpe e Capispalla seguono al 20% combinato. Categorie come <strong>Borse, Abiti e Gonne sono sotto il 5%</strong> nonostante siano tipologie ad alto AOV e alto contenuto stilistico: sono evidentemente sotto sfruttate nella pagina prodotto e nei moduli di cross sell.</p>
+
+  <!-- ============================================ -->
+  <!-- INSIGHT 6: BUNDLE MISTI TRA GENERI -->
+  <!-- ============================================ -->
+  <h2><span class="num">06</span>Bundle misti tra generi</h2>
+  <div class="h2-sub">Quanto spesso un singolo ordine combina prodotti di macro categorie diverse</div>
+
+  <p style="margin-bottom: 24px;">Analisi condotta sui <strong>594 bundle classificati con genere certo</strong> (88,1% degli ordini totali). Esclusi i bundle di soli prodotti unisex/indeterminati per evitare di gonfiare artificialmente la quota dei misti.</p>
+
+  <div class="size-grid">
+    <div class="size-card base">
+      <div class="head">Bundle puri</div>
+      <div class="val-row">
+        <span class="val">93,2%</span>
+        <span style="font-size:11px; color:#595959;">degli ordini</span>
+      </div>
+      <div class="divider"></div>
+      <div class="line">552 bundle unici</div>
+      <div class="line">1.240 ordini, € 101.012</div>
+      <div class="line">AOV € 81,46</div>
+    </div>
+    <div class="size-card boost">
+      <div class="head">Bundle misti</div>
+      <div class="val-row">
+        <span class="val">6,8%</span>
+        <span class="delta">AOV +11%</span>
+      </div>
+      <div class="divider"></div>
+      <div class="line">42 bundle unici</div>
+      <div class="line">91 ordini, € 8.206</div>
+      <div class="line">AOV € 90,18</div>
+    </div>
+  </div>
+
+  <h3>Decomposizione dei bundle misti</h3>
+
+  <div class="chart-wrapper" style="height: 260px;">
+    <canvas id="mixChart"></canvas>
+  </div>
+
+  <div class="aov-block" style="margin-top: 24px;">
+    <h3 style="margin-top:0;">Composizione delle 91 transazioni miste</h3>
+    <div class="aov-grid">
+      <div class="item"><div class="lab">Donna + Uomo</div><div class="val">54 ord.</div><div style="font-size:11px; color:#595959;">59% dei misti</div></div>
+      <div class="item"><div class="lab">Donna + Bambini</div><div class="val">29 ord.</div><div style="font-size:11px; color:#595959;">32% dei misti</div></div>
+      <div class="item"><div class="lab">Uomo + Bambini</div><div class="val">6 ord.</div><div style="font-size:11px; color:#595959;">7% dei misti</div></div>
+      <div class="item"><div class="lab">Tutti e tre</div><div class="val">2 ord.</div><div style="font-size:11px; color:#595959;">2% dei misti</div></div>
+    </div>
+  </div>
+
+  <h3>Esempi reali dei bundle misti</h3>
+
+  <div class="example look">
+    <div class="head">Donna + Uomo, 4 ordini, € 256 AOV</div>
+    <div class="body">Camicia bianca Weekend Max Mara (donna) + Camicia bianca crêpe de chine misto seta (uomo). Pattern "stesso colore, stesso capo, due generi": acquisto coppia/famiglia.</div>
+  </div>
+
+  <div class="example look">
+    <div class="head">Donna + Bambini coordinato, 3 ordini, € 238 AOV</div>
+    <div class="body">Blazer verde salvia Antony Morato (donna) + Pantalone chino Antony Morato Kids verde salvia (bambini). Pattern "mamma e figlio coordinati", brand e colore identici.</div>
+  </div>
+
+  <div class="example look">
+    <div class="head">Donna + Uomo total look, 3 ordini, € 245 AOV</div>
+    <div class="body">Gonna midi color testa di moro (donna) + Maglia girocollo color testa di moro lana (uomo). Coordinato cromatico per coppia.</div>
+  </div>
+
+  <div class="example look">
+    <div class="head">Uomo + Bambini padre-figlio, 4 ordini, € 140 AOV</div>
+    <div class="body">Felpa Lacoste grigia (uomo) + Jeans Levi's 511 (uomo) + Maglia Mayoral beige misto lana (bambini). Acquisto familiare con focus papà.</div>
+  </div>
+
+  <h3>Pattern dominante nei misti, capispalla + pantaloni</h3>
+  <p>La combinazione tipologica più frequente nei bundle misti è <strong>Capispalla + Pantaloni</strong> (7 bundle, 17 ordini), tipicamente <span class="red">blazer donna + pantalone uomo dello stesso brand e stesso colore</span>. È il pattern del "completo coppia" o del "regalo coordinato": Hlo!, Antony Morato, Punto Milano e Jurerê sono i brand che lo intercettano meglio grazie alla disponibilità del capo gemello in entrambi i listini.</p>
+
+  <h3>Insight chiave</h3>
+  <p>I bundle misti sono <span class="red">una nicchia (6,8% degli ordini)</span> ma con AOV superiore alla media (+11% vs bundle puri). Tre conclusioni operative:</p>
+  <ul class="bullet">
+    <li><strong>Il sito non viene quasi mai usato come "luogo di acquisto familiare"</strong>. La regola è la specializzazione: l'utente entra in una macro categoria e ne esce con prodotti di quella stessa categoria. Significa che la navigazione siloed (Uomo, Donna, Bambini) funziona, ma chiude opportunità.</li>
+    <li><strong>Quando il misto avviene, è quasi sempre coordinato</strong>: stesso brand, stesso colore, stesso family-look. Non sono acquisti casuali "io per me, tu per te", ma scelte deliberate di coordinated shopping.</li>
+    <li><strong>I brand che producono coordinati cross-genere intercettano questa nicchia</strong> (Hlo!, Antony Morato, Punto Milano, Jurerê, Mayoral, Weekend Max Mara con la sua linea uomo). Una sezione "Family looks" o "Coppia coordinata" potrebbe far emergere uno scenario d'uso oggi invisibile in navigazione.</li>
+  </ul>
+
+  <!-- ============================================ -->
+  <!-- SINTESI -->
+  <!-- ============================================ -->
+  <h2><span class="num">07</span>Sintesi insights principali</h2>
+  <div class="h2-sub">Cosa fanno gli utenti quando acquistano in bundle</div>
+
+  <div class="synth-section">
+    <h3>Comportamenti d'acquisto rilevati</h3>
+    <ul class="bullet">
+      <li><strong>Comprano lo stesso prodotto in più colori</strong> (14% degli ordini): le Friulane in velluto sono il caso scuola, con 5 combinazioni diverse di colori nei top 10 bundle. Vale anche per cardigan, t-shirt brand (Manuel Ritz, Levi's), bermuda Jeckerson, teli mare Sundek.</li>
+      <li><strong>Comprano completi coordinati</strong> dello stesso brand e dello stesso colore (blazer + pantaloni palazzo, gonna + blusa, abito + coprispalle): è il pattern a maggior valore monetario.</li>
+      <li><strong>Fanno rifornimento di basici</strong> nella stessa categoria (jeans + jeans, t-shirt + t-shirt, polo + polo, soprattutto lato uomo): pattern tipico della cliente uomo che compra in modalità "wardrobe stocking".</li>
+      <li><strong>Le calzature sono il prodotto bundle per eccellenza</strong> (24% di tutti gli slot bundle), trainate principalmente dal pattern variant buying lato donna.</li>
+    </ul>
+  </div>
+
+  <div class="synth-section">
+    <h3>Abitudini per macro categoria</h3>
+    <ul class="bullet">
+      <li><strong>Donna</strong>: predilige la coppia calzature stessa famiglia in più colori (314 ordini in questa sola combo) e i completi coordinati blazer + pantalone o capispalla + pantalone (94 ordini).</li>
+      <li><strong>Uomo</strong>: stocking di pantaloni (jeans, chino, bermuda) e t-shirt/polo basic dello stesso brand. Pattern "armadio" più che "outfit".</li>
+      <li><strong>Bambini</strong>: volume troppo basso per pattern statisticamente solidi (1,5% degli ordini), prevalgono completi t-shirt + leggings/short.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- RACCOMANDAZIONI -->
+  <!-- ============================================ -->
+  <h2><span class="num">08</span>Raccomandazioni iniziali per la UX</h2>
+  <div class="h2-sub">Leve immediate per il nuovo sito basate sugli insights</div>
+
+  <div class="reco-card">
+    <div class="reco-label">Modulo PDP</div>
+    <div class="reco-title">"Disponibile anche in", molto visibile</div>
+    <div class="reco-desc">Per le categorie a forte variant buying (calzature, t-shirt, cardigan, jeans). Il caso Friulane mostra che l'utente cerca attivamente la stessa silhouette in colori diversi.</div>
+  </div>
+
+  <div class="reco-card">
+    <div class="reco-label">Modulo PDP</div>
+    <div class="reco-title">"Total look" o "Completa l'outfit"</div>
+    <div class="reco-desc">Sulle PDP donna di blazer, gonne, abiti e capispalla, con suggerimento del coordinato brand stesso colore. È il driver del bundle ad AOV più alto.</div>
+  </div>
+
+  <div class="reco-card">
+    <div class="reco-label">Carrello e checkout</div>
+    <div class="reco-title">Spinta dal bundle a 2 al bundle a 3</div>
+    <div class="reco-desc">Sfruttare l'add-to-cart per spingere il passaggio da 2 a 3 prodotti (incentivo +58% AOV potenziale). Soglia free shipping calibrata sul valore di un bundle da 3.</div>
+  </div>
+
+  <div class="reco-card">
+    <div class="reco-label">Architettura informativa</div>
+    <div class="reco-title">Hub trasversali in navigazione</div>
+    <div class="reco-desc">Architettura a 3 macro categorie confermata, ma valutare se elevare "Calzature" e "Outfit/Completi" come hub trasversali in navigazione, dato il loro peso nei bundle.</div>
+  </div>
+
+  <div class="reco-card">
+    <div class="reco-label">Cross genere</div>
+    <div class="reco-title">Sezione "Family looks" o "Coppia coordinata"</div>
+    <div class="reco-desc">I bundle misti sono il 6,8% degli ordini ma con AOV +11%. Quando avvengono sono quasi sempre coordinati (stesso brand, stesso colore, capi gemelli). Una sezione che valorizza i brand con capsule cross-genere (Hlo!, Antony Morato, Mayoral, Punto Milano) può far emergere uno scenario d'uso oggi invisibile.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>Moca, analisi bundle 2025-2026</span>
+    <span>Documento di lavoro interno</span>
+  </div>
+
+</div>
+
+<script>
+// COLORI BRAND
+const COL = {
+  red: '#E52217',
+  redLight: '#FF8B85',
+  redLightest: '#FFE7E6',
+  white: '#FFFFFF',
+  greyLight: '#F4F5F6',
+  greyDark: '#191919',
+  greyText: '#595959',
+  green: '#118541',
+  blue: '#5781FF',
+  purple: '#551FC4',
+  pink: '#CE2A59',
+  orange: '#DB5E29',
+  grey: '#484848'
+};
+
+const FIGTREE = { family: 'Figtree', size: 11 };
+
+// CHART 1: GENDER DISTRIBUTION
+new Chart(document.getElementById('genderChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Donna', 'Uomo', 'Indeterminato', 'Misto', 'Bambini'],
+    datasets: [{
+      label: 'Ordini',
+      data: [770, 447, 180, 91, 23],
+      backgroundColor: [COL.red, COL.blue, COL.grey, COL.purple, COL.orange],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: { label: (c) => c.parsed.y + ' ordini' },
+        bodyFont: FIGTREE,
+        titleFont: FIGTREE
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: FIGTREE, color: COL.greyText } },
+      x: { grid: { display: false }, ticks: { font: FIGTREE, color: COL.greyDark } }
+    }
+  }
+});
+
+// CHART 2: COMBO TIPOLOGICHE
+new Chart(document.getElementById('comboChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Calzature + Calzature',
+      'Pantaloni + Pantaloni',
+      'Capispalla + Pantaloni',
+      'Top/Camicie + Top/Camicie',
+      'Maglieria + Maglieria',
+      'Pantaloni + Top/Camicie',
+      'Maglieria + Pantaloni',
+      'Top + Top + Top (3 pz)',
+      'Calzature x3 (3 pz)',
+      'Accessori + Accessori'
+    ],
+    datasets: [{
+      label: 'Ordini',
+      data: [322, 145, 126, 97, 68, 67, 46, 37, 35, 35],
+      backgroundColor: [COL.red, COL.grey, COL.green, COL.grey, COL.grey, COL.green, COL.green, COL.grey, COL.grey, COL.grey],
+      borderRadius: 4,
+      barThickness: 22
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (c) => c.parsed.x + ' ordini' }, bodyFont: FIGTREE, titleFont: FIGTREE }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: FIGTREE, color: COL.greyText } },
+      y: { grid: { display: false }, ticks: { font: FIGTREE, color: COL.greyDark } }
+    }
+  }
+});
+
+// CHART 3: PRESENZA TIPOLOGIE
+new Chart(document.getElementById('typesChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Calzature', 'Pantaloni', 'Top/Camicie', 'Maglieria/Felpe', 'Capispalla', 'Accessori', 'Borse', 'Abiti', 'Gonne', 'Beachwear', 'Intimo'],
+    datasets: [{
+      label: '% slot bundle',
+      data: [23.6, 21.9, 17.6, 11.2, 8.8, 4.8, 3.0, 2.4, 1.5, 0.6, 0.3],
+      backgroundColor: [COL.red, COL.red, COL.red, COL.redLight, COL.redLight, COL.grey, COL.grey, COL.grey, COL.grey, COL.grey, COL.grey],
+      borderRadius: 4,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (c) => c.parsed.x.toFixed(1) + '% degli slot bundle' }, bodyFont: FIGTREE, titleFont: FIGTREE }
+    },
+    scales: {
+      x: { beginAtZero: true, max: 26, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: FIGTREE, color: COL.greyText, callback: (v) => v + '%' } },
+      y: { grid: { display: false }, ticks: { font: FIGTREE, color: COL.greyDark } }
+    }
+  }
+});
+
+// CHART 4: BUNDLE MISTI
+new Chart(document.getElementById('mixChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Donna + Uomo', 'Donna + Bambini', 'Uomo + Bambini', 'Donna + Uomo + Bambini'],
+    datasets: [{
+      label: 'Ordini',
+      data: [54, 29, 6, 2],
+      backgroundColor: [COL.red, COL.purple, COL.orange, COL.grey],
+      borderRadius: 4,
+      barThickness: 28
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (c) => c.parsed.x + ' ordini' }, bodyFont: FIGTREE, titleFont: FIGTREE }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { font: FIGTREE, color: COL.greyText } },
+      y: { grid: { display: false }, ticks: { font: FIGTREE, color: COL.greyDark } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
