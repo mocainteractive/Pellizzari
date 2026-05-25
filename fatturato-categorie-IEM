@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pellizzari — Analisi Acquisto IEM 2025–2026</title>
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --moca-black:   #0f0f0f;
+      --moca-dark:    #1a1a1a;
+      --moca-card:    #242424;
+      --moca-border:  #333333;
+      --moca-orange:  #ff5c00;
+      --moca-orange2: #ff7a2e;
+      --moca-text:    #e8e8e8;
+      --moca-muted:   #888888;
+      --moca-white:   #ffffff;
+
+      --donna:   #e05c8a;
+      --uomo:    #4a9eff;
+      --bambino: #f5c842;
+      --outlet:  #ff5c00;
+      --arredo:  #7ecb85;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--moca-black);
+      color: var(--moca-text);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--moca-orange); text-decoration: none; }
+
+    /* ─── HEADER ──────────────────────────────────────── */
+    header {
+      background: var(--moca-dark);
+      border-bottom: 2px solid var(--moca-orange);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-block { display: flex; align-items: center; gap: 1rem; }
+
+    .logo-mark {
+      width: 40px; height: 40px;
+      background: var(--moca-orange);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.1rem; color: #fff; letter-spacing: -1px;
+    }
+
+    .logo-text { font-size: 0.75rem; color: var(--moca-muted); text-transform: uppercase; letter-spacing: 2px; }
+    .logo-text strong { display: block; font-size: 1rem; color: var(--moca-white); letter-spacing: 1px; }
+
+    .header-meta { text-align: right; }
+    .header-meta h1 { font-size: 1.4rem; font-weight: 700; color: var(--moca-white); }
+    .header-meta span { font-size: 0.8rem; color: var(--moca-muted); }
+
+    /* ─── LAYOUT ──────────────────────────────────────── */
+    main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* ─── INTRO TAG ───────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      background: var(--moca-orange);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ─── SECTION TITLE ───────────────────────────────── */
+    .section-intro { margin-bottom: 2.5rem; }
+    .section-intro h2 { font-size: 1.8rem; font-weight: 700; color: var(--moca-white); margin-bottom: 0.4rem; }
+    .section-intro p { color: var(--moca-muted); font-size: 0.9rem; }
+
+    /* ─── SUMMARY CARDS ───────────────────────────────── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .summary-card {
+      background: var(--moca-card);
+      border: 1px solid var(--moca-border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      border-top: 3px solid var(--color);
+      transition: transform .2s;
+    }
+    .summary-card:hover { transform: translateY(-2px); }
+
+    .summary-card .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--moca-muted);
+      margin-bottom: 0.4rem;
+    }
+    .summary-card .amount {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--moca-white);
+    }
+    .summary-card .pct {
+      font-size: 0.8rem;
+      color: var(--color);
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+    .summary-card .bar-bg {
+      height: 3px;
+      background: var(--moca-border);
+      border-radius: 2px;
+      margin-top: 0.75rem;
+    }
+    .summary-card .bar-fill {
+      height: 3px;
+      background: var(--color);
+      border-radius: 2px;
+    }
+
+    /* ─── SEGMENT SECTION ─────────────────────────────── */
+    .segment { margin-bottom: 3.5rem; }
+
+    .segment-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--moca-border);
+    }
+
+    .segment-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--color);
+      flex-shrink: 0;
+    }
+
+    .segment-header h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--moca-white);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .segment-total {
+      margin-left: auto;
+      text-align: right;
+    }
+    .segment-total .tot-label { font-size: 0.7rem; color: var(--moca-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .segment-total .tot-value { font-size: 1.1rem; font-weight: 700; color: var(--moca-white); }
+
+    /* ─── TABLE ───────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--moca-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+    }
+
+    thead tr {
+      background: var(--moca-card);
+    }
+
+    thead th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--moca-muted);
+      white-space: nowrap;
+      border-bottom: 1px solid var(--moca-border);
+    }
+
+    thead th.right { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--moca-border);
+      transition: background .15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    tbody td {
+      padding: 0.65rem 1rem;
+      vertical-align: middle;
+    }
+
+    .rank {
+      width: 32px;
+      font-size: 0.75rem;
+      color: var(--moca-muted);
+      font-weight: 600;
+    }
+
+    .cat2-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.07);
+      color: var(--moca-muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .cat3-name {
+      font-weight: 600;
+      color: var(--moca-white);
+    }
+
+    .amount-cell {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      font-weight: 600;
+      color: var(--moca-white);
+    }
+
+    .pct-cell {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      color: var(--color, var(--moca-orange));
+      font-weight: 700;
+    }
+
+    .cum-cell {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      color: var(--moca-muted);
+      font-size: 0.8rem;
+    }
+
+    .bar-cell { width: 120px; }
+
+    .mini-bar-bg {
+      height: 6px;
+      background: var(--moca-border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .mini-bar-fill {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--color, var(--moca-orange));
+    }
+
+    /* highlight top row */
+    tbody tr.top-row { background: rgba(255,255,255,0.04); }
+    tbody tr.top-row .cat3-name { color: var(--color, var(--moca-orange)); }
+
+    /* ─── INSIGHT BOX ─────────────────────────────────── */
+    .insight {
+      background: var(--moca-card);
+      border-left: 3px solid var(--color, var(--moca-orange));
+      border-radius: 0 6px 6px 0;
+      padding: 0.9rem 1.2rem;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--moca-muted);
+    }
+    .insight strong { color: var(--moca-white); }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--moca-dark);
+      border-top: 1px solid var(--moca-border);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.78rem;
+      color: var(--moca-muted);
+    }
+    footer span { display: flex; align-items: center; gap: 0.4rem; }
+    footer .dot-orange { color: var(--moca-orange); }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 640px) {
+      header { padding: 1.5rem; flex-direction: column; align-items: flex-start; }
+      .header-meta { text-align: left; }
+      main { padding: 1.5rem 1rem; }
+      .bar-cell, .cum-cell { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════ HEADER -->
+<header>
+  <div class="logo-block">
+    <div class="logo-mark">M</div>
+    <div class="logo-text">
+      <strong>Moca Interactive</strong>
+      Analisi dati e-commerce
+    </div>
+  </div>
+  <div class="header-meta">
+    <h1>Pellizzari — Dati Acquisto IEM</h1>
+    <span>Anni 2025–2026 &nbsp;·&nbsp; Fatturato per categoria 3° livello</span>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════ MAIN -->
+<main>
+
+  <!-- INTRO -->
+  <div class="section-intro">
+    <div class="tag">Analisi fatturato</div>
+    <h2>Categorie di 3° livello per segmento</h2>
+    <p>Fatturato basato sulla colonna <em>fat. riga articolo</em>. Dati filtrati per anni 2025–2026. Ogni segmento è ordinato per fatturato decrescente con % sul totale del segmento e % cumulata.</p>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="summary-card" style="--color: var(--donna)">
+      <div class="label">Donna</div>
+      <div class="amount">€ 2.181.167</div>
+      <div class="pct">43,6% del totale</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:43.6%"></div></div>
+    </div>
+    <div class="summary-card" style="--color: var(--outlet)">
+      <div class="label">Outlet</div>
+      <div class="amount">€ 1.447.437</div>
+      <div class="pct">29,0% del totale</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:29%"></div></div>
+    </div>
+    <div class="summary-card" style="--color: var(--uomo)">
+      <div class="label">Uomo</div>
+      <div class="amount">€ 999.977</div>
+      <div class="pct">20,0% del totale</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:20%"></div></div>
+    </div>
+    <div class="summary-card" style="--color: var(--bambino)">
+      <div class="label">Bambino</div>
+      <div class="amount">€ 348.166</div>
+      <div class="pct">7,0% del totale</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:7%"></div></div>
+    </div>
+    <div class="summary-card" style="--color: var(--arredo)">
+      <div class="label">Arredo</div>
+      <div class="amount">€ 9.785</div>
+      <div class="pct">0,2% del totale</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:0.2%"></div></div>
+    </div>
+    <div class="summary-card" style="--color: var(--moca-white); border-top-color: var(--moca-white)">
+      <div class="label">Grand Total</div>
+      <div class="amount">€ 4.986.534</div>
+      <div class="pct" style="color:var(--moca-white)">100%</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:100%; background:var(--moca-white)"></div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ DONNA -->
+  <div class="segment" style="--color: var(--donna)">
+    <div class="segment-header">
+      <div class="segment-dot"></div>
+      <h2>Donna</h2>
+      <div class="segment-total">
+        <div class="tot-label">Totale fatturato</div>
+        <div class="tot-value">€ 2.181.167,68</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="rank">#</th>
+            <th>Categoria</th>
+            <th class="right">Fatturato</th>
+            <th class="right">% segmento</th>
+            <th class="right">% cumulata</th>
+            <th class="bar-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="top-row"><td class="rank">1</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Cappotti e Giacconi</span></td><td class="amount-cell">€ 391.085,62</td><td class="pct-cell">17,9%</td><td class="cum-cell">17,9%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:100%"></div></div></td></tr>
+          <tr><td class="rank">2</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Piumini</span></td><td class="amount-cell">€ 201.718,67</td><td class="pct-cell">9,2%</td><td class="cum-cell">27,2%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:51.6%"></div></div></td></tr>
+          <tr><td class="rank">3</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Pantaloni</span></td><td class="amount-cell">€ 176.863,61</td><td class="pct-cell">8,1%</td><td class="cum-cell">35,3%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:45.2%"></div></div></td></tr>
+          <tr><td class="rank">4</td><td><span class="cat2-badge">SCARPE</span><br><span class="cat3-name">Friulane</span></td><td class="amount-cell">€ 168.265,30</td><td class="pct-cell">7,7%</td><td class="cum-cell">43,0%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:43%"></div></div></td></tr>
+          <tr><td class="rank">5</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Maglieria</span></td><td class="amount-cell">€ 163.129,09</td><td class="pct-cell">7,5%</td><td class="cum-cell">50,5%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:41.7%"></div></div></td></tr>
+          <tr><td class="rank">6</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Giacche</span></td><td class="amount-cell">€ 148.148,03</td><td class="pct-cell">6,8%</td><td class="cum-cell">57,3%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:37.9%"></div></div></td></tr>
+          <tr><td class="rank">7</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Camicie e Top</span></td><td class="amount-cell">€ 125.787,17</td><td class="pct-cell">5,8%</td><td class="cum-cell">63,0%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:32.2%"></div></div></td></tr>
+          <tr><td class="rank">8</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Capispalla leggeri</span></td><td class="amount-cell">€ 113.736,86</td><td class="pct-cell">5,2%</td><td class="cum-cell">68,3%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:29.1%"></div></div></td></tr>
+          <tr><td class="rank">9</td><td><span class="cat2-badge">BORSE</span><br><span class="cat3-name">A tracolla</span></td><td class="amount-cell">€ 102.173,80</td><td class="pct-cell">4,7%</td><td class="cum-cell">72,9%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:26.1%"></div></div></td></tr>
+          <tr><td class="rank">10</td><td><span class="cat2-badge">BORSE</span><br><span class="cat3-name">A mano</span></td><td class="amount-cell">€ 101.998,66</td><td class="pct-cell">4,7%</td><td class="cum-cell">77,6%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:26.1%"></div></div></td></tr>
+          <tr><td class="rank">11</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Abiti</span></td><td class="amount-cell">€ 99.490,04</td><td class="pct-cell">4,6%</td><td class="cum-cell">82,2%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:25.4%"></div></div></td></tr>
+          <tr><td class="rank">12</td><td><span class="cat2-badge">BORSE</span><br><span class="cat3-name">A spalla</span></td><td class="amount-cell">€ 48.252,59</td><td class="pct-cell">2,2%</td><td class="cum-cell">84,4%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:12.3%"></div></div></td></tr>
+          <tr><td class="rank">13</td><td><span class="cat2-badge">MARE</span><br><span class="cat3-name">Borse mare</span></td><td class="amount-cell">€ 36.335,70</td><td class="pct-cell">1,7%</td><td class="cum-cell">86,1%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:9.3%"></div></div></td></tr>
+          <tr><td class="rank">14</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">T-shirt</span></td><td class="amount-cell">€ 34.247,56</td><td class="pct-cell">1,6%</td><td class="cum-cell">87,6%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:8.8%"></div></div></td></tr>
+          <tr><td class="rank">15</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Jeans</span></td><td class="amount-cell">€ 31.373,45</td><td class="pct-cell">1,4%</td><td class="cum-cell">89,1%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:8.0%"></div></div></td></tr>
+          <tr><td class="rank">16</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Gonne</span></td><td class="amount-cell">€ 30.765,01</td><td class="pct-cell">1,4%</td><td class="cum-cell">90,5%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:7.9%"></div></div></td></tr>
+          <tr><td class="rank">17</td><td><span class="cat2-badge">BORSE</span><br><span class="cat3-name">Shopping bag</span></td><td class="amount-cell">€ 27.842,39</td><td class="pct-cell">1,3%</td><td class="cum-cell">91,8%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:7.1%"></div></div></td></tr>
+          <tr><td class="rank">18</td><td><span class="cat2-badge">SCARPE</span><br><span class="cat3-name">Sandali</span></td><td class="amount-cell">€ 21.502,60</td><td class="pct-cell">1,0%</td><td class="cum-cell">92,7%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:5.5%"></div></div></td></tr>
+          <tr><td class="rank">19</td><td><span class="cat2-badge">ACCESSORI</span><br><span class="cat3-name">Sciarpe e Foulard</span></td><td class="amount-cell">€ 17.343,77</td><td class="pct-cell">0,8%</td><td class="cum-cell">93,5%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:4.4%"></div></div></td></tr>
+          <tr><td class="rank">20</td><td><span class="cat2-badge">ACCESSORI</span><br><span class="cat3-name">Cappelli e Berretti</span></td><td class="amount-cell">€ 14.591,40</td><td class="pct-cell">0,7%</td><td class="cum-cell">94,2%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:3.7%"></div></div></td></tr>
+          <tr><td class="rank">21</td><td><span class="cat2-badge">BORSE</span><br><span class="cat3-name">Pochette</span></td><td class="amount-cell">€ 12.863,98</td><td class="pct-cell">0,6%</td><td class="cum-cell">94,8%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:3.3%"></div></div></td></tr>
+          <tr><td class="rank">22</td><td><span class="cat2-badge">MARE</span><br><span class="cat3-name">Pochette mare</span></td><td class="amount-cell">€ 11.975,20</td><td class="pct-cell">0,5%</td><td class="cum-cell">95,3%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:3.1%"></div></div></td></tr>
+          <tr><td class="rank">23</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Felpe</span></td><td class="amount-cell">€ 10.119,89</td><td class="pct-cell">0,5%</td><td class="cum-cell">95,8%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:2.6%"></div></div></td></tr>
+          <tr><td class="rank">24</td><td><span class="cat2-badge">SCARPE</span><br><span class="cat3-name">Sneakers</span></td><td class="amount-cell">€ 10.059,00</td><td class="pct-cell">0,5%</td><td class="cum-cell">96,2%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:2.6%"></div></div></td></tr>
+          <tr><td class="rank">25</td><td><span class="cat2-badge">SCARPE</span><br><span class="cat3-name">Stivali e Boots</span></td><td class="amount-cell">€ 9.950,60</td><td class="pct-cell">0,5%</td><td class="cum-cell">96,7%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:2.5%"></div></div></td></tr>
+          <tr><td class="rank">26</td><td><span class="cat2-badge">ACCESSORI</span><br><span class="cat3-name">Cinture</span></td><td class="amount-cell">€ 8.532,24</td><td class="pct-cell">0,4%</td><td class="cum-cell">97,1%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:2.2%"></div></div></td></tr>
+          <tr><td class="rank">27</td><td><span class="cat2-badge">BORSE</span><br><span class="cat3-name">Portafogli</span></td><td class="amount-cell">€ 8.438,70</td><td class="pct-cell">0,4%</td><td class="cum-cell">97,5%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:2.2%"></div></div></td></tr>
+          <tr><td class="rank">28+</td><td colspan="5" style="color:var(--moca-muted); font-size:0.8rem; padding-top:0.6rem">Altre 20 categorie minori &nbsp;·&nbsp; <strong style="color:var(--moca-text)">€ 53.876,07</strong> &nbsp;·&nbsp; 2,5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight" style="--color: var(--donna)">
+      💡 Le prime <strong>11 categorie coprono l'82,2% del fatturato Donna</strong>. L'outerwear (Cappotti + Piumini + Capispalla leggeri) vale da solo il <strong>32,3%</strong>. Le Borse (A tracolla + A mano + A spalla) contribuiscono all'<strong>11,6%</strong>.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ UOMO -->
+  <div class="segment" style="--color: var(--uomo)">
+    <div class="segment-header">
+      <div class="segment-dot"></div>
+      <h2>Uomo</h2>
+      <div class="segment-total">
+        <div class="tot-label">Totale fatturato</div>
+        <div class="tot-value">€ 999.977,28</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="rank">#</th>
+            <th>Categoria</th>
+            <th class="right">Fatturato</th>
+            <th class="right">% segmento</th>
+            <th class="right">% cumulata</th>
+            <th class="bar-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="top-row"><td class="rank">1</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Capispalla</span></td><td class="amount-cell">€ 349.945,74</td><td class="pct-cell">35,0%</td><td class="cum-cell">35,0%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:100%"></div></div></td></tr>
+          <tr><td class="rank">2</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Piumini</span></td><td class="amount-cell">€ 116.040,38</td><td class="pct-cell">11,6%</td><td class="cum-cell">46,6%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:33.2%"></div></div></td></tr>
+          <tr><td class="rank">3</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Maglieria</span></td><td class="amount-cell">€ 115.260,91</td><td class="pct-cell">11,5%</td><td class="cum-cell">58,1%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:32.9%"></div></div></td></tr>
+          <tr><td class="rank">4</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Pantaloni</span></td><td class="amount-cell">€ 63.624,18</td><td class="pct-cell">6,4%</td><td class="cum-cell">64,5%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:18.2%"></div></div></td></tr>
+          <tr><td class="rank">5</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">T-shirt</span></td><td class="amount-cell">€ 46.281,07</td><td class="pct-cell">4,6%</td><td class="cum-cell">69,1%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:13.2%"></div></div></td></tr>
+          <tr><td class="rank">6</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Camicie</span></td><td class="amount-cell">€ 40.053,78</td><td class="pct-cell">4,0%</td><td class="cum-cell">73,1%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:11.4%"></div></div></td></tr>
+          <tr><td class="rank">7</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Felpe</span></td><td class="amount-cell">€ 34.926,07</td><td class="pct-cell">3,5%</td><td class="cum-cell">76,6%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:9.9%"></div></div></td></tr>
+          <tr><td class="rank">8</td><td><span class="cat2-badge">ABBIGLIAMENTO</span><br><span class="cat3-name">Jeans</span></td><td class="amount-cell">€ 33.608,10</td><td class="pct-cell">3,4%</td><td class="cum-cell">80,0%</td><td class="bar-cell"><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:9.6%"></div></div></td></tr>
+          <tr
