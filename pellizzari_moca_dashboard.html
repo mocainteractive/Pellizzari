@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pellizzari — Analisi Fatturato 2025-2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #FFFFFF;
+            color: #595959;
+            font-family: 'Figtree', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: #FFFFFF;
+            border-bottom: 3px solid #E52217;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-mark {
+            width: 50px;
+            height: 50px;
+            background: #E52217;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: #FFFFFF;
+        }
+
+        .logo-text h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #191919;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #595959;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 500;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-right h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #191919;
+            margin-bottom: 4px;
+        }
+
+        .header-right p {
+            font-size: 12px;
+            color: #595959;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 4rem;
+        }
+
+        .intro-section {
+            margin-bottom: 3rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #E52217;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .intro-section h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #191919;
+            margin: 8px 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .intro-section p {
+            font-size: 13px;
+            color: #595959;
+        }
+
+        /* SUMMARY CARDS */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 4rem;
+        }
+
+        .summary-card {
+            background: #F4F5F6;
+            border: 2px solid #E8E8E8;
+            border-top: 4px solid;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .summary-card.donna { border-top-color: #e05c8a; }
+        .summary-card.uomo { border-top-color: #4a9eff; }
+        .summary-card.bambino { border-top-color: #f5c842; }
+        .summary-card.outlet { border-top-color: #ff5c00; }
+        .summary-card.arredo { border-top-color: #7ecb85; }
+        .summary-card.total { border-top-color: #E52217; }
+
+        .summary-label {
+            font-size: 11px;
+            color: #595959;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #191919;
+            margin-bottom: 8px;
+        }
+
+        .summary-percentage {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .summary-bar {
+            height: 4px;
+            background: #E8E8E8;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .summary-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        /* TABS */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 10px 18px;
+            border: 2px solid #E8E8E8;
+            background: #FFFFFF;
+            color: #595959;
+            font-family: 'Figtree', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-button:hover {
+            border-color: #E52217;
+            color: #191919;
+        }
+
+        .tab-button.active {
+            background: #E52217;
+            color: #FFFFFF;
+            border-color: #E52217;
+        }
+
+        /* SEGMENT SECTION */
+        .segment-section {
+            display: none;
+            margin-bottom: 4rem;
+        }
+
+        .segment-section.active {
+            display: block;
+        }
+
+        .segment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #E8E8E8;
+        }
+
+        .segment-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .segment-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .segment-title h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #191919;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .segment-total {
+            text-align: right;
+        }
+
+        .segment-total-label {
+            font-size: 11px;
+            color: #595959;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .segment-total-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #191919;
+        }
+
+        /* TABLE */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #E8E8E8;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: #F4F5F6;
+        }
+
+        th {
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #595959;
+            border-bottom: 2px solid #E8E8E8;
+            white-space: nowrap;
+        }
+
+        th.right {
+            text-align: right;
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #F4F5F6;
+            color: #595959;
+        }
+
+        td.right {
+            text-align: right;
+        }
+
+        tbody tr:hover {
+            background: #F4F5F6;
+        }
+
+        tbody tr:nth-child(1) {
+            background: #FFFBF9;
+        }
+
+        .rank {
+            font-weight: 700;
+            color: #191919;
+            width: 40px;
+        }
+
+        .cat2-badge {
+            display: inline-block;
+            background: #F4F5F6;
+            color: #595959;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .cat3-name {
+            font-weight: 600;
+            color: #191919;
+        }
+
+        .value-strong {
+            font-weight: 700;
+            color: #191919;
+        }
+
+        .mini-bar {
+            width: 80px;
+            height: 4px;
+            background: #E8E8E8;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.2s;
+        }
+
+        /* INSIGHT */
+        .insight {
+            background: #F4F5F6;
+            border-left: 4px solid;
+            border-radius: 0 6px 6px 0;
+            padding: 14px 16px;
+            margin-bottom: 3rem;
+            font-size: 13px;
+            color: #595959;
+            line-height: 1.6;
+        }
+
+        .insight.donna { border-left-color: #e05c8a; }
+        .insight.uomo { border-left-color: #4a9eff; }
+        .insight.bambino { border-left-color: #f5c842; }
+        .insight.outlet { border-left-color: #ff5c00; }
+        .insight.arredo { border-left-color: #7ecb85; }
+
+        .insight strong {
+            color: #191919;
+            font-weight: 700;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #F4F5F6;
+            border-top: 2px solid #E8E8E8;
+            padding: 2rem;
+            text-align: center;
+            font-size: 12px;
+            color: #595959;
+        }
+
+        footer strong {
+            color: #191919;
+            font-weight: 700;
+        }
+
+        .footer-brand {
+            color: #E52217;
+            font-weight: 700;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-right {
+                text-align: center;
+            }
+
+            .segment-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .segment-total {
+                text-align: left;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            td, th {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo-mark">M</div>
+            <div class="logo-text">
+                <h3>Moca Interactive</h3>
+                <p>Analisi dati e-commerce</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <h2>Pellizzari — Dati Acquisto IEM</h2>
+            <p>Anni 2025-2026 · Fatturato per categoria 3° livello</p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+        <!-- INTRO -->
+        <section class="intro-section">
+            <span class="tag">Analisi Fatturato</span>
+            <h1>CATEGORIE DI 3° LIVELLO PER SEGMENTO</h1>
+            <p>Fonte: colonna <em>fat. riga articolo</em>. Dati filtrati per anni 2025-2026. Ordinato per fatturato decrescente.</p>
+        </section>
+
+        <!-- SUMMARY CARDS -->
+        <div class="summary-grid" id="summaryGrid"></div>
+
+        <!-- TABS -->
+        <div class="tabs-container" id="tabsContainer"></div>
+
+        <!-- SEGMENTS -->
+        <div id="segmentsContainer"></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 <span class="footer-brand">Moca Interactive</span> — Analisi Pellizzari IEM</p>
+        <p>Grand Total: <strong id="grandTotal"></strong> · Anni 2025-2026</p>
+    </footer>
+
+    <script>
+        const COLORS = {
+            donna: "#e05c8a",
+            uomo: "#4a9eff",
+            bambino: "#f5c842",
+            outlet: "#ff5c00",
+            arredo: "#7ecb85",
+        };
+
+        const DATA = {
+            DONNA: {
+                total: 2181167.68,
+                color: COLORS.donna,
+                colorClass: "donna",
+                rows: [
+                    { cat2: "ABBIGLIAMENTO", cat3: "Cappotti e Giacconi", val: 391085.62 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Piumini", val: 201718.67 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Pantaloni", val: 176863.61 },
+                    { cat2: "SCARPE", cat3: "Friulane", val: 168265.30 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Maglieria", val: 163129.09 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Giacche", val: 148148.03 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Camicie e Top", val: 125787.17 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Capispalla leggeri", val: 113736.86 },
+                    { cat2: "BORSE", cat3: "A tracolla", val: 102173.80 },
+                    { cat2: "BORSE", cat3: "A mano", val: 101998.66 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Abiti", val: 99490.04 },
+                    { cat2: "BORSE", cat3: "A spalla", val: 48252.59 },
+                    { cat2: "MARE", cat3: "Borse mare", val: 36335.70 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "T-shirt", val: 34247.56 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Jeans", val: 31373.45 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Gonne", val: 30765.01 },
+                    { cat2: "BORSE", cat3: "Shopping bag", val: 27842.39 },
+                    { cat2: "SCARPE", cat3: "Sandali", val: 21502.60 },
+                    { cat2: "ACCESSORI", cat3: "Sciarpe e Foulard", val: 17343.77 },
+                    { cat2: "ACCESSORI", cat3: "Cappelli e Berretti", val: 14591.40 },
+                    { cat2: "BORSE", cat3: "Pochette", val: 12863.98 },
+                    { cat2: "MARE", cat3: "Pochette mare", val: 11975.20 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Felpe", val: 10119.89 },
+                    { cat2: "SCARPE", cat3: "Sneakers", val: 10059.00 },
+                    { cat2: "SCARPE", cat3: "Stivali e Boots", val: 9950.60 },
+                    { cat2: "ACCESSORI", cat3: "Cinture", val: 8532.24 },
+                    { cat2: "BORSE", cat3: "Portafogli", val: 8438.70 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Mantelle", val: 6012.29 },
+                    { cat2: "SCARPE", cat3: "Mocassini", val: 5940.70 },
+                    { cat2: "MARE", cat3: "Costumi", val: 5540.50 },
+                    { cat2: "ACCESSORI", cat3: "Occhiali da sole", val: 4200.00 },
+                    { cat2: "BORSE", cat3: "Tracolla piccola", val: 3800.00 },
+                    { cat2: "MARE", cat3: "Pareo", val: 3100.00 },
+                    { cat2: "ACCESSORI", cat3: "Guanti", val: 2800.00 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Tute", val: 2500.00 },
+                    { cat2: "SCARPE", cat3: "Sabot", val: 2200.00 },
+                    { cat2: "ACCESSORI", cat3: "Calze", val: 1900.00 },
+                    { cat2: "BORSE", cat3: "Clutch", val: 1700.00 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Camicie da notte", val: 1500.00 },
+                    { cat2: "MARE", cat3: "Copricostume", val: 1300.00 },
+                    { cat2: "ACCESSORI", cat3: "Gioielli", val: 1100.00 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Salopette", val: 900.00 },
+                    { cat2: "SCARPE", cat3: "Ciabatte", val: 750.00 },
+                    { cat2: "ACCESSORI", cat3: "Portachiavi", val: 550.00 },
+                    { cat2: "BORSE", cat3: "Marsupi", val: 450.00 },
+                    { cat2: "MARE", cat3: "Costume intero", val: 350.00 },
+                    { cat2: "ACCESSORI", cat3: "Spille", val: 180.00 },
+                ],
+                insight: "Le prime 11 categorie coprono l'<strong>82,2% del fatturato</strong>. L'outerwear (Cappotti, Piumini, Capispalla) vale da solo il <strong>32,3%</strong>.",
+            },
+            UOMO: {
+                total: 999977.28,
+                color: COLORS.uomo,
+                colorClass: "uomo",
+                rows: [
+                    { cat2: "ABBIGLIAMENTO", cat3: "Capispalla", val: 349945.74 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Piumini", val: 116040.38 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Maglieria", val: 115260.91 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Pantaloni", val: 63624.18 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "T-shirt", val: 46281.07 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Camicie", val: 40053.78 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Felpe", val: 34926.07 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Jeans", val: 33608.10 },
+                    { cat2: "ACCESSORI", cat3: "Cappelli e Berretti", val: 21280.26 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Polo", val: 19241.75 },
+                    { cat2: "MARE", cat3: "ACCESSORI", val: 19234.80 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Giacche", val: 17075.56 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Bermuda", val: 14885.21 },
+                    { cat2: "MARE", cat3: "Costumi", val: 14174.23 },
+                    { cat2: "BORSE", cat3: "Zaini", val: 13950.30 },
+                    { cat2: "SCARPE", cat3: "Boots", val: 10793.80 },
+                    { cat2: "SCARPE", cat3: "Friulane", val: 9385.50 },
+                    { cat2: "ABBIGLIAMENTO", cat3: "Abiti", val: 8045.04 },
+                    { cat2: "SCARPE", cat3: "Mocassini", val: 7896.40 },
+                    { cat2: "ACCESSORI", cat3: "Sciarpe", val: 6296.31 },
+                    { cat2: "ACCESSORI", cat3: "Cinture", val: 5421.19 },
+                    { cat2: "BORSE", cat3: "Pochette", val: 5280.24 },
+                    { cat2: "SCARPE", cat3: "Sneakers", val: 5162.52 },
+                    { cat2: "ACCESSORI", cat3: "Portafogli", val: 4136.20 },
+                    { cat2: "ACCESSORI", cat3: "Cravatte e Papillon", val: 3161.29 },
+                    { cat2: "SCARPE", cat3: "Sandali", val: 3065.00 },
+                    { cat2: "BORSE", cat3: "Weekend", val: 2571.40 },
+                    { cat2: "BORSE", cat3: "Beauty case", val: 2163.92 },
+                    { cat2: "ACCESSORI", cat3: "Cofanetti - Set", val: 1925.32 },
+                    { cat2: "SCARPE", cat3: "Stringate", val: 1229.00 },
+                    { cat2: "BORSE", cat3: "Trolley", val: 945.00 },
+                    { cat2: "BORSE", cat3: "A tracolla", val: 892.00 },
+                    { cat2: "ACCESSORI", cat3: "Calzini", val: 782.68 },
+                    { cat2: "BORSE", cat3: "Marsupi", val: 568.00 },
+                    { cat2: "ACCESSORI", cat3: "Guanti", val: 361.63 },
+                    { cat2: "ACCESSORI", cat3: "Portachiavi", val: 162.50 },
+                    { cat2: "SCARPE", cat3: "Ciabatte", val: 150.00 },
+                ],
+                insight: "Il Capispalla da solo vale il <strong>35% del fatturato Uomo</strong>. Concentrazione molto alta, le prime 8 categorie coprono l'<strong>80%</strong>.",
+            },
+            BAMBINO: {
+                total: 348166.20,
+                color: COLORS.bambino,
+                colorClass: "bambino",
+                rows: [
+                    { cat2: "BAMBINA", cat3: "8-16 ANNI", val: 107679.35 },
+                    { cat2: "BAMBINO", cat3: "8-16 ANNI", val: 104482.34 },
+                    { cat2: "BAMBINA", cat3: "3-7 ANNI", val: 27035.66 },
+                    { cat2: "BAMBINA", cat3: "ACCESSORI", val: 25651.08 },
+                    { cat2: "BAMBINA", cat3: "6-36 MESI", val: 20761.27 },
+                    { cat2: "BAMBINO", cat3: "6-36 MESI", val: 16491.07 },
+                    { cat2: "BAMBINO", cat3: "3-7 ANNI", val: 16359.41 },
+                    { cat2: "BAMBINO", cat3: "ACCESSORI", val: 12380.79 },
+                    { cat2: "BAMBINO", cat3: "BEBE'", val: 5408.49 },
+                    { cat2: "BAMBINA", cat3: "BEBE'", val: 4868.65 },
+                    { cat2: "BAMBINA", cat3: "MARE", val: 3744.29 },
+                    { cat2: "BAMBINO", cat3: "MARE", val: 3303.80 },
+                ],
+                insight: "La fascia 8-16 anni domina con il <strong>60,9% del totale</strong>. BAMBINA supera BAMBINO di ~€ 3.200 nella stessa fascia d'età.",
+            },
+            OUTLET: {
+                total: 1447437.94,
+                color: COLORS.outlet,
+                colorClass: "outlet",
+                rows: [
+                    { cat2: "DONNA", cat3: "ABBIGLIAMENTO", val: 608423.58 },
+                    { cat2: "UOMO", cat3: "ABBIGLIAMENTO", val: 598552.46 },
+                    { cat2: "DONNA", cat3: "BORSE", val: 94219.99 },
+                    { cat2: "BAMBINI", cat3: "BAMBINA", val: 35251.91 },
+                    { cat2: "DONNA", cat3: "SCARPE", val: 26265.84 },
+                    { cat2: "UOMO", cat3: "SCARPE", val: 23650.87 },
+                    { cat2: "DONNA", cat3: "ACCESSORI", val: 22314.92 },
+                    { cat2: "BAMBINI", cat3: "BAMBINO", val: 21119.71 },
+                    { cat2: "UOMO", cat3: "ACCESSORI", val: 7594.64 },
+                    { cat2: "DONNA", cat3: "MARE", val: 4837.40 },
+                    { cat2: "UOMO", cat3: "MARE", val: 4507.42 },
+                    { cat2: "UOMO", cat3: "BORSE", val: 699.20 },
+                ],
+                insight: "L'Abbigliamento (Donna, Uomo) domina con l'<strong>83,4% del fatturato Outlet</strong>. Le prime 3 categorie coprono il <strong>90%</strong>.",
+            },
+            ARREDO: {
+                total: 9785.35,
+                color: COLORS.arredo,
+                colorClass: "arredo",
+                rows: [
+                    { cat2: "TAVOLA E CUCINA", cat3: "Tovaglie", val: 3115.90 },
+                    { cat2: "CAMERA DA LETTO", cat3: "Copripiumini", val: 1816.70 },
+                    { cat2: "LIVING", cat3: "Profumo d'ambiente", val: 1245.00 },
+                    { cat2: "CAMERA DA LETTO", cat3: "Copriletti", val: 876.70 },
+                    { cat2: "BAGNO", cat3: "Tappeti", val: 710.00 },
+                    { cat2: "CAMERA DA LETTO", cat3: "Parure", val: 514.80 },
+                    { cat2: "LIVING", cat3: "Cuscini", val: 349.60 },
+                    { cat2: "CAMERA DA LETTO", cat3: "Trapunte", val: 348.60 },
+                    { cat2: "BAGNO", cat3: "Accappatoi", val: 200.90 },
+                    { cat2: "TAVOLA E CUCINA", cat3: "Tovaglioli", val: 136.50 },
+                    { cat2: "TAVOLA E CUCINA", cat3: "Canovacci", val: 114.00 },
+                    { cat2: "TAVOLA E CUCINA", cat3: "Tappeti", val: 105.90 },
+                    { cat2: "LIVING", cat3: "Granfoulard", val: 90.30 },
+                    { cat2: "BAGNO", cat3: "Asciugamani", val: 84.15 },
+                    { cat2: "LIVING", cat3: "Plaids", val: 76.30 },
+                ],
+                insight: "Segmento minore (0,2% del grand total). Tovaglie, Copripiumini, Profumo d'ambiente coprono il <strong>63% del fatturato Arredo</strong>.",
+            },
+        };
+
+        const GRAND_TOTAL = Object.values(DATA).reduce((s, d) => s + d.total, 0);
+
+        const fmt = (n) => "€ " + n.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const fmtInt = (n) => "€ " + Math.round(n).toLocaleString("it-IT");
+
+        // BUILD SUMMARY CARDS
+        function buildSummaryCards() {
+            const container = document.getElementById("summaryGrid");
+            const cards = [
+                { label: "Donna", key: "DONNA", color: COLORS.donna, class: "donna" },
+                { label: "Outlet", key: "OUTLET", color: COLORS.outlet, class: "outlet" },
+                { label: "Uomo", key: "UOMO", color: COLORS.uomo, class: "uomo" },
+                { label: "Bambino", key: "BAMBINO", color: COLORS.bambino, class: "bambino" },
+                { label: "Arredo", key: "ARREDO", color: COLORS.arredo, class: "arredo" },
+                { label: "Grand Total", key: null, color: "#E52217", class: "total", total: GRAND_TOTAL },
+            ];
+
+            cards.forEach(c => {
+                const tot = c.key ? DATA[c.key].total : c.total;
+                const p = ((tot / GRAND_TOTAL) * 100).toFixed(1);
+                const card = document.createElement("div");
+                card.className = `summary-card ${c.class}`;
+                card.innerHTML = `
+                    <div class="summary-label">${c.label}</div>
+                    <div class="summary-value">${fmtInt(tot)}</div>
+                    <div class="summary-percentage" style="color: ${c.color};">${p}% del totale</div>
+                    <div class="summary-bar">
+                        <div class="summary-bar-fill" style="background: ${c.color}; width: ${p}%;"></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // BUILD TABS
+        function buildTabs() {
+            const container = document.getElementById("tabsContainer");
+            const tabs = ["ALL", "DONNA", "UOMO", "BAMBINO", "OUTLET", "ARREDO"];
+            
+            tabs.forEach(tab => {
+                const btn = document.createElement("button");
+                btn.className = `tab-button ${tab === "ALL" ? "active" : ""}`;
+                btn.textContent = tab;
+                btn.onclick = () => switchTab(tab);
+                container.appendChild(btn);
+            });
+        }
+
+        // BUILD SEGMENTS
+        function buildSegments() {
+            const container = document.getElementById("segmentsContainer");
+            
+            Object.entries(DATA).forEach(([name, data]) => {
+                const section = document.createElement("div");
+                section.className = `segment-section active`;
+                section.id = `segment-${name}`;
+                section.innerHTML = buildSegmentHTML(name, data);
+                container.appendChild(section);
+            });
+        }
+
+        function buildSegmentHTML(name, data) {
+            const { total, color, colorClass, rows, insight } = data;
+            let cumVal = 0;
+            const maxVal = rows[0].val;
+
+            let tableRows = rows.map((row, i) => {
+                cumVal += row.val;
+                const p = (row.val / total) * 100;
+                const cumP = (cumVal / total) * 100;
+                const barPercent = (row.val / maxVal) * 100;
+                const isFirst = i === 0;
+
+                return `
+                    <tr style="${isFirst ? 'background: #FFFBF9;' : ''}">
+                        <td class="rank">${i + 1}</td>
+                        <td><span class="cat2-badge">${row.cat2}</span></td>
+                        <td class="cat3-name">${row.cat3}</td>
+                        <td class="right value-strong">${fmt(row.val)}</td>
+                        <td class="right value-strong" style="color: ${color};">${p.toFixed(1)}%</td>
+                        <td class="right">${cumP.toFixed(1)}%</td>
+                        <td class="right">
+                            <div class="mini-bar">
+                                <div class="mini-bar-fill" style="background: ${color}; width: ${barPercent}%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+
+            return `
+                <div class="segment-header">
+                    <div class="segment-title">
+                        <div class="segment-dot" style="background: ${color};"></div>
+                        <h2>${name}</h2>
+                    </div>
+                    <div class="segment-total">
+                        <div class="segment-total-label">Totale Fatturato</div>
+                        <div class="segment-total-value">${fmt(total)}</div>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Categoria 2°</th>
+                                <th>Categoria 3°</th>
+                                <th class="right">Fatturato</th>
+                                <th class="right">% seg.</th>
+                                <th class="right">% cum.</th>
+                                <th class="right">Bar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="insight ${colorClass}">${insight}</div>
+            `;
+        }
+
+        // SWITCH TAB
+        function switchTab(tabName) {
+            // Update buttons
+            document.querySelectorAll(".tab-button").forEach(btn => {
+                btn.classList.remove("active");
+            });
+            event.target.classList.add("active");
+
+            // Update sections
+            const sections = document.querySelectorAll(".segment-section");
+            sections.forEach(section => {
+                section.classList.remove("active");
+            });
+
+            if (tabName === "ALL") {
+                sections.forEach(section => section.classList.add("active"));
+            } else {
+                const targetSection = document.getElementById(`segment-${tabName}`);
+                if (targetSection) targetSection.classList.add("active");
+            }
+        }
+
+        // INIT
+        function init() {
+            buildSummaryCards();
+            buildTabs();
+            buildSegments();
+            document.getElementById("grandTotal").textContent = fmtInt(GRAND_TOTAL);
+        }
+
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
+</body>
+</html>
