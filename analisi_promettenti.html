@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisi Segmento Promettenti, Pellizzari</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+:root{
+  --red:#E52217; --white:#FFFFFF; --lgray:#F4F5F6; --dark:#191919; --text:#595959;
+  --green:#118541; --blue:#5781FF; --violet:#551FC4; --pink:#CE2A59; --orange:#DB5E29; --gray:#484848;
+  --r100:#FF5147; --r70:#FF9F98; --r40:#FFCFCC; --r20:#FFE2E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.hero{background:var(--dark);color:var(--white);padding:40px 0 44px;margin-bottom:36px}
+.hero .wrap{padding-bottom:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}
+.logo{height:26px}
+.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:44px;font-weight:800;line-height:1.05;text-transform:uppercase;color:var(--white);letter-spacing:-.01em}
+.hero h1 .thin{font-weight:500;color:#c9c9c9;display:block;font-size:22px;letter-spacing:0;text-transform:none;margin-top:8px}
+.hero-note{margin-top:20px;font-size:12.5px;color:#8f8f8f;max-width:680px;border-left:2px solid var(--red);padding-left:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:44px}
+.kpi{background:var(--white);border-radius:14px;padding:22px 20px;border:1px solid #eceef0}
+.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--dark);margin-bottom:10px}
+.kpi .val{font-size:30px;font-weight:800;color:var(--dark);line-height:1}
+.kpi .sub{font-size:12px;color:var(--text);margin-top:7px}
+.kpi.accent{background:var(--red);border-color:var(--red)}
+.kpi.accent .lab,.kpi.accent .val,.kpi.accent .sub{color:var(--white)}
+section{margin-bottom:48px}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.snum{font-size:13px;font-weight:800;color:var(--red)}
+h2{font-size:23px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.005em}
+.sintro{font-size:14px;color:var(--text);margin:8px 0 22px;max-width:800px}
+.card{background:var(--white);border-radius:14px;padding:26px 28px;border:1px solid #eceef0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.subttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dark);margin-bottom:16px}
+.axislab{font-size:11px;fill:var(--text);font-family:'Figtree'}
+.pointlab{font-size:12px;font-weight:700;fill:var(--dark);font-family:'Figtree'}
+.bar-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:10px}
+.bar-row .nm{font-size:13px;color:var(--dark);font-weight:500;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:var(--lgray);border-radius:6px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px}
+.bar-row .vl{font-size:12.5px;font-weight:700;color:var(--dark);text-align:left}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;align-items:end;height:170px;margin-top:8px}
+.mcol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.mbar{width:100%;border-radius:5px 5px 0 0;background:var(--r40)}
+.mbar.peak{background:var(--red)}
+.mlab{font-size:10px;color:var(--text);margin-top:6px;text-transform:uppercase;font-weight:600}
+.reg{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.reg .rn{width:130px;font-size:13px;font-weight:600;color:var(--dark)}
+.reg .rt{flex:1;background:var(--lgray);height:14px;border-radius:7px;overflow:hidden}
+.reg .rf{height:100%;background:var(--blue);border-radius:7px}
+.reg .rf.ns{background:#c4c8cc}
+.reg .rv{width:52px;font-size:12.5px;font-weight:700;color:var(--dark);text-align:right}
+ul.ins{list-style:none;margin-top:4px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:14px;font-size:14px;color:var(--text)}
+ul.ins li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.note{font-size:11.5px;color:#8a8a8a;margin-top:14px;font-style:italic}
+.callout{background:#191919;border-radius:14px;padding:26px 30px;color:#fff;margin-top:4px}
+.callout .ct{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9a9a9a;font-weight:700;margin-bottom:18px}
+.twin{display:flex;align-items:stretch;gap:16px;flex-wrap:wrap}
+.twin .box{flex:1;min-width:150px;background:#232323;border-radius:10px;padding:18px 20px}
+.twin .box.hl{background:#2a1414;border:1px solid var(--red)}
+.twin .box .n{font-size:30px;font-weight:800;line-height:1}
+.twin .box .n.g{color:#9a9a9a}.twin .box .n.r{color:var(--r70)}
+.twin .box .l{font-size:11.5px;color:#c4c4c4;margin-top:8px;line-height:1.4}
+.callout .cnote{font-size:13px;color:#d0d0d0;margin-top:20px;border-top:1px solid #333;padding-top:16px}
+.callout .cnote b{color:#fff}
+.foot{border-top:1px solid #e2e4e6;margin-top:56px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.hero h1{font-size:32px}.bar-row{grid-template-columns:110px 1fr 52px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca">
+      <div class="tag">Analisi RFM Pellizzari &nbsp;/&nbsp; Fase 1</div>
+    </div>
+    <div class="eyebrow">Segmento aggiuntivo</div>
+    <h1>Promettenti
+      <span class="thin">Un solo acquisto, ma di valore. La coorte a più alto potenziale</span>
+    </h1>
+    <div class="hero-note">R medio 3,97, alto. F-M medio 2,52. Frequenza pari a 1 come i Nuovi Clienti, ultimo ordine da 0 a 731 giorni, ma valore del primo ordine molto più alto. Dati lordi dei resi. Andamento su 2024-2026. Benchmark su 14.348 clienti, il segmento più numeroso della base.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="lab">Clienti</div>
+      <div class="val">14.348</div>
+      <div class="sub">segmento più numeroso, 26% della base</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Fatturato lifetime</div>
+      <div class="val">2,85 mln</div>
+      <div class="sub">il più alto in aggregato di tutta la base</div>
+    </div>
+    <div class="kpi accent">
+      <div class="lab">Scontrino d'ingresso</div>
+      <div class="val">186 €</div>
+      <div class="sub">+37% sulla media Pellizzari</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Valore medio cliente</div>
+      <div class="val">198,8 €</div>
+      <div class="sub">da un solo acquisto</div>
+    </div>
+  </div>
+
+  <!-- CALLOUT GEMELLI -->
+  <div class="callout">
+    <div class="ct">Il confronto che definisce il segmento</div>
+    <div class="twin">
+      <div class="box"><div class="n g">46 €</div><div class="l">Nuovi Clienti<br>1 acquisto, basso valore</div></div>
+      <div class="box hl"><div class="n r">186 €</div><div class="l">Promettenti<br>1 acquisto, alto valore</div></div>
+      <div class="box"><div class="n g">231 €</div><div class="l">Da Non Perdere<br>alto valore, poi persi</div></div>
+    </div>
+    <div class="cnote">Nuovi Clienti e Promettenti hanno la stessa frequenza, un solo ordine, e la stessa recency. Cambia solo quanto hanno speso al primo acquisto. I Promettenti spendono come un futuro Campione, ma il loro scontrino è quasi identico a quello dei <b>Da Non Perdere</b>, clienti di valore che non sono più tornati. Convertire i Promettenti al secondo ordine è la priorità strategica più alta emersa dall'analisi.</div>
+  </div>
+
+  <!-- 1. TREND -->
+  <section style="margin-top:48px">
+    <div class="shead"><span class="snum">01</span><h2>Il motore di volume della base</h2></div>
+    <p class="sintro">Con 14.348 clienti e 2,85 milioni di fatturato lifetime, i Promettenti sono il segmento più grande e con il fatturato aggregato più alto di Pellizzari. Il valore registrato cresce con forza, il 2026 è già oltre i tre quarti del 2025 in poco più di metà anno.</p>
+    <div class="card">
+      <div class="subttl">Fatturato annuo registrato, dato giornaliero 2024-2026</div>
+      <svg viewBox="0 0 900 320" width="100%" preserveAspectRatio="xMidYMid meet">
+        <line x1="70" y1="40" x2="70" y2="260" stroke="#e6e8ea"/>
+        <line x1="70" y1="260" x2="860" y2="260" stroke="#e6e8ea"/>
+        <text class="axislab" x="60" y="264" text-anchor="end">0</text>
+        <text class="axislab" x="60" y="154" text-anchor="end">500k</text>
+        <text class="axislab" x="60" y="48" text-anchor="end">1,02 mln</text>
+        <line x1="70" y1="150" x2="860" y2="150" stroke="#f0f1f2"/>
+        <line x1="70" y1="44" x2="860" y2="44" stroke="#f0f1f2"/>
+        <!-- 2024=459523->163 ; 2025=1017125->45 ; 2026=759780->99 -->
+        <polygon points="180,163 500,45 820,99 820,260 180,260" fill="#E52217" opacity="0.06"/>
+        <polyline points="180,163 500,45 820,99" fill="none" stroke="#E52217" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="180" cy="163" r="5.5" fill="#E52217"/>
+        <circle cx="500" cy="45" r="6.5" fill="#E52217" stroke="#fff" stroke-width="2"/>
+        <circle cx="820" cy="99" r="6.5" fill="#E52217" stroke="#fff" stroke-width="2"/>
+        <text class="pointlab" x="180" y="151" text-anchor="middle">460k</text>
+        <text class="pointlab" x="500" y="33" text-anchor="middle">1,02 mln</text>
+        <text class="pointlab" x="820" y="87" text-anchor="middle">760k*</text>
+        <text class="axislab" x="180" y="282" text-anchor="middle">2024</text>
+        <text class="axislab" x="500" y="282" text-anchor="middle">2025</text>
+        <text class="axislab" x="820" y="282" text-anchor="middle">2026*</text>
+      </svg>
+      <div class="note">* 2026 parziale, dato fino al 20 luglio.</div>
+    </div>
+  </section>
+
+  <!-- 2. SCONTRINO -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Un primo acquisto già premium</h2></div>
+    <p class="sintro">Lo scontrino del primo e unico ordine è stabile intorno a 186 euro, costantemente +36-38% sopra la media della base. È l'opposto dei Nuovi Clienti, che entrano a un terzo di quel valore. I Promettenti non vanno educati a spendere, vanno solo convinti a tornare.</p>
+    <div class="card">
+      <div class="subttl">Scontrino del primo ordine, segmento contro totale base</div>
+      <div style="margin-top:10px">
+        <div class="bar-row"><div class="nm">2024</div><div class="bar-track"><div class="bar-fill" style="width:86%;background:var(--red)"></div></div><div class="vl">187 €</div></div>
+        <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:#c4c8cc"></div></div><div class="vl">137 €</div></div>
+        <div class="bar-row"><div class="nm">2025</div><div class="bar-track"><div class="bar-fill" style="width:86%;background:var(--red)"></div></div><div class="vl">187 €</div></div>
+        <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:62%;background:#c4c8cc"></div></div><div class="vl">135 €</div></div>
+        <div class="bar-row"><div class="nm">2026*</div><div class="bar-track"><div class="bar-fill" style="width:86%;background:var(--red)"></div></div><div class="vl">186 €</div></div>
+        <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:#c4c8cc"></div></div><div class="vl">136 €</div></div>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--red)"></span>Promettenti, primo ordine</span>
+        <span><span class="dot" style="background:#c4c8cc"></span>Media base Pellizzari</span>
+      </div>
+      <div class="note">* 2026 parziale a luglio. Valori lordi dei resi.</div>
+    </div>
+  </section>
+
+  <!-- 3. STAGIONALITA -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Entrano a gennaio e a Natale</h2></div>
+    <p class="sintro">L'acquisizione dei Promettenti si concentra su gennaio (2.098 ingressi), luglio e dicembre (1.368). A differenza dei Nuovi Clienti, prevalentemente estivi, questa coorte entra anche con il regalo di Natale e i saldi invernali, coerente con un carrello più alto.</p>
+    <div class="card">
+      <div class="subttl">Nuovi ingressi per mese, somma 2024-2026</div>
+      <div class="months">
+        <div class="mcol"><div class="mbar peak" style="height:100%"></div><div class="mlab">Gen</div></div>
+        <div class="mcol"><div class="mbar" style="height:49%"></div><div class="mlab">Feb</div></div>
+        <div class="mcol"><div class="mbar" style="height:33%"></div><div class="mlab">Mar</div></div>
+        <div class="mcol"><div class="mbar" style="height:25%"></div><div class="mlab">Apr</div></div>
+        <div class="mcol"><div class="mbar" style="height:33%"></div><div class="mlab">Mag</div></div>
+        <div class="mcol"><div class="mbar" style="height:36%"></div><div class="mlab">Giu</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:66%"></div><div class="mlab">Lug</div></div>
+        <div class="mcol"><div class="mbar" style="height:33%"></div><div class="mlab">Ago</div></div>
+        <div class="mcol"><div class="mbar" style="height:34%"></div><div class="mlab">Set</div></div>
+        <div class="mcol"><div class="mbar" style="height:30%"></div><div class="mlab">Ott</div></div>
+        <div class="mcol"><div class="mbar" style="height:41%"></div><div class="mlab">Nov</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:65%"></div><div class="mlab">Dic</div></div>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--red)"></span>Picchi, gennaio, luglio, dicembre</span>
+        <span><span class="dot" style="background:var(--r40)"></span>Resto dell'anno</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. BRAND -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Ingresso da brand premium, non da entry price</h2></div>
+    <p class="sintro">La porta d'ingresso è il womenswear Max Mara e Mc2 Saint Barth, con Pinko e Barbour a rafforzare il profilo premium. Le Papù, che domina l'acquisizione dei Nuovi Clienti a basso valore, qui scende al settimo posto. Il brand d'ingresso predice il valore del cliente.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Top brand come 1° ordine</div>
+        <div class="bar-row"><div class="nm">Emme Marella</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">1042</div></div>
+        <div class="bar-row"><div class="nm">Mc2 Saint Barth</div><div class="bar-track"><div class="bar-fill" style="width:97%;background:var(--r70)"></div></div><div class="vl">1011</div></div>
+        <div class="bar-row"><div class="nm">Hlo!</div><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--r70)"></div></div><div class="vl">646</div></div>
+        <div class="bar-row"><div class="nm">Marella</div><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--r70)"></div></div><div class="vl">646</div></div>
+        <div class="bar-row"><div class="nm">Weekend Max Mara</div><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--r40)"></div></div><div class="vl">642</div></div>
+        <div class="bar-row"><div class="nm">Pinko</div><div class="bar-track"><div class="bar-fill" style="width:59%;background:var(--r40)"></div></div><div class="vl">620</div></div>
+        <div class="bar-row"><div class="nm">Le Papù</div><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--r40)"></div></div><div class="vl">586</div></div>
+        <div class="bar-row"><div class="nm">Barbour</div><div class="bar-track"><div class="bar-fill" style="width:47%;background:var(--r20)"></div></div><div class="vl">492</div></div>
+      </div>
+      <div class="card">
+        <div class="subttl">Categoria di primo acquisto</div>
+        <div class="bar-row"><div class="nm">Abbigliamento</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="vl">6495</div></div>
+        <div class="bar-row"><div class="nm">Uomo</div><div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--green)"></div></div><div class="vl">2070</div></div>
+        <div class="bar-row"><div class="nm">Donna</div><div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--pink)"></div></div><div class="vl">1814</div></div>
+        <div class="bar-row"><div class="nm">Borse</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--orange)"></div></div><div class="vl">1194</div></div>
+        <div class="bar-row"><div class="nm">Scarpe</div><div class="bar-track"><div class="bar-fill" style="width:14%;background:var(--violet)"></div></div><div class="vl">917</div></div>
+        <div class="note">Categoria principale, Donna 42,3%, Outlet 28,1%, Uomo 21,5%, Bambini 7,9%. Compaiono le Borse, categoria ad alto scontrino assente tra i top dei Nuovi Clienti.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TERRITORIO -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>La concentrazione geografica più alta</h2></div>
+    <p class="sintro">Su 11.426 clienti geolocalizzati, Lombardia, Lazio e Veneto valgono insieme il 57,5% del segmento, la concentrazione più alta dei quattro segmenti analizzati. Copertura anagrafica ottima, solo il 4,8% senza regione.</p>
+    <div class="card">
+      <div class="subttl">Distribuzione clienti per regione, top 8</div>
+      <div class="reg"><div class="rn">Lombardia</div><div class="rt"><div class="rf" style="width:100%"></div></div><div class="rv">27,7%</div></div>
+      <div class="reg"><div class="rn">Lazio</div><div class="rt"><div class="rf" style="width:57%"></div></div><div class="rv">15,9%</div></div>
+      <div class="reg"><div class="rn">Veneto</div><div class="rt"><div class="rf" style="width:50%"></div></div><div class="rv">13,9%</div></div>
+      <div class="reg"><div class="rn">Non specificato</div><div class="rt"><div class="rf ns" style="width:17%"></div></div><div class="rv">4,8%</div></div>
+      <div class="reg"><div class="rn">Abruzzo</div><div class="rt"><div class="rf" style="width:15%"></div></div><div class="rv">4,2%</div></div>
+      <div class="reg"><div class="rn">Campania</div><div class="rt"><div class="rf" style="width:15%"></div></div><div class="rv">4,2%</div></div>
+      <div class="reg"><div class="rn">Emilia-Romagna</div><div class="rt"><div class="rf" style="width:15%"></div></div><div class="rv">4,1%</div></div>
+      <div class="reg"><div class="rn">Sicilia</div><div class="rt"><div class="rf" style="width:14%"></div></div><div class="rv">4,0%</div></div>
+    </div>
+  </section>
+
+  <!-- INSIGHT -->
+  <section>
+    <div class="shead"><span class="snum">→</span><h2>Insight chiave e spunti strategici</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>La priorità numero uno per la retention.</b> Grandi numeri, alto valore d'ingresso, recency ancora buona. Sono i clienti dove un euro investito in conversione al secondo ordine rende di più.</li>
+        <li><b>Non educare a spendere, dare una ragione per tornare.</b> A differenza dei Nuovi Clienti, i Promettenti spendono già bene. Le leve giuste sono novità di collezione, coerenza col brand d'ingresso e servizio, non lo sconto.</li>
+        <li><b>Il brand d'ingresso è un predittore di valore.</b> Chi entra da Emme Marella, Mc2 Saint Barth, Pinko o Barbour vale più di chi entra da Le Papù o Havaianas. Utile per prioritizzare i budget di acquisizione verso i brand che portano clienti di valore.</li>
+        <li><b>Agganciare i picchi di gennaio e dicembre.</b> Chi entra col regalo di Natale o coi saldi va intercettato subito dopo, quando il ricordo del brand è fresco, con una proposta di riacquisto mirata.</li>
+        <li><b>Il monito dei Da Non Perdere.</b> Stesso scontrino, stessa frequenza iniziale. La differenza tra un Promettente che diventa Campione e uno che si perde è il tempismo del secondo contatto. Qui il fattore tempo è decisivo.</li>
+        <li><b>Cross-sell coerente col primo acquisto.</b> Le Borse tra le categorie d'ingresso segnalano appetito per accessori di valore. Un follow-up con prodotti complementari al primo ordine può alzare ulteriormente il carrello.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Moca Interactive per Pellizzari</span>
+    <span>Analisi RFM 2026 &nbsp;/&nbsp; Fase 1, Segmento Promettenti</span>
+  </div>
+
+</div>
+</body>
+</html>
