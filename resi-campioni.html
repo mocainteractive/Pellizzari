@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Analisi resi, segmento Campioni · Pellizzari · Moca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --red:#E52217; --dark:#191919; --text:#595959; --light:#F4F5F6; --white:#FFFFFF;
+    --grigio:#484848;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Figtree',-apple-system,sans-serif;background:var(--light);color:var(--text);padding:28px 18px;}
+  .wrap{max-width:1120px;margin:0 auto;}
+  .box{background:var(--white);border:1px solid #ECECEC;border-radius:14px;padding:22px;margin-bottom:22px;}
+  h1{font-weight:700;font-size:30px;color:var(--dark);text-transform:uppercase;line-height:1.1;}
+  .head{font-weight:700;font-size:13px;letter-spacing:.6px;color:var(--dark);text-transform:uppercase;margin-bottom:14px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--red);text-transform:uppercase;}
+  .sub{font-size:13px;color:var(--text);}
+  .note{font-size:11.5px;color:var(--text);margin-top:8px;line-height:1.6;}
+  .header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;}
+  .badge{width:34px;height:34px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:22px;}
+  .kpi{background:var(--white);border:1px solid #ECECEC;border-radius:14px;padding:18px;}
+  .kpi .lbl{display:flex;align-items:center;gap:8px;color:var(--red);margin-bottom:10px;}
+  .kpi .lbl span{font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--dark);text-transform:uppercase;}
+  .kpi .val{font-weight:700;font-size:30px;color:var(--dark);line-height:1;}
+  .kpi .ksub{font-size:11.5px;color:var(--text);margin-top:7px;}
+  .insight{background:var(--dark);border-color:var(--dark);display:flex;gap:16px;align-items:flex-start;}
+  .insight .t{font-weight:700;font-size:13px;letter-spacing:.6px;color:var(--white);text-transform:uppercase;margin-bottom:8px;}
+  .insight p{color:#D6D6D6;font-size:13.5px;line-height:1.6;}
+  .insight b{color:var(--white);}
+  .toprow{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .toggle{display:inline-flex;background:var(--light);border-radius:9px;padding:3px;}
+  .toggle button{font-family:'Figtree';font-size:11.5px;font-weight:600;border:none;cursor:pointer;padding:6px 13px;border-radius:7px;background:transparent;color:var(--text);}
+  .toggle button.on{background:var(--red);color:var(--white);}
+  .methodo{background:var(--light);border-color:#E2E2E2;}
+  .methodo .mt{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:700;font-size:12px;letter-spacing:.6px;color:var(--dark);text-transform:uppercase;}
+  .methodo ul{margin:0;padding-left:18px;font-size:12px;color:var(--text);line-height:1.7;}
+  .foot{text-align:center;font-size:11px;color:#9A9A9A;margin-top:22px;}
+  .chartbox{position:relative;width:100%;}
+  svg.ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div class="badge">
+          <svg class="ico" style="stroke:#fff" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </div>
+        <span class="eyebrow">Pellizzari · Analisi RFM</span>
+      </div>
+      <h1>Analisi resi, segmento Campioni</h1>
+      <p class="sub" style="margin-top:8px;">Periodo 02/01/2023 - 20/07/2026 · 2.369 clienti · 5.883 ordini · 10.786 righe articolo</p>
+    </div>
+    <img src="https://mocainteractive.com/assets/svg/logo.svg" alt="Moca" style="height:26px;" />
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="box insight">
+    <svg class="ico" style="stroke:var(--red);width:22px;height:22px;margin-top:2px;flex:0 0 auto;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <div>
+      <div class="t">Insight chiave, il reso non dipende dalla fedeltà</div>
+      <p>La correlazione tra numero progressivo dell'ordine e propensione al reso è praticamente nulla (Pearson 0,017). Il tasso resta stabile intorno all'8-9 per cento sia al primo acquisto sia nei clienti più maturi. Il reso è quindi un fatto di <b>prodotto, taglia e vestibilità</b>, non di fiducia nel brand, e va aggredito sulla scheda prodotto e sulla categoria, non sul ciclo di vita del cliente.</p>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="head">Tasso di reso per progressivo ordine</div>
+    <div class="chartbox" style="height:270px;"><canvas id="cProg"></canvas></div>
+    <p class="note">• La numerosità cala rapidamente dopo il 5° ordine, i picchi sugli ordini alti (11°, 15°) poggiano su poche decine di righe e vanno letti con cautela.</p>
+  </div>
+
+  <div class="box">
+    <div class="toprow" style="margin-bottom:4px;">
+      <div class="head">Brand più restituiti</div>
+      <div class="toggle" id="tBrand"><button data-v="prop" class="on">Propensione %</button><button data-v="num">Numero resi</button></div>
+    </div>
+    <p class="note" id="brandNote" style="margin-top:0;margin-bottom:12px;">Ordinati per tasso di reso, solo brand con almeno 40 righe articolo.</p>
+    <div class="chartbox" style="height:360px;"><canvas id="cBrand"></canvas></div>
+    <p class="note">• Woolrich è il caso critico, unisce volume alto (140 righe) e propensione al reso del 20,7 per cento. Emergono due cluster, capispalla imbottito premium (Woolrich, Peuterey, Save The Duck) e denim strutturato (Michael Coal, Roy Roger's, Jacob Cohen).</p>
+  </div>
+
+  <div class="box">
+    <div class="toprow" style="margin-bottom:12px;">
+      <div class="head">Categorie più restituite</div>
+      <div class="toggle" id="tCat"><button data-v="tasso" class="on">Tasso reso %</button><button data-v="num">Numero resi</button></div>
+    </div>
+    <div class="chartbox" style="height:360px;"><canvas id="cCat"></canvas></div>
+    <p class="note">• Abiti (14,6 per cento) e Capispalla (13,1 per cento) hanno i tassi più alti, i Pantaloni guidano il volume assoluto con 226 resi. T-Shirt, Polo e Accessori sono le categorie più sicure. Classificazione derivata dalle descrizioni articolo, 12,4 per cento non classificabile.</p>
+  </div>
+
+  <div class="box">
+    <div class="head">Andamento del tasso di reso per anno</div>
+    <div class="chartbox" style="height:230px;"><canvas id="cAnno"></canvas></div>
+    <p class="note">• Trend in lieve crescita costante, dal 7,4 per cento del 2023 all'8,8 per cento del 2026. 2026 parziale, dati fino al 20 luglio.</p>
+  </div>
+
+  <div class="box methodo">
+    <div class="mt">
+      <svg class="ico" style="stroke:var(--dark);width:16px;height:16px;" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Nota metodologica e limiti
+    </div>
+    <ul>
+      <li>Un articolo è considerato reso quando nella riga ordine ha unità vendute pari a zero e prezzo € 0,00, logica di codifica verificata sulla piattaforma BI. Questo isola i singoli capi resi anche dentro i resi parziali.</li>
+      <li>La categoria è derivata da parole chiave sulle descrizioni articolo, non da tassonomia ufficiale. Fornendo la tassonomia a due livelli già usata per Pellizzari la riclassificazione diventa precisa.</li>
+      <li>Il valore economico dei capi resi non è ricostruibile da questo file, perché la riga del reso azzera il prezzo. Serve il valore lordo pre reso per stimare il monetary perso.</li>
+      <li>L'estrazione copre 2.369 clienti Campioni, l'87 per cento del segmento ufficiale (2.726).</li>
+    </ul>
+  </div>
+
+  <p class="foot">Moca Interactive · Analisi RFM Pellizzari · 2026</p>
+</div>
+
+<script>
+const RED="#E52217", DARK="#191919", TEXT="#595959", LIGHT="#F4F5F6", GRIGIO="#484848";
+const RED_SHADES=["#FF5147","#FF6B62","#FF857D","#FF9F98","#FFB9B5","#FFC4C1","#FFCFCC","#FFD9D8","#FFE2E1","#FFE7E6"];
+Chart.defaults.font.family="'Figtree', sans-serif";
+Chart.defaults.color=TEXT;
+
+// DATI
+const KPI={tasso_art:8.5,righe:10786,resi:916,tasso_ord:15.5,ordini:5883,ord_reso:910,full:5.5,partial:10.2};
+const PROG=[{o:1,t:9.2},{o:2,t:7.0},{o:3,t:7.6},{o:4,t:8.2},{o:5,t:8.9},{o:6,t:8.1},{o:7,t:9.0},{o:8,t:11.5},{o:9,t:7.9},{o:10,t:6.2},{o:11,t:13.0},{o:12,t:10.7},{o:13,t:6.0},{o:14,t:11.5},{o:15,t:12.5}];
+const BRAND_PROP=[["Michael Coal",21.3,10],["Woolrich",20.7,29],["Max Mara Studio",15.9,22],["Peuterey",15.5,16],["Puro Lino",15.0,6],["Save The Duck",14.5,10],["Greek Archaic Kori",14.0,7],["Roy Roger's",14.0,20],["Jacob Cohen",13.0,9],["Xacus",12.5,5]];
+const BRAND_NUM=[["Emme Marella",72,7.8],["Weekend Max Mara",69,10.3],["Marella",63,10.8],["Hlo!",40,6.8],["Rodolfo Pellizzari",39,10.1],["Jurerê",35,6.9],["Barbour",29,12.1],["Woolrich",29,20.7],["Patrizia Pepe",27,9.1],["My Stuff",26,8.9]];
+const CAT=[["Abiti",14.6,82],["Capispalla",13.1,166],["Gonne",10.7,13],["Pantaloni",8.7,226],["Altro/NC",8.1,109],["Maglieria",7.8,122],["Camicie e Bluse",7.3,79],["Giacche e Blazer",6.8,20],["Calzature",6.1,6],["Borse",5.8,23],["T-Shirt e Polo",5.0,63],["Accessori",3.3,7]];
+const ANNO=[["2023",7.4],["2024",8.3],["2025",8.7],["2026*",8.8]];
+
+// KPI cards
+const ki=[
+ ["package","Tasso reso articoli",KPI.tasso_art+"%",KPI.resi+" articoli resi su "+KPI.righe.toLocaleString("it-IT")],
+ ["bag","Tasso reso ordini",KPI.tasso_ord+"%",KPI.ord_reso+" ordini con almeno un reso"],
+ ["layers","Full refund",KPI.full+"%","ordini interamente resi"],
+ ["layers","Partial refund",KPI.partial+"%","ordini con reso parziale"]
+];
+const ICONS={
+ package:'<path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><line x1="3.27" y1="6.96" x2="12" y2="12.01"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+ bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+ layers:'<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>'
+};
+document.getElementById("kpis").innerHTML=ki.map(k=>`
+ <div class="kpi">
+   <div class="lbl"><svg class="ico" style="stroke:var(--red)" viewBox="0 0 24 24">${ICONS[k[0]]}</svg><span>${k[1]}</span></div>
+   <div class="val">${k[2]}</div><div class="ksub">${k[3]}</div>
+ </div>`).join("");
+
+// plugin etichette valori sulle barre
+const labelPlugin={id:"vlab",afterDatasetsDraw(c,a,o){const{ctx}=c;ctx.save();c.data.datasets.forEach((ds,di)=>{const m=c.getDatasetMeta(di);m.data.forEach((el,i)=>{const raw=ds.data[i];const txt=o.suffix?raw.toString().replace(".",",")+o.suffix:raw;ctx.fillStyle=DARK;ctx.font="700 11px Figtree";if(o.horizontal){ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(txt,el.x+8,el.y);}else{ctx.textAlign="center";ctx.textBaseline="bottom";ctx.fillText(txt,el.x,el.y-4);}});});ctx.restore();}};
+
+const tt={backgroundColor:DARK,titleFont:{family:"Figtree",weight:"700"},bodyFont:{family:"Figtree"},padding:10,cornerRadius:8,displayColors:false};
+
+// PROGRESSIVO
+new Chart(document.getElementById("cProg"),{
+ type:"line",
+ data:{labels:PROG.map(p=>p.o),datasets:[{label:"Tasso reso",data:PROG.map(p=>p.t),borderColor:RED,backgroundColor:RED,borderWidth:2.5,tension:.35,pointRadius:3,pointBackgroundColor:RED}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>"Tasso reso: "+c.parsed.y.toString().replace(".",",")+"%"}},
+   annotation:false},
+   scales:{y:{beginAtZero:true,max:16,grid:{color:"#EEE"},ticks:{callback:v=>v+"%"}},x:{grid:{display:false},title:{display:true,text:"n° ordine",font:{size:11}}}}}
+});
+// linea media manuale
+const mediaPlugin={id:"media",afterDraw(c){const y=c.scales.y.getPixelForValue(8.5);const{ctx,chartArea}=c;ctx.save();ctx.strokeStyle=GRIGIO;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(chartArea.left,y);ctx.lineTo(chartArea.right,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=GRIGIO;ctx.font="10px Figtree";ctx.textAlign="right";ctx.fillText("media 8,5%",chartArea.right-4,y-5);ctx.restore();}};
+Chart.register(mediaPlugin);
+
+// BRAND
+let brandChart;
+function drawBrand(mode){
+ const d=mode==="prop"?BRAND_PROP:BRAND_NUM;
+ const vals=d.map(x=>x[1]);
+ const colors=d.map((x,i)=>(mode==="prop"&&x[1]>=15)?RED:RED_SHADES[Math.min(i,9)]);
+ const cfg={type:"bar",
+  data:{labels:d.map(x=>x[0]),datasets:[{data:vals,backgroundColor:colors,borderRadius:5}]},
+  options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:40}},
+   plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>(mode==="prop"?"Tasso reso: "+c.parsed.x.toString().replace(".",",")+"%":"Articoli resi: "+c.parsed.x)}},vlab:{horizontal:true,suffix:mode==="prop"?"%":""}},
+   scales:{x:{grid:{color:"#EEE"},ticks:{callback:v=>mode==="prop"?v+"%":v}},y:{grid:{display:false},ticks:{font:{size:11.5},color:DARK}}}},
+  plugins:[labelPlugin]};
+ if(brandChart)brandChart.destroy();
+ brandChart=new Chart(document.getElementById("cBrand"),cfg);
+ document.getElementById("brandNote").textContent=mode==="prop"?"Ordinati per tasso di reso, solo brand con almeno 40 righe articolo.":"Ordinati per numero assoluto di articoli resi.";
+}
+drawBrand("prop");
+
+// CATEGORIA
+let catChart;
+function drawCat(mode){
+ const d=[...CAT].sort((a,b)=>mode==="tasso"?b[1]-a[1]:b[2]-a[2]);
+ const vals=d.map(x=>mode==="tasso"?x[1]:x[2]);
+ const colors=d.map(x=>(mode==="tasso"&&x[1]>=13)?RED:GRIGIO);
+ const cfg={type:"bar",
+  data:{labels:d.map(x=>x[0]),datasets:[{data:vals,backgroundColor:colors,borderRadius:5}]},
+  options:{indexAxis:"y",maintainAspectRatio:false,layout:{padding:{right:40}},
+   plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>(mode==="tasso"?"Tasso reso: "+c.parsed.x.toString().replace(".",",")+"%":"Articoli resi: "+c.parsed.x)}},vlab:{horizontal:true,suffix:mode==="tasso"?"%":""}},
+   scales:{x:{grid:{color:"#EEE"},ticks:{callback:v=>mode==="tasso"?v+"%":v}},y:{grid:{display:false},ticks:{font:{size:11.5},color:DARK}}}},
+  plugins:[labelPlugin]};
+ if(catChart)catChart.destroy();
+ catChart=new Chart(document.getElementById("cCat"),cfg);
+}
+drawCat("tasso");
+
+// ANNO
+new Chart(document.getElementById("cAnno"),{
+ type:"bar",
+ data:{labels:ANNO.map(a=>a[0]),datasets:[{data:ANNO.map(a=>a[1]),backgroundColor:RED,borderRadius:5}]},
+ options:{maintainAspectRatio:false,layout:{padding:{top:16}},
+  plugins:{legend:{display:false},tooltip:{...tt,callbacks:{label:c=>"Tasso reso: "+c.parsed.y.toString().replace(".",",")+"%"}},vlab:{horizontal:false,suffix:"%"}},
+  scales:{y:{beginAtZero:true,max:12,grid:{color:"#EEE"},ticks:{callback:v=>v+"%"}},x:{grid:{display:false},ticks:{color:DARK,font:{size:12}}}}},
+ plugins:[labelPlugin]
+});
+
+// TOGGLE handlers
+document.getElementById("tBrand").addEventListener("click",e=>{if(e.target.tagName!=="BUTTON")return;[...e.currentTarget.children].forEach(b=>b.classList.remove("on"));e.target.classList.add("on");drawBrand(e.target.dataset.v);});
+document.getElementById("tCat").addEventListener("click",e=>{if(e.target.tagName!=="BUTTON")return;[...e.currentTarget.children].forEach(b=>b.classList.remove("on"));e.target.classList.add("on");drawCat(e.target.dataset.v);});
+</script>
+</body>
+</html>
