@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisi Segmento Da Non Perdere, Pellizzari</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+:root{
+  --red:#E52217; --white:#FFFFFF; --lgray:#F4F5F6; --dark:#191919; --text:#595959;
+  --green:#118541; --blue:#5781FF; --violet:#551FC4; --pink:#CE2A59; --orange:#DB5E29; --gray:#484848;
+  --r100:#FF5147; --r70:#FF9F98; --r40:#FFCFCC; --r20:#FFE2E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.hero{background:var(--dark);color:var(--white);padding:40px 0 44px;margin-bottom:36px}
+.hero .wrap{padding-bottom:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}
+.logo{height:26px}
+.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:44px;font-weight:800;line-height:1.05;text-transform:uppercase;color:var(--white);letter-spacing:-.01em}
+.hero h1 .thin{font-weight:500;color:#c9c9c9;display:block;font-size:22px;letter-spacing:0;text-transform:none;margin-top:8px}
+.hero-note{margin-top:20px;font-size:12.5px;color:#8f8f8f;max-width:660px;border-left:2px solid var(--red);padding-left:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:44px}
+.kpi{background:var(--white);border-radius:14px;padding:22px 20px;border:1px solid #eceef0}
+.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--dark);margin-bottom:10px}
+.kpi .val{font-size:30px;font-weight:800;color:var(--dark);line-height:1}
+.kpi .sub{font-size:12px;color:var(--text);margin-top:7px}
+.kpi.accent{background:var(--red);border-color:var(--red)}
+.kpi.accent .lab,.kpi.accent .val,.kpi.accent .sub{color:var(--white)}
+.kpi.dark{background:var(--dark);border-color:var(--dark)}
+.kpi.dark .lab,.kpi.dark .val,.kpi.dark .sub{color:var(--white)}
+.kpi.dark .val{color:var(--r70)}
+section{margin-bottom:48px}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.snum{font-size:13px;font-weight:800;color:var(--red)}
+h2{font-size:23px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.005em}
+.sintro{font-size:14px;color:var(--text);margin:8px 0 22px;max-width:800px}
+.card{background:var(--white);border-radius:14px;padding:26px 28px;border:1px solid #eceef0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.subttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dark);margin-bottom:16px}
+.axislab{font-size:11px;fill:var(--text);font-family:'Figtree'}
+.pointlab{font-size:12px;font-weight:700;fill:var(--dark);font-family:'Figtree'}
+.bar-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:10px}
+.bar-row .nm{font-size:13px;color:var(--dark);font-weight:500;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:var(--lgray);border-radius:6px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px}
+.bar-row .vl{font-size:12.5px;font-weight:700;color:var(--dark);text-align:left}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;align-items:end;height:170px;margin-top:8px}
+.mcol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.mbar{width:100%;border-radius:5px 5px 0 0;background:var(--r40)}
+.mbar.peak{background:var(--red)}
+.mlab{font-size:10px;color:var(--text);margin-top:6px;text-transform:uppercase;font-weight:600}
+.steps{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;align-items:end;height:170px;margin-top:6px}
+.scol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.sbar{width:100%;border-radius:4px 4px 0 0;background:var(--dark)}
+.sbar.hi{background:var(--red)}
+.slab{font-size:10px;color:var(--text);margin-top:5px;font-weight:600}
+.sval{font-size:9.5px;color:var(--text);margin-bottom:3px;font-weight:700}
+.reg{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.reg .rn{width:130px;font-size:13px;font-weight:600;color:var(--dark)}
+.reg .rt{flex:1;background:var(--lgray);height:14px;border-radius:7px;overflow:hidden}
+.reg .rf{height:100%;background:var(--blue);border-radius:7px}
+.reg .rf.ns{background:#c4c8cc}
+.reg .rv{width:52px;font-size:12.5px;font-weight:700;color:var(--dark);text-align:right}
+ul.ins{list-style:none;margin-top:4px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:14px;font-size:14px;color:var(--text)}
+ul.ins li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.note{font-size:11.5px;color:#8a8a8a;margin-top:14px;font-style:italic}
+.callout{background:#191919;border-radius:14px;padding:24px 28px;color:#fff;display:flex;align-items:center;gap:26px;margin-top:4px}
+.callout .big{font-size:46px;font-weight:800;color:var(--r70);line-height:1;white-space:nowrap}
+.callout .txt{font-size:14px;color:#d4d4d4}
+.callout .txt b{color:#fff;font-weight:700}
+.foot{border-top:1px solid #e2e4e6;margin-top:56px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.hero h1{font-size:32px}.bar-row{grid-template-columns:110px 1fr 52px}.callout{flex-direction:column;align-items:flex-start;gap:12px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca">
+      <div class="tag">Analisi RFM Pellizzari &nbsp;/&nbsp; Fase 1</div>
+    </div>
+    <div class="eyebrow">Segmento 02 di 03</div>
+    <h1>Da Non Perdere
+      <span class="thin">Clienti di valore che hanno smesso di comprare</span>
+    </h1>
+    <div class="hero-note">R medio 1,39, tra i più bassi della matrice. Ultimo ordine da 732 a 1.296 giorni fa, ossia da 2 a 3,5 anni. Dati lordi dei resi. Andamento su 2023-2024, nessun acquisto nel 2025-2026. Benchmark su 8.381 clienti.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="lab">Clienti</div>
+      <div class="val">8.381</div>
+      <div class="sub">2° segmento più numeroso, 15% della base</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Fatturato lifetime</div>
+      <div class="val">1,93 mln</div>
+      <div class="sub">valore storico rilevante</div>
+    </div>
+    <div class="kpi dark">
+      <div class="lab">Recency ultimo ordine</div>
+      <div class="val">2&ndash;3,5 anni</div>
+      <div class="sub">segmento profondamente dormiente</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Scontrino medio 2024</div>
+      <div class="val">218 €</div>
+      <div class="sub">+67% sulla media Pellizzari</div>
+    </div>
+  </div>
+
+  <!-- 1. IL CROLLO -->
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>Un valore che si è spento</h2></div>
+    <p class="sintro">Questi clienti hanno generato quasi 1,4 milioni di euro tra 2023 e 2024, poi hanno smesso. Nel 2025 e nel 2026 non risulta alcun acquisto dal segmento. È il ritratto di una base di valore lasciata scivolare verso l'inattività.</p>
+    <div class="card">
+      <div class="subttl">Fatturato annuo registrato, dato giornaliero</div>
+      <svg viewBox="0 0 900 320" width="100%" preserveAspectRatio="xMidYMid meet">
+        <line x1="70" y1="40" x2="70" y2="260" stroke="#e6e8ea"/>
+        <line x1="70" y1="260" x2="860" y2="260" stroke="#e6e8ea"/>
+        <text class="axislab" x="60" y="264" text-anchor="end">0</text>
+        <text class="axislab" x="60" y="154" text-anchor="end">500k</text>
+        <text class="axislab" x="60" y="48" text-anchor="end">1 mln</text>
+        <line x1="70" y1="150" x2="860" y2="150" stroke="#f0f1f2"/>
+        <line x1="70" y1="44" x2="860" y2="44" stroke="#f0f1f2"/>
+        <!-- 2023=965777->51 ; 2024=415427->170 ; 2025=0->260 ; 2026=0->260 -->
+        <polygon points="150,51 383,170 617,260 850,260 850,260 150,260" fill="#E52217" opacity="0.06"/>
+        <polyline points="150,51 383,170 617,260 850,260" fill="none" stroke="#E52217" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="150" cy="51" r="6.5" fill="#E52217" stroke="#fff" stroke-width="2"/>
+        <circle cx="383" cy="170" r="5.5" fill="#E52217"/>
+        <circle cx="617" cy="260" r="5.5" fill="#191919"/>
+        <circle cx="850" cy="260" r="5.5" fill="#191919"/>
+        <text class="pointlab" x="150" y="39" text-anchor="middle">966k</text>
+        <text class="pointlab" x="383" y="158" text-anchor="middle">415k</text>
+        <text class="pointlab" x="617" y="248" text-anchor="middle">0</text>
+        <text class="pointlab" x="850" y="248" text-anchor="middle">0</text>
+        <text class="axislab" x="150" y="282" text-anchor="middle">2023</text>
+        <text class="axislab" x="383" y="282" text-anchor="middle">2024</text>
+        <text class="axislab" x="617" y="282" text-anchor="middle">2025</text>
+        <text class="axislab" x="850" y="282" text-anchor="middle">2026</text>
+      </svg>
+      <div class="note">Il segmento è definito proprio dalla bassa recency, quindi l'assenza di acquisti recenti è attesa. Il dato che conta è quanto valore è transitato prima dello spegnimento.</div>
+    </div>
+  </section>
+
+  <!-- 2. FREQUENZA -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Il problema è la frequenza, non il valore</h2></div>
+    <p class="sintro">La matrice ordini è netta, su 8.900 primi ordini solo il 6% arriva al secondo. La quasi totalità di questi clienti ha comprato una volta sola e non è più tornata. La relazione si è interrotta subito dopo l'ingresso.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Articoli acquistati per progressivo d'ordine</div>
+        <div class="steps">
+          <div class="scol"><div class="sval">8900</div><div class="sbar hi" style="height:100%"></div><div class="slab">1°</div></div>
+          <div class="scol"><div class="sval">515</div><div class="sbar" style="height:6%"></div><div class="slab">2°</div></div>
+          <div class="scol"><div class="sval">254</div><div class="sbar" style="height:3%"></div><div class="slab">3°</div></div>
+          <div class="scol"><div class="sval">73</div><div class="sbar" style="height:1%"></div><div class="slab">4°</div></div>
+          <div class="scol"><div class="sval">29</div><div class="sbar" style="height:0.5%"></div><div class="slab">5°</div></div>
+          <div class="scol"><div class="sval">12</div><div class="sbar" style="height:0.3%"></div><div class="slab">6°</div></div>
+          <div class="scol"><div class="sval">12</div><div class="sbar" style="height:0.3%"></div><div class="slab">7°</div></div>
+          <div class="scol"><div class="sval">2</div><div class="sbar" style="height:0.1%"></div><div class="slab">9°</div></div>
+        </div>
+        <div class="note">Il crollo tra 1° e 2° ordine è il tratto distintivo del segmento. Qui si è persa la relazione.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Scontrino medio, segmento contro totale base</div>
+        <div style="margin-top:10px">
+          <div class="bar-row"><div class="nm">2023</div><div class="bar-track"><div class="bar-fill" style="width:87%;background:var(--red)"></div></div><div class="vl">189 €</div></div>
+          <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:56%;background:#c4c8cc"></div></div><div class="vl">121 €</div></div>
+          <div class="bar-row"><div class="nm">2024</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">218 €</div></div>
+          <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:60%;background:#c4c8cc"></div></div><div class="vl">131 €</div></div>
+        </div>
+        <div class="legend">
+          <span><span class="dot" style="background:var(--red)"></span>Da Non Perdere</span>
+          <span><span class="dot" style="background:#c4c8cc"></span>Media base</span>
+        </div>
+        <div class="note">Quando compravano spendevano bene, tra +56% e +67% sopra la media. Non erano clienti a basso valore, ma clienti di valore a bassa frequenza. Nessun acquisto nel 2025-2026.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. STAGIONALITA -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Entrati con i saldi di gennaio</h2></div>
+    <p class="sintro">La distribuzione mensile è molto più sbilanciata rispetto ai Campioni. Gennaio domina con oltre 396 mila euro, segno che molti di questi clienti sono entrati durante i saldi invernali. Un ingresso legato allo sconto, che si è rivelato fragile.</p>
+    <div class="card">
+      <div class="subttl">Fatturato per mese, somma 2023-2024</div>
+      <div class="months">
+        <div class="mcol"><div class="mbar peak" style="height:100%"></div><div class="mlab">Gen</div></div>
+        <div class="mcol"><div class="mbar" style="height:43%"></div><div class="mlab">Feb</div></div>
+        <div class="mcol"><div class="mbar" style="height:28%"></div><div class="mlab">Mar</div></div>
+        <div class="mcol"><div class="mbar" style="height:22%"></div><div class="mlab">Apr</div></div>
+        <div class="mcol"><div class="mbar" style="height:24%"></div><div class="mlab">Mag</div></div>
+        <div class="mcol"><div class="mbar" style="height:25%"></div><div class="mlab">Giu</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:34%"></div><div class="mlab">Lug</div></div>
+        <div class="mcol"><div class="mbar" style="height:15%"></div><div class="mlab">Ago</div></div>
+        <div class="mcol"><div class="mbar" style="height:13%"></div><div class="mlab">Set</div></div>
+        <div class="mcol"><div class="mbar" style="height:8%"></div><div class="mlab">Ott</div></div>
+        <div class="mcol"><div class="mbar" style="height:14%"></div><div class="mlab">Nov</div></div>
+        <div class="mcol"><div class="mbar" style="height:23%"></div><div class="mlab">Dic</div></div>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--red)"></span>Picchi saldi (gennaio, luglio)</span>
+        <span><span class="dot" style="background:var(--r40)"></span>Resto dell'anno</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. BRAND -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Le Papù è la porta d'ingresso principale</h2></div>
+    <p class="sintro">Su 9.797 ordini, Le Papù guida sia il totale sia i primi ordini, davanti a Emme Marella, Marella e Hlo!. Da notare il dettaglio strategico, Le Papù qui è ingresso di clienti poi persi, mentre tra i Campioni era un brand ad alto riacquisto. Il brand d'ingresso non garantisce da solo la fidelizzazione.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Top brand come 1° ordine</div>
+        <div class="bar-row"><div class="nm">Le Papù</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">618</div></div>
+        <div class="bar-row"><div class="nm">Emme Marella</div><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--r70)"></div></div><div class="vl">454</div></div>
+        <div class="bar-row"><div class="nm">Marella</div><div class="bar-track"><div class="bar-fill" style="width:71%;background:var(--r70)"></div></div><div class="vl">438</div></div>
+        <div class="bar-row"><div class="nm">Hlo!</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--r70)"></div></div><div class="vl">435</div></div>
+        <div class="bar-row"><div class="nm">Mc2 Saint Barth</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--r40)"></div></div><div class="vl">434</div></div>
+        <div class="bar-row"><div class="nm">Weekend Max Mara</div><div class="bar-track"><div class="bar-fill" style="width:54%;background:var(--r40)"></div></div><div class="vl">336</div></div>
+        <div class="bar-row"><div class="nm">Jeckerson</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--r40)"></div></div><div class="vl">297</div></div>
+        <div class="bar-row"><div class="nm">Patrizia Pepe</div><div class="bar-track"><div class="bar-fill" style="width:47%;background:var(--r40)"></div></div><div class="vl">291</div></div>
+      </div>
+      <div class="card">
+        <div class="subttl">Categoria principale sul primo ordine</div>
+        <div class="bar-row"><div class="nm">Outlet</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--violet)"></div></div><div class="vl">38,8%</div></div>
+        <div class="bar-row"><div class="nm">Donna</div><div class="bar-track"><div class="bar-fill" style="width:91%;background:var(--pink)"></div></div><div class="vl">35,4%</div></div>
+        <div class="bar-row"><div class="nm">Uomo</div><div class="bar-track"><div class="bar-fill" style="width:47%;background:var(--blue)"></div></div><div class="vl">18,2%</div></div>
+        <div class="bar-row"><div class="nm">Bambini</div><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--orange)"></div></div><div class="vl">7,5%</div></div>
+        <div class="note">Mix categoriale quasi identico ai Campioni. La differenza tra i due segmenti non è cosa si compra, ma quante volte si torna.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TERRITORIO -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Lo stesso cuore geografico dei Campioni</h2></div>
+    <p class="sintro">Su 6.592 clienti geolocalizzati, Lombardia, Lazio e Veneto valgono oltre metà del segmento, esattamente come per i Campioni. Il valore, attivo o dormiente, si concentra nelle stesse tre regioni. Buona la copertura anagrafica, solo il 10,1% senza regione.</p>
+    <div class="card">
+      <div class="subttl">Distribuzione clienti per regione, top 8</div>
+      <div class="reg"><div class="rn">Lombardia</div><div class="rt"><div class="rf" style="width:100%"></div></div><div class="rv">26,1%</div></div>
+      <div class="reg"><div class="rn">Lazio</div><div class="rt"><div class="rf" style="width:57%"></div></div><div class="rv">14,9%</div></div>
+      <div class="reg"><div class="rn">Veneto</div><div class="rt"><div class="rf" style="width:50%"></div></div><div class="rv">13,0%</div></div>
+      <div class="reg"><div class="rn">Non specificato</div><div class="rt"><div class="rf ns" style="width:39%"></div></div><div class="rv">10,1%</div></div>
+      <div class="reg"><div class="rn">Emilia-Romagna</div><div class="rt"><div class="rf" style="width:16%"></div></div><div class="rv">4,2%</div></div>
+      <div class="reg"><div class="rn">Abruzzo</div><div class="rt"><div class="rf" style="width:16%"></div></div><div class="rv">4,2%</div></div>
+      <div class="reg"><div class="rn">Sicilia</div><div class="rt"><div class="rf" style="width:14%"></div></div><div class="rv">3,6%</div></div>
+      <div class="reg"><div class="rn">Puglia</div><div class="rt"><div class="rf" style="width:13%"></div></div><div class="rv">3,5%</div></div>
+    </div>
+  </section>
+
+  <!-- CALLOUT -->
+  <div class="callout">
+    <div class="big">94%</div>
+    <div class="txt">dei clienti del segmento <b>non ha mai superato il primo ordine</b>. Recuperarli significa vincere una sola battaglia, quella del secondo acquisto. È lì che vanno concentrate le energie di win-back.</div>
+  </div>
+
+  <!-- INSIGHT -->
+  <section style="margin-top:48px">
+    <div class="shead"><span class="snum">→</span><h2>Insight chiave e spunti strategici</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>Valore reale ancora recuperabile.</b> Con 1,93 milioni lifetime e scontrini premium, non sono clienti da abbandonare ma da riattivare prima che diventino Clienti Persi in via definitiva.</li>
+        <li><b>La leva è il secondo acquisto.</b> Il collo di bottiglia storico è la mancata conversione dal 1° al 2° ordine. Un flusso di win-back con incentivo mirato al ritorno può muovere volumi importanti.</li>
+        <li><b>Attenzione all'ingresso solo promozionale.</b> La forte dipendenza da gennaio suggerisce che molti sono entrati per lo sconto. La riattivazione deve costruire una ragione d'acquisto oltre il prezzo, ad esempio novità di collezione dei brand affini al primo acquisto.</li>
+        <li><b>Personalizzare sul brand d'ingresso.</b> Chi è entrato con Le Papù, Mc2 Saint Barth o il womenswear Max Mara può essere ricontattato con proposte coerenti con quel primo interesse, aumentando la rilevanza del messaggio.</li>
+        <li><b>Finestra temporale critica.</b> Con recency già a 2-3,5 anni, il tempo gioca contro. Ogni mese in più riduce la probabilità di recupero, quindi il win-back su questo segmento ha priorità di tempistica.</li>
+        <li><b>Lezione per l'acquisizione.</b> Lo stesso brand e mix prodotto genera Campioni fedeli o clienti persi. La differenza si costruisce nell'onboarding post primo acquisto, non nella scelta del prodotto d'ingresso.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Moca Interactive per Pellizzari</span>
+    <span>Analisi RFM 2026 &nbsp;/&nbsp; Fase 1, Segmento Da Non Perdere</span>
+  </div>
+
+</div>
+</body>
+</html>
