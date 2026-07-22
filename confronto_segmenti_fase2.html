@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confronto tra segmenti, Analisi RFM Pellizzari</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+:root{--red:#E52217;--white:#FFFFFF;--lgray:#F4F5F6;--dark:#191919;--text:#595959;
+--green:#118541;--blue:#5781FF;--violet:#551FC4;--pink:#CE2A59;--orange:#DB5E29;
+--r100:#FF5147;--r70:#FF9F98;--r40:#FFCFCC;--r20:#FFE2E1;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 80px}
+.hero{background:var(--dark);color:#fff;padding:40px 0 44px;margin-bottom:36px}
+.hero .wrap{padding-bottom:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.logo{height:26px}.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:42px;font-weight:800;line-height:1.06;text-transform:uppercase;color:#fff;letter-spacing:-.01em}
+.hero h1 .thin{font-weight:500;color:#c9c9c9;display:block;font-size:20px;letter-spacing:0;text-transform:none;margin-top:8px}
+.hero-note{margin-top:20px;font-size:12.5px;color:#8f8f8f;max-width:720px;border-left:2px solid var(--red);padding-left:14px}
+section{margin-bottom:48px}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.snum{font-size:13px;font-weight:800;color:var(--red)}
+h2{font-size:23px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.005em}
+.sintro{font-size:14px;color:var(--text);margin:8px 0 22px;max-width:820px}
+.card{background:#fff;border-radius:14px;padding:26px 28px;border:1px solid #eceef0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.subttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dark);margin-bottom:16px}
+.axislab{font-size:12px;fill:var(--text);font-family:'Figtree'}
+.axttl{font-size:12px;fill:var(--dark);font-weight:700;font-family:'Figtree';text-transform:uppercase;letter-spacing:.06em}
+.blab{font-size:12.5px;font-weight:800;fill:#fff;font-family:'Figtree'}
+.bsub{font-size:10px;font-weight:600;font-family:'Figtree'}
+.arrlab{font-size:11.5px;font-weight:700;font-family:'Figtree'}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:12px 10px;text-align:center;border-bottom:1px solid #eef0f1}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#fff;font-weight:700;background:var(--dark)}
+th:first-child,td:first-child{text-align:left}
+td.lab{font-weight:700;color:var(--dark);font-size:12px;text-transform:uppercase;letter-spacing:.03em;background:var(--lgray)}
+tr td{color:var(--text)}
+td b{color:var(--dark);font-weight:800}
+.seghead{font-weight:800;font-size:13px}
+.c-nuo{color:var(--blue)}.c-pro{color:var(--violet)}.c-cam{color:var(--red)}.c-dnp{color:var(--orange)}
+.dotb{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* freq bars */
+.fq{display:grid;grid-template-columns:130px 1fr 58px;align-items:center;gap:12px;margin-bottom:13px}
+.fq .nm{font-size:13px;font-weight:600;color:var(--dark);text-align:right}
+.fq .tr{background:var(--lgray);border-radius:6px;height:24px;overflow:hidden}
+.fq .ff{height:100%;border-radius:6px}
+.fq .vv{font-size:12.5px;font-weight:800;color:var(--dark)}
+.note{font-size:11.5px;color:#8a8a8a;margin-top:14px;font-style:italic}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+ul.ins{list-style:none;margin-top:4px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:15px;font-size:14px;color:var(--text)}
+ul.ins li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+.lev{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:4px}
+.levbox{background:#fff;border:1px solid #eceef0;border-top:3px solid var(--red);border-radius:12px;padding:22px 22px}
+.levbox .k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:10px}
+.levbox h3{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;line-height:1.2}
+.levbox p{font-size:13px;color:var(--text)}
+.foot{border-top:1px solid #e2e4e6;margin-top:56px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}.lev{grid-template-columns:1fr}.hero h1{font-size:30px}.tblwrap{overflow-x:auto}}
+</style>
+</head>
+<body>
+
+<div class="hero"><div class="wrap">
+  <div class="hero-top"><img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca"><div class="tag">Analisi RFM Pellizzari &nbsp;/&nbsp; Fase 2</div></div>
+  <div class="eyebrow">Confronto incrociato tra i segmenti</div>
+  <h1>Un solo percorso, un solo bivio<span class="thin">I quattro segmenti sono le tappe dello stesso viaggio del cliente</span></h1>
+  <div class="hero-note">Confronto tra Nuovi Clienti, Promettenti, Campioni e Da Non Perdere. Dati lordi dei resi, benchmark cliente al 20 luglio 2026. La tesi che emerge, il valore di Pellizzari si crea o si perde tutto sul secondo acquisto.</div>
+</div></div>
+
+<div class="wrap">
+
+  <!-- 1. MAPPA RFM -->
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>La mappa del viaggio</h2></div>
+    <p class="sintro">Posizionando i quattro segmenti sugli assi Recency e Frequenza-Valore si vede il percorso. Si entra in basso a destra, recenti ma senza storia. Da lì due strade, salire verso i Campioni conquistando il riacquisto, oppure scivolare a sinistra verso i Da Non Perdere con il passare del tempo. La dimensione dei cerchi indica il numero di clienti.</p>
+    <div class="card">
+      <svg viewBox="0 0 900 500" width="100%" preserveAspectRatio="xMidYMid meet">
+        <!-- axes -->
+        <line x1="120" y1="60" x2="120" y2="420" stroke="#d8dadd" stroke-width="1.5"/>
+        <line x1="120" y1="420" x2="820" y2="420" stroke="#d8dadd" stroke-width="1.5"/>
+        <text class="axttl" x="470" y="470" text-anchor="middle">Recency, da bassa a alta</text>
+        <text class="axttl" x="40" y="240" text-anchor="middle" transform="rotate(-90 40 240)">Frequenza e valore</text>
+        <text class="axislab" x="120" y="440" text-anchor="middle">1</text>
+        <text class="axislab" x="820" y="440" text-anchor="middle">5</text>
+        <text class="axislab" x="108" y="424" text-anchor="end">1</text>
+        <text class="axislab" x="108" y="64" text-anchor="end">5</text>
+        <!-- fork arrows from Promettenti -->
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E52217"/></marker>
+          <marker id="ag" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a9adb2"/></marker>
+        </defs>
+        <!-- promettenti(625,283) -> campioni(742,101) -->
+        <path d="M645,265 C700,210 720,150 735,120" fill="none" stroke="#E52217" stroke-width="2.5" stroke-dasharray="2 0" marker-end="url(#ar)"/>
+        <text class="arrlab" x="730" y="200" fill="#E52217">conquista il 2° ordine</text>
+        <!-- promettenti(625,283) -> danonperdere(186,266) -->
+        <path d="M605,280 C480,300 320,285 210,272" fill="none" stroke="#a9adb2" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#ag)"/>
+        <text class="arrlab" x="380" y="315" fill="#8a8e93">non torna, scivola nel tempo</text>
+        <!-- bubbles -->
+        <!-- Nuovi 657,402 r40 -->
+        <circle cx="657" cy="402" r="40" fill="#5781FF" opacity="0.9"/>
+        <text class="blab" x="657" y="399" text-anchor="middle">Nuovi</text>
+        <text class="blab" x="657" y="399" text-anchor="middle" dy="14" style="font-size:9px;font-weight:600">7.692</text>
+        <!-- Promettenti 625,283 r54 -->
+        <circle cx="625" cy="283" r="55" fill="#551FC4" opacity="0.9"/>
+        <text class="blab" x="625" y="280" text-anchor="middle">Promettenti</text>
+        <text class="blab" x="625" y="280" text-anchor="middle" dy="14" style="font-size:9px;font-weight:600">14.348</text>
+        <!-- Campioni 742,101 r24 -->
+        <circle cx="742" cy="101" r="30" fill="#E52217"/>
+        <text class="blab" x="742" y="98" text-anchor="middle">Campioni</text>
+        <text class="blab" x="742" y="98" text-anchor="middle" dy="13" style="font-size:9px;font-weight:600">2.726</text>
+        <!-- DaNonPerdere 186,266 r42 -->
+        <circle cx="205" cy="266" r="44" fill="#DB5E29" opacity="0.92"/>
+        <text class="blab" x="205" y="260" text-anchor="middle" style="font-size:11px">Da Non</text>
+        <text class="blab" x="205" y="260" text-anchor="middle" dy="13" style="font-size:11px">Perdere</text>
+        <text class="blab" x="205" y="260" text-anchor="middle" dy="26" style="font-size:9px;font-weight:600">8.381</text>
+      </svg>
+      <div class="note">Posizioni basate sui valori medi R e F-M di ciascun segmento. Nuovi Clienti e Promettenti condividono la stessa area d'ingresso, li separa solo il valore del primo ordine.</div>
+    </div>
+  </section>
+
+  <!-- 2. TABELLA -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>I quattro segmenti a confronto</h2></div>
+    <p class="sintro">Lo stesso set di metriche per tutti, per leggere le differenze in un colpo d'occhio.</p>
+    <div class="card tblwrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metrica</th>
+            <th><span class="dotb" style="background:#5781FF"></span>Nuovi Clienti</th>
+            <th><span class="dotb" style="background:#551FC4"></span>Promettenti</th>
+            <th><span class="dotb" style="background:#E52217"></span>Campioni</th>
+            <th><span class="dotb" style="background:#DB5E29"></span>Da Non Perdere</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="lab">Clienti</td><td>7.692</td><td><b>14.348</b></td><td>2.726</td><td>8.381</td></tr>
+          <tr><td class="lab">Fatturato lifetime</td><td>559 mila</td><td><b>2,85 mln</b></td><td>2,45 mln</td><td>1,93 mln</td></tr>
+          <tr><td class="lab">Valore medio cliente</td><td>73 €</td><td>199 €</td><td><b>900 €</b></td><td>231 €</td></tr>
+          <tr><td class="lab">Recency (R medio)</td><td>4,16</td><td>3,97</td><td><b>4,66</b></td><td>1,39</td></tr>
+          <tr><td class="lab">Freq. e valore (F-M medio)</td><td>1,20</td><td>2,52</td><td><b>4,54</b></td><td>2,71</td></tr>
+          <tr><td class="lab">Numero acquisti</td><td>1</td><td>1</td><td><b>fino a 76</b></td><td>1 nel 94%</td></tr>
+          <tr><td class="lab">Scontrino d'ingresso</td><td>46 €</td><td>186 €</td><td><b>371 €</b></td><td>~200 €</td></tr>
+          <tr><td class="lab">Brand d'ingresso n.1</td><td>Le Papù</td><td>Emme Marella</td><td>Emme Marella</td><td>Le Papù</td></tr>
+          <tr><td class="lab">Categoria d'ingresso</td><td>Scarpe, Mare</td><td>Abbigl., Borse</td><td>Donna, Outlet</td><td>Outlet, Donna</td></tr>
+          <tr><td class="lab">Stagione d'ingresso</td><td>Estate</td><td>Gennaio, Natale</td><td>Gennaio</td><td>Gennaio</td></tr>
+          <tr><td class="lab">Anagrafica mancante</td><td>4,4%</td><td>4,8%</td><td>16,3%</td><td>10,1%</td></tr>
+          <tr><td class="lab">Iscritti newsletter</td><td>16,7%</td><td>21,4%</td><td><b>29,5%</b></td><td>23,3%</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Valori lordi dei resi. Scontrino d'ingresso, primo ordine, per Da Non Perdere approssimato allo scontrino tipico del segmento monoacquisto.</div>
+    </div>
+  </section>
+
+  <!-- 3. IL DIVISORE -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>La vera linea di demarcazione è la frequenza</h2></div>
+    <p class="sintro">Tre segmenti su quattro vivono di un solo acquisto. L'unico gruppo che riacquista in profondità sono i Campioni, ed è anche l'unico di massimo valore. La differenza tra chi vale 900 euro e chi ne vale 73 non è quanto spende una volta, ma quante volte torna.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Chi supera il primo ordine</div>
+        <div class="fq"><div class="nm">Campioni</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">norma</div></div>
+        <div class="fq"><div class="nm">Da Non Perdere</div><div class="tr"><div class="ff" style="width:6%;background:var(--orange)"></div></div><div class="vv">6%</div></div>
+        <div class="fq"><div class="nm">Promettenti</div><div class="tr"><div class="ff" style="width:1%;background:var(--violet)"></div></div><div class="vv">0%</div></div>
+        <div class="fq"><div class="nm">Nuovi Clienti</div><div class="tr"><div class="ff" style="width:1%;background:var(--blue)"></div></div><div class="vv">0%</div></div>
+        <div class="note">Per i Campioni il 2° ordine è la norma e muove più articoli del primo. Per i Da Non Perdere solo il 6% ci è arrivato. Promettenti e Nuovi sono per definizione fermi al primo ordine, in attesa.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Il valore del carrello dei Campioni, per ordine</div>
+        <svg viewBox="0 0 460 260" width="100%" preserveAspectRatio="xMidYMid meet">
+          <line x1="40" y1="20" x2="40" y2="200" stroke="#e6e8ea"/>
+          <line x1="40" y1="200" x2="440" y2="200" stroke="#e6e8ea"/>
+          <!-- 600->y20base? scale: y=200-(v/600)*180 ; 371->89 578->27 363->91 277->117 233->130 225->133 -->
+          <polyline points="70,89 132,27 194,91 256,117 318,130 380,133" fill="none" stroke="#E52217" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="70" cy="89" r="4.5" fill="#E52217"/><circle cx="132" cy="27" r="6" fill="#E52217" stroke="#fff" stroke-width="2"/>
+          <circle cx="194" cy="91" r="4.5" fill="#E52217"/><circle cx="256" cy="117" r="4.5" fill="#E52217"/>
+          <circle cx="318" cy="130" r="4.5" fill="#E52217"/><circle cx="380" cy="133" r="4.5" fill="#E52217"/>
+          <text x="70" y="78" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#191919">371</text>
+          <text x="132" y="17" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#191919">578</text>
+          <text x="194" y="80" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">363</text>
+          <text x="256" y="106" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">277</text>
+          <text x="318" y="119" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">233</text>
+          <text x="380" y="122" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">225</text>
+          <text x="70" y="218" text-anchor="middle" class="axislab">1°</text><text x="132" y="218" text-anchor="middle" class="axislab">2°</text>
+          <text x="194" y="218" text-anchor="middle" class="axislab">3°</text><text x="256" y="218" text-anchor="middle" class="axislab">4°</text>
+          <text x="318" y="218" text-anchor="middle" class="axislab">5°</text><text x="380" y="218" text-anchor="middle" class="axislab">6°</text>
+          <text x="240" y="245" text-anchor="middle" class="axislab" style="font-weight:600">Scontrino per progressivo, euro</text>
+        </svg>
+        <div class="note">Il 2° ordine è il picco di spesa, poi il ritmo si stabilizza. Superare la soglia del riacquisto genera il carrello più ricco della relazione.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. VALORE INGRESSO + BRAND -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Il primo ordine predice il destino</h2></div>
+    <p class="sintro">Chi diventa Campione entra spendendo circa 371 euro, quasi il doppio di un Promettente e otto volte un Nuovo Cliente. E il brand d'ingresso conta, Le Papù porta volumi ma clienti a basso valore, mentre il womenswear Max Mara e i brand premium portano clienti destinati a valere di più.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Scontrino del primo ordine</div>
+        <div class="fq"><div class="nm">Campioni</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">371 €</div></div>
+        <div class="fq"><div class="nm">Da Non Perdere</div><div class="tr"><div class="ff" style="width:54%;background:var(--orange)"></div></div><div class="vv">~200 €</div></div>
+        <div class="fq"><div class="nm">Promettenti</div><div class="tr"><div class="ff" style="width:50%;background:var(--violet)"></div></div><div class="vv">186 €</div></div>
+        <div class="fq"><div class="nm">Nuovi Clienti</div><div class="tr"><div class="ff" style="width:12%;background:var(--blue)"></div></div><div class="vv">46 €</div></div>
+      </div>
+      <div class="card">
+        <div class="subttl">Il brand d'ingresso come segnale di valore</div>
+        <p style="font-size:13.5px;margin-bottom:14px"><b style="color:var(--dark)">Ingresso a basso valore.</b> Le Papù e Havaianas guidano l'acquisizione dei Nuovi Clienti e dei Da Non Perdere, spesso via scarpe e mare in estate.</p>
+        <p style="font-size:13.5px;margin-bottom:14px"><b style="color:var(--dark)">Ingresso di valore.</b> Emme Marella, Weekend Max Mara, Mc2 Saint Barth, Pinko e Barbour dominano i Promettenti e i Campioni, con capispalla e abbigliamento premium.</p>
+        <p style="font-size:13.5px"><b style="color:var(--dark)">L'amplificatore di fedeltà.</b> Hlo! è il brand col più alto tasso di riacquisto tra i Campioni, oltre due ordini profondi per ogni primo acquisto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. STAGIONALITA + GEO -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Quando e dove entrano</h2></div>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Stagionalità d'ingresso</div>
+        <p style="font-size:13.5px;margin-bottom:14px">Il momento dell'ingresso è legato al valore. Gli ingressi <b style="color:var(--dark)">a basso valore</b> si concentrano in estate, trainati da mare e scarpe. Gli ingressi <b style="color:var(--dark)">di valore</b> arrivano a gennaio con i saldi e i capispalla, e a dicembre col regalo di Natale.</p>
+        <p style="font-size:13.5px">I Campioni, in più, comprano tutto l'anno, con i saldi che pesano solo un quarto del fatturato. La fedeltà li rende meno dipendenti dallo sconto rispetto agli altri segmenti.</p>
+      </div>
+      <div class="card">
+        <div class="subttl">Geografia, uniforme tra i segmenti</div>
+        <p style="font-size:13.5px;margin-bottom:14px">Lombardia, Lazio e Veneto dominano in tutti e quattro i segmenti, valendo insieme circa metà della base, fino al 57,5% tra i Promettenti. Il valore, attivo o dormiente, si concentra nel Nord-Centro.</p>
+        <p style="font-size:13.5px">Nota operativa, i Campioni hanno la peggiore copertura anagrafica, il 16,3% senza regione, un dato da colmare per abilitare attività territoriali proprio sul segmento più prezioso.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. NEWSLETTER -->
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Chi è raggiungibile via newsletter</h2></div>
+    <p class="sintro">L'iscrizione alla newsletter cresce con la fedeltà, dai Nuovi Clienti ai Campioni. Ma il dato letto al contrario è più significativo, la maggioranza dei clienti di valore non è iscritta, quindi non è raggiungibile via email. È un vincolo da sciogliere prima di attivare qualsiasi flusso di conversione. Dato sull'intera base, 55.687 clienti al 20 luglio 2026.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Tasso di iscrizione per segmento</div>
+        <div class="fq"><div class="nm">Campioni</div><div class="tr"><div class="ff" style="width:98%;background:var(--red)"></div></div><div class="vv">29,5%</div></div>
+        <div class="fq"><div class="nm">Da Non Perdere</div><div class="tr"><div class="ff" style="width:78%;background:var(--orange)"></div></div><div class="vv">23,3%</div></div>
+        <div class="fq"><div class="nm">Promettenti</div><div class="tr"><div class="ff" style="width:71%;background:var(--violet)"></div></div><div class="vv">21,4%</div></div>
+        <div class="fq"><div class="nm">Nuovi Clienti</div><div class="tr"><div class="ff" style="width:56%;background:var(--blue)"></div></div><div class="vv">16,7%</div></div>
+        <div class="note">Media dell'intera base 21,6%. I Campioni hanno il tasso più alto di tutti gli 11 segmenti, i Nuovi Clienti il più basso.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Clienti NON iscritti, la platea da recuperare</div>
+        <div class="fq"><div class="nm">Promettenti</div><div class="tr"><div class="ff" style="width:100%;background:#c4c8cc"></div></div><div class="vv">11.258</div></div>
+        <div class="fq"><div class="nm">Da Non Perdere</div><div class="tr"><div class="ff" style="width:57%;background:#c4c8cc"></div></div><div class="vv">6.418</div></div>
+        <div class="fq"><div class="nm">Nuovi Clienti</div><div class="tr"><div class="ff" style="width:57%;background:#c4c8cc"></div></div><div class="vv">6.403</div></div>
+        <div class="fq"><div class="nm">Campioni</div><div class="tr"><div class="ff" style="width:17%;background:#c4c8cc"></div></div><div class="vv">1.921</div></div>
+        <div class="note">La leva del secondo acquisto via email oggi raggiunge solo un Promettente su cinque e un Nuovo Cliente su sei. Raccogliere il consenso di questa platea è il presupposto della strategia email.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SINTESI -->
+  <section>
+    <div class="shead"><span class="snum">→</span><h2>Dove si crea e dove si perde valore</h2></div>
+    <p class="sintro">Il confronto individua tre punti di leva su cui costruire le attività della fase successiva. Non sono ancora proposte operative, sono le aree dove i dati dicono che il ritorno è più alto.</p>
+    <div class="lev">
+      <div class="levbox">
+        <div class="k">Leva 1</div>
+        <h3>Il secondo acquisto</h3>
+        <p>È il bivio che separa i Campioni dai Da Non Perdere. Presidiarlo su Promettenti e Nuovi Clienti è l'attività a più alto potenziale, ma oggi solo un quinto è iscritto alla newsletter, quindi va abbinato alla raccolta consensi.</p>
+      </div>
+      <div class="levbox">
+        <div class="k">Leva 2</div>
+        <h3>La qualità dell'acquisizione</h3>
+        <p>Il valore e il brand del primo ordine predicono il cliente. Orientare acquisizione e merchandising verso gli ingressi premium significa generare più futuri Campioni e meno clienti a basso valore.</p>
+      </div>
+      <div class="levbox">
+        <div class="k">Leva 3</div>
+        <h3>Il recupero dei dormienti</h3>
+        <p>I Da Non Perdere valgono 1,93 milioni e hanno lo stesso profilo dei Promettenti. Un win-back tempestivo, prima che diventino Clienti Persi, recupera valore già esistente.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHT -->
+  <section>
+    <div class="shead"><span class="snum">✦</span><h2>Le differenze che contano</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>Nuovi Clienti e Promettenti sono gemelli separati dal valore d'ingresso.</b> Stessa frequenza, stessa recency, stessa area della matrice. Cambia solo quanto spendono al primo ordine, la soglia è intorno agli 83 euro di M.</li>
+        <li><b>I Da Non Perdere sono l'ombra dei Promettenti.</b> Stesso scontrino, stessa partenza monoacquisto, ma non convertiti e ormai dormienti da 2-3,5 anni. Sono il monito di cosa succede se il secondo ordine non arriva.</li>
+        <li><b>I Campioni sono l'unico segmento che riacquista, ed è l'unico di massimo valore.</b> Entrano alti, al secondo ordine spendono il massimo, poi si stabilizzano in un ritmo regolare. La frequenza, non lo scontrino singolo, costruisce il valore lifetime.</li>
+        <li><b>Il brand d'ingresso è un predittore azionabile.</b> Le Papù porta volume a basso valore, il womenswear Max Mara e i premium portano valore. È un criterio concreto per allocare i budget di acquisizione.</li>
+        <li><b>La stagionalità segue il valore.</b> Ingressi economici in estate, ingressi di valore a gennaio e Natale. Il calendario delle attività di conversione va tarato su queste finestre.</li>
+        <li><b>La geografia non discrimina il valore.</b> Le stesse tre regioni dominano ogni segmento, quindi la leva strategica è comportamentale e di ciclo di vita, non territoriale.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot"><span>Moca Interactive per Pellizzari</span><span>Analisi RFM 2026 &nbsp;/&nbsp; Fase 2, Confronto tra segmenti</span></div>
+</div>
+</body>
+</html>
