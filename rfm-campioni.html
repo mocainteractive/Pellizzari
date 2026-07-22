@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dossier Segmento Campioni, Pellizzari</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+:root{--red:#E52217;--white:#FFFFFF;--lgray:#F4F5F6;--dark:#191919;--text:#595959;
+--green:#118541;--blue:#5781FF;--violet:#551FC4;--pink:#CE2A59;--orange:#DB5E29;
+--r100:#FF5147;--r70:#FF9F98;--r40:#FFCFCC;--r20:#FFE2E1;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 80px}
+.hero{background:var(--dark);color:#fff;padding:44px 0 48px;margin-bottom:36px}
+.hero .wrap{padding-bottom:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.logo{height:26px}.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:42px;font-weight:800;line-height:1.06;text-transform:uppercase;color:#fff;letter-spacing:-.01em}
+.hero h1 .thin{font-weight:500;color:#c9c9c9;display:block;font-size:19px;letter-spacing:0;text-transform:none;margin-top:8px}
+.hero-note{margin-top:20px;font-size:12.5px;color:#8f8f8f;max-width:760px;border-left:2px solid var(--red);padding-left:14px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.toc a{font-size:11px;color:#c9c9c9;text-decoration:none;border:1px solid #3a3a3a;border-radius:20px;padding:6px 13px;transition:.15s}
+.toc a:hover{border-color:var(--red);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:44px}
+.kpi{background:#fff;border-radius:14px;padding:22px 20px;border:1px solid #eceef0}
+.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--dark);margin-bottom:10px}
+.kpi .val{font-size:29px;font-weight:800;color:var(--dark);line-height:1}
+.kpi .sub{font-size:12px;color:var(--text);margin-top:7px}
+.kpi.accent{background:var(--red);border-color:var(--red)}.kpi.accent .lab,.kpi.accent .val,.kpi.accent .sub{color:#fff}
+section{margin-bottom:48px;scroll-margin-top:20px}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.snum{font-size:13px;font-weight:800;color:var(--red)}
+h2{font-size:22px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.005em}
+.sintro{font-size:14px;color:var(--text);margin:8px 0 20px;max-width:820px}
+.card{background:#fff;border-radius:14px;padding:26px 28px;border:1px solid #eceef0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.subttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dark);margin-bottom:16px}
+.axislab{font-size:11px;fill:var(--text);font-family:'Figtree'}
+.pointlab{font-size:12px;font-weight:700;fill:var(--dark);font-family:'Figtree'}
+.blab{font-size:11px;font-weight:800;fill:var(--dark);font-family:'Figtree'}
+.clab{font-size:11px;font-weight:800;fill:#191919;font-family:'Figtree';paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.bar-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:10px}
+.bar-row .nm{font-size:13px;color:var(--dark);font-weight:500;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:var(--lgray);border-radius:6px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px}
+.bar-row .vl{font-size:12.5px;font-weight:700;color:var(--dark);text-align:left}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;align-items:end;height:170px;margin-top:8px}
+.mcol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.mbar{width:100%;border-radius:5px 5px 0 0;background:var(--r40)}
+.mbar.peak{background:var(--red)}
+.mlab{font-size:10px;color:var(--text);margin-top:6px;text-transform:uppercase;font-weight:600}
+.steps{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;align-items:end;height:150px;margin-top:6px}
+.scol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.sbar{width:100%;border-radius:4px 4px 0 0;background:var(--dark)}
+.sbar.hi{background:var(--red)}
+.slab{font-size:10px;color:var(--text);margin-top:5px;font-weight:600}
+.sval{font-size:9.5px;color:var(--text);margin-bottom:3px;font-weight:700}
+.split{display:flex;flex-direction:column;gap:14px}
+.splitrow .h{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.splitrow .h b{color:var(--dark);font-weight:700}
+.dual{display:flex;height:9px;border-radius:5px;overflow:hidden;background:var(--lgray)}
+.dual span{display:block;height:100%}
+.reg{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.reg .rn{width:130px;font-size:13px;font-weight:600;color:var(--dark)}
+.reg .rt{flex:1;background:var(--lgray);height:14px;border-radius:7px;overflow:hidden}
+.reg .rf{height:100%;background:var(--blue);border-radius:7px}
+.reg .rf.ns{background:#c4c8cc}
+.reg .rv{width:52px;font-size:12.5px;font-weight:700;color:var(--dark);text-align:right}
+ul.ins{list-style:none;margin-top:4px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:14px;font-size:14px;color:var(--text)}
+ul.ins li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.note{font-size:11.5px;color:#8a8a8a;margin-top:14px;font-style:italic}
+.callout{background:#191919;border-radius:14px;padding:26px 30px;color:#fff;margin-top:4px}
+.callout .ct{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9a9a9a;font-weight:700;margin-bottom:18px}
+.twin{display:flex;align-items:stretch;gap:16px;flex-wrap:wrap}
+.twin .box{flex:1;min-width:150px;background:#232323;border-radius:10px;padding:18px 20px}
+.twin .box.hl{background:#2a1414;border:1px solid var(--red)}
+.twin .box .n{font-size:28px;font-weight:800;line-height:1}
+.twin .box .n.g{color:#9a9a9a}.twin .box .n.r{color:var(--r70)}
+.twin .box .l{font-size:11.5px;color:#c4c4c4;margin-top:8px;line-height:1.4}
+.callout .cnote{font-size:13px;color:#d0d0d0;margin-top:20px;border-top:1px solid #333;padding-top:16px}
+.callout .cnote b{color:#fff}
+.fq{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:12px}
+.fq .nm{font-size:13px;font-weight:600;color:var(--dark);text-align:right}
+.fq .tr{background:var(--lgray);border-radius:6px;height:24px;overflow:hidden}
+.fq .ff{height:100%;border-radius:6px}
+.fq .vv{font-size:12.5px;font-weight:800;color:var(--dark)}
+.lev{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:4px}
+.levbox{background:#fff;border:1px solid #eceef0;border-top:3px solid var(--red);border-radius:12px;padding:22px 22px}
+.levbox .k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:10px}
+.levbox h3{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:10px;line-height:1.2}
+.levbox p{font-size:13px;color:var(--text)}
+.foot{border-top:1px solid #e2e4e6;margin-top:56px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.hero h1{font-size:30px}.bar-row{grid-template-columns:110px 1fr 52px}.lev{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero"><div class="wrap">
+  <div class="hero-top"><img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca"><div class="tag">Analisi RFM Pellizzari</div></div>
+  <div class="eyebrow">Dossier completo di segmento</div>
+  <h1>Campioni<span class="thin">Tutte le analisi condotte sul segmento in un unico documento</span></h1>
+  <div class="hero-note">R medio 4,66, F-M medio 4,54, i punteggi più alti della matrice. Dati lordi dei resi. Benchmark su 2.726 clienti, aggiornato al 20 luglio 2026.</div>
+  <div class="toc">
+    <a href="#s1">01 Profilo</a><a href="#s2">02 Andamento</a><a href="#s3">03 Scontrino</a>
+    <a href="#s4">04 Brand e categorie</a><a href="#s5">05 Riacquisto</a><a href="#s6">06 Territorio</a>
+    <a href="#s7">07 Valore 1° ordine</a><a href="#s8">08 Tempi riacquisto</a><a href="#s9">09 Newsletter</a><a href="#s10">10 Insight</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+
+  <div class="kpis">
+    <div class="kpi"><div class="lab">Clienti</div><div class="val">2.726</div><div class="sub">4,9% della base totale</div></div>
+    <div class="kpi"><div class="lab">Fatturato lifetime</div><div class="val">2,45 mln</div><div class="sub">il più alto tra tutti i segmenti</div></div>
+    <div class="kpi accent"><div class="lab">Valore medio cliente</div><div class="val">899,7 €</div><div class="sub">record assoluto della base</div></div>
+    <div class="kpi"><div class="lab">Scontrino medio 2025</div><div class="val">233 €</div><div class="sub">+73% sulla media Pellizzari</div></div>
+  </div>
+
+  <!-- 01 PROFILO -->
+  <section id="s1">
+    <div class="shead"><span class="snum">01</span><h2>Profilo del segmento</h2></div>
+    <p class="sintro">Massimo su entrambi gli assi della matrice RFM, priorità di mantenimento e upsell.</p>
+    <div class="card">
+      <div class="bar-row"><div class="nm">R medio</div><div class="bar-track"><div class="bar-fill" style="width:93%;background:var(--red)"></div></div><div class="vl">4,66</div></div>
+      <div class="bar-row"><div class="nm">F-M medio</div><div class="bar-track"><div class="bar-fill" style="width:91%;background:var(--red)"></div></div><div class="vl">4,54</div></div>
+      <div class="note">Range R, da 0 a 472 giorni dall'ultimo ordine. Range F, da 2 a 76 ordini. Range M per cliente, da € 127,86 a € 1.740,15.</div>
+    </div>
+  </section>
+
+  <!-- 02 ANDAMENTO -->
+  <section id="s2">
+    <div class="shead"><span class="snum">02</span><h2>Andamento e stagionalità</h2></div>
+    <p class="sintro">Il fatturato registrato è quadruplicato in tre anni. Nei mesi comparabili gennaio-luglio, la crescita è del +90% nel 2026 sul 2025, dopo il +107% del 2025 sul 2024. Gennaio e luglio, mesi dei saldi, pesano solo il 26% del fatturato 2023-2025, segno di una fedeltà non guidata dallo sconto.</p>
+    <div class="card">
+      <div class="subttl">Fatturato annuo registrato, dato giornaliero 2023-2026</div>
+      <svg viewBox="0 0 900 300" width="100%" preserveAspectRatio="xMidYMid meet">
+        <line x1="70" y1="30" x2="70" y2="240" stroke="#e6e8ea"/><line x1="70" y1="240" x2="860" y2="240" stroke="#e6e8ea"/>
+        <text class="axislab" x="60" y="244" text-anchor="end">0</text>
+        <text class="axislab" x="60" y="140" text-anchor="end">250k</text>
+        <text class="axislab" x="60" y="38" text-anchor="end">520k</text>
+        <line x1="70" y1="136" x2="860" y2="136" stroke="#f0f1f2"/><line x1="70" y1="34" x2="860" y2="34" stroke="#f0f1f2"/>
+        <polygon points="150,178 383,151 617,42 850,42 850,240 150,240" fill="#E52217" opacity="0.06"/>
+        <polyline points="150,178 383,151 617,42 850,42" fill="none" stroke="#E52217" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="150" cy="178" r="5.5" fill="#E52217"/><circle cx="383" cy="151" r="5.5" fill="#E52217"/>
+        <circle cx="617" cy="42" r="5.5" fill="#E52217"/><circle cx="850" cy="42" r="6.5" fill="#E52217" stroke="#fff" stroke-width="2"/>
+        <text class="pointlab" x="150" y="166" text-anchor="middle">164k</text><text class="pointlab" x="383" y="139" text-anchor="middle">232k</text>
+        <text class="pointlab" x="617" y="30" text-anchor="middle">509k</text><text class="pointlab" x="850" y="30" text-anchor="middle">508k*</text>
+        <text class="axislab" x="150" y="262" text-anchor="middle">2023</text><text class="axislab" x="383" y="262" text-anchor="middle">2024</text>
+        <text class="axislab" x="617" y="262" text-anchor="middle">2025</text><text class="axislab" x="850" y="262" text-anchor="middle">2026*</text>
+      </svg>
+      <div class="note">* 2026 parziale, dato fino al 20 luglio, già in linea con l'intero 2025.</div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="subttl">Fatturato per mese, somma 2023-2026</div>
+      <div class="months">
+        <div class="mcol"><div class="mbar peak" style="height:100%"></div><div class="mlab">Gen</div></div>
+        <div class="mcol"><div class="mbar" style="height:48%"></div><div class="mlab">Feb</div></div>
+        <div class="mcol"><div class="mbar" style="height:38%"></div><div class="mlab">Mar</div></div>
+        <div class="mcol"><div class="mbar" style="height:35%"></div><div class="mlab">Apr</div></div>
+        <div class="mcol"><div class="mbar" style="height:36%"></div><div class="mlab">Mag</div></div>
+        <div class="mcol"><div class="mbar" style="height:34%"></div><div class="mlab">Giu</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:63%"></div><div class="mlab">Lug</div></div>
+        <div class="mcol"><div class="mbar" style="height:23%"></div><div class="mlab">Ago</div></div>
+        <div class="mcol"><div class="mbar" style="height:21%"></div><div class="mlab">Set</div></div>
+        <div class="mcol"><div class="mbar" style="height:26%"></div><div class="mlab">Ott</div></div>
+        <div class="mcol"><div class="mbar" style="height:33%"></div><div class="mlab">Nov</div></div>
+        <div class="mcol"><div class="mbar" style="height:39%"></div><div class="mlab">Dic</div></div>
+      </div>
+      <div class="legend"><span><span class="dot" style="background:var(--red)"></span>Picchi saldi (gennaio, luglio)</span><span><span class="dot" style="background:var(--r40)"></span>Resto dell'anno</span></div>
+    </div>
+  </section>
+
+  <!-- 03 SCONTRINO -->
+  <section id="s3">
+    <div class="shead"><span class="snum">03</span><h2>Scontrino medio</h2></div>
+    <p class="sintro">Un divario strutturale e stabile nel tempo, non un picco occasionale.</p>
+    <div class="card">
+      <div class="bar-row"><div class="nm">2023</div><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--red)"></div></div><div class="vl">206 €</div></div>
+      <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:52%;background:#c4c8cc"></div></div><div class="vl">121 €</div></div>
+      <div class="bar-row"><div class="nm">2025</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">233 €</div></div>
+      <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:58%;background:#c4c8cc"></div></div><div class="vl">135 €</div></div>
+      <div class="bar-row"><div class="nm">2026*</div><div class="bar-track"><div class="bar-fill" style="width:93%;background:var(--red)"></div></div><div class="vl">216 €</div></div>
+      <div class="bar-row"><div class="nm">&nbsp;</div><div class="bar-track"><div class="bar-fill" style="width:58%;background:#c4c8cc"></div></div><div class="vl">136 €</div></div>
+      <div class="legend"><span><span class="dot" style="background:var(--red)"></span>Campioni</span><span><span class="dot" style="background:#c4c8cc"></span>Media base Pellizzari</span></div>
+      <div class="note">* 2026 parziale a luglio. Premium tra +59% e +73% ogni anno.</div>
+    </div>
+  </section>
+
+  <!-- 04 BRAND E CATEGORIE -->
+  <section id="s4">
+    <div class="shead"><span class="snum">04</span><h2>Brand e categorie</h2></div>
+    <p class="sintro">Su 9.809 ordini totali, il womenswear Max Mara guida il segmento. L'Outlet acquisisce, il menswear consolida col crescere della fedeltà.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Top brand per ordini totali</div>
+        <div class="bar-row"><div class="nm">Emme Marella</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">850</div></div>
+        <div class="bar-row"><div class="nm">Weekend Max Mara</div><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--r70)"></div></div><div class="vl">635</div></div>
+        <div class="bar-row"><div class="nm">Hlo!</div><div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--r70)"></div></div><div class="vl">540</div></div>
+        <div class="bar-row"><div class="nm">Marella</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:var(--r70)"></div></div><div class="vl">537</div></div>
+        <div class="bar-row"><div class="nm">Jurerê</div><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--r40)"></div></div><div class="vl">473</div></div>
+        <div class="bar-row"><div class="nm">Rodolfo Pellizzari</div><div class="bar-track"><div class="bar-fill" style="width:37%;background:var(--r40)"></div></div><div class="vl">317</div></div>
+        <div class="bar-row"><div class="nm">Polo Ralph Lauren</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--r40)"></div></div><div class="vl">298</div></div>
+        <div class="bar-row"><div class="nm">Patrizia Pepe</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--r40)"></div></div><div class="vl">296</div></div>
+      </div>
+      <div class="card">
+        <div class="subttl">Categoria principale, 1° ordine contro ordini profondi (4°+)</div>
+        <div class="split">
+          <div class="splitrow"><div class="h"><b>Outlet</b><span>1° 41,7% / 4°+ 39,4%</span></div><div class="dual"><span style="width:41.7%;background:var(--violet)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Donna</b><span>1° 36,0% / 4°+ 36,2%</span></div><div class="dual"><span style="width:36%;background:var(--pink)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Uomo</b><span>1° 17,3% / 4°+ 19,8%</span></div><div class="dual"><span style="width:19.8%;background:var(--blue)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Bambini</b><span>1° 4,9% / 4°+ 4,6%</span></div><div class="dual"><span style="width:4.9%;background:var(--orange)"></span></div></div>
+        </div>
+        <div class="note">L'Outlet acquisisce, il womenswear regge, l'uomo cresce di peso man mano che il cliente diventa fedele.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 RIACQUISTO -->
+  <section id="s5">
+    <div class="shead"><span class="snum">05</span><h2>Pattern di riacquisto</h2></div>
+    <p class="sintro">Il 2° ordine è il più denso di articoli. Alcuni brand hanno un potere fidelizzante fuori scala.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Articoli per progressivo d'ordine</div>
+        <div class="steps">
+          <div class="scol"><div class="sval">2255</div><div class="sbar" style="height:76%"></div><div class="slab">1°</div></div>
+          <div class="scol"><div class="sval">2982</div><div class="sbar hi" style="height:100%"></div><div class="slab">2°</div></div>
+          <div class="scol"><div class="sval">1606</div><div class="sbar" style="height:54%"></div><div class="slab">3°</div></div>
+          <div class="scol"><div class="sval">940</div><div class="sbar" style="height:32%"></div><div class="slab">4°</div></div>
+          <div class="scol"><div class="sval">606</div><div class="sbar" style="height:20%"></div><div class="slab">5°</div></div>
+          <div class="scol"><div class="sval">455</div><div class="sbar" style="height:15%"></div><div class="slab">6°</div></div>
+          <div class="scol"><div class="sval">331</div><div class="sbar" style="height:11%"></div><div class="slab">7°</div></div>
+          <div class="scol"><div class="sval">252</div><div class="sbar" style="height:8%"></div><div class="slab">8°</div></div>
+          <div class="scol"><div class="sval">187</div><div class="sbar" style="height:6%"></div><div class="slab">9°</div></div>
+          <div class="scol"><div class="sval">195</div><div class="sbar" style="height:7%"></div><div class="slab">10°</div></div>
+        </div>
+        <div class="note">Il salto più marcato è tra il 3° e il 4° ordine, dove il volume si dimezza.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Brand più fidelizzanti, ordini profondi per primo acquisto</div>
+        <div class="bar-row"><div class="nm">Hlo!</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><div class="vl">2,24×</div></div>
+        <div class="bar-row"><div class="nm">Le Papù</div><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--green)"></div></div><div class="vl">1,98×</div></div>
+        <div class="bar-row"><div class="nm">Armani Exchange</div><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--green)"></div></div><div class="vl">1,69×</div></div>
+        <div class="bar-row"><div class="nm">Paul Baker</div><div class="bar-track"><div class="bar-fill" style="width:65%;background:#4aa96c"></div></div><div class="vl">1,46×</div></div>
+        <div class="bar-row"><div class="nm">Polo Ralph Lauren</div><div class="bar-track"><div class="bar-fill" style="width:64%;background:#4aa96c"></div></div><div class="vl">1,44×</div></div>
+        <div class="bar-row"><div class="nm">Rodolfo Pellizzari</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:#4aa96c"></div></div><div class="vl">1,42×</div></div>
+        <div class="bar-row"><div class="nm">Emme Marella</div><div class="bar-track"><div class="bar-fill" style="width:58%;background:#7cc496"></div></div><div class="vl">1,29×</div></div>
+        <div class="note">Hlo! è il pattern d'ingresso con il più alto potere fidelizzante del segmento.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 TERRITORIO -->
+  <section id="s6">
+    <div class="shead"><span class="snum">06</span><h2>Distribuzione territoriale</h2></div>
+    <p class="sintro">Su 2.408 clienti geolocalizzati, tre regioni valgono oltre la metà del segmento.</p>
+    <div class="card">
+      <div class="reg"><div class="rn">Lombardia</div><div class="rt"><div class="rf" style="width:100%"></div></div><div class="rv">25,6%</div></div>
+      <div class="reg"><div class="rn">Non specificato</div><div class="rt"><div class="rf ns" style="width:64%"></div></div><div class="rv">16,3%</div></div>
+      <div class="reg"><div class="rn">Lazio</div><div class="rt"><div class="rf" style="width:52%"></div></div><div class="rv">13,2%</div></div>
+      <div class="reg"><div class="rn">Veneto</div><div class="rt"><div class="rf" style="width:50%"></div></div><div class="rv">12,9%</div></div>
+      <div class="reg"><div class="rn">Abruzzo</div><div class="rt"><div class="rf" style="width:16%"></div></div><div class="rv">4,0%</div></div>
+      <div class="reg"><div class="rn">Sicilia</div><div class="rt"><div class="rf" style="width:14%"></div></div><div class="rv">3,7%</div></div>
+      <div class="reg"><div class="rn">Puglia</div><div class="rt"><div class="rf" style="width:13%"></div></div><div class="rv">3,3%</div></div>
+      <div class="reg"><div class="rn">Campania</div><div class="rt"><div class="rf" style="width:12%"></div></div><div class="rv">3,0%</div></div>
+      <div class="note">Top province, Roma 279 clienti, Milano 157, Brescia 147, Bergamo 94, Verona 84. Il 16,3% senza regione è la copertura anagrafica peggiore tra i quattro segmenti analizzati.</div>
+    </div>
+  </section>
+
+  <!-- 07 VALORE 1o ORDINE -->
+  <section id="s7">
+    <div class="shead"><span class="snum">07</span><h2>Valore del primo acquisto</h2></div>
+    <p class="sintro">Un Campione entra spendendo circa 371 euro, quasi il doppio di un Promettente e otto volte un Nuovo Cliente. Il picco di spesa non è però il primo ordine ma il secondo.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Scontrino d'ingresso a confronto</div>
+        <div class="fq"><div class="nm">Campioni</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">371 €</div></div>
+        <div class="fq"><div class="nm">Da Non Perdere</div><div class="tr"><div class="ff" style="width:54%;background:var(--orange)"></div></div><div class="vv">~200 €</div></div>
+        <div class="fq"><div class="nm">Promettenti</div><div class="tr"><div class="ff" style="width:50%;background:var(--violet)"></div></div><div class="vv">186 €</div></div>
+        <div class="fq"><div class="nm">Nuovi Clienti</div><div class="tr"><div class="ff" style="width:12%;background:var(--blue)"></div></div><div class="vv">46 €</div></div>
+        <div class="note">Spesso capispalla invernali premium acquistati a gennaio.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Il valore del carrello, per ordine</div>
+        <svg viewBox="0 0 460 260" width="100%" preserveAspectRatio="xMidYMid meet">
+          <line x1="40" y1="20" x2="40" y2="200" stroke="#e6e8ea"/><line x1="40" y1="200" x2="440" y2="200" stroke="#e6e8ea"/>
+          <polyline points="70,89 132,27 194,91 256,117 318,130 380,133" fill="none" stroke="#E52217" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="70" cy="89" r="4.5" fill="#E52217"/><circle cx="132" cy="27" r="6" fill="#E52217" stroke="#fff" stroke-width="2"/>
+          <circle cx="194" cy="91" r="4.5" fill="#E52217"/><circle cx="256" cy="117" r="4.5" fill="#E52217"/>
+          <circle cx="318" cy="130" r="4.5" fill="#E52217"/><circle cx="380" cy="133" r="4.5" fill="#E52217"/>
+          <text x="70" y="78" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#191919">371</text>
+          <text x="132" y="17" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#191919">578</text>
+          <text x="194" y="80" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">363</text>
+          <text x="256" y="106" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">277</text>
+          <text x="318" y="119" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">233</text>
+          <text x="380" y="122" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#595959">225</text>
+          <text x="70" y="218" text-anchor="middle" class="axislab">1°</text><text x="132" y="218" text-anchor="middle" class="axislab">2°</text>
+          <text x="194" y="218" text-anchor="middle" class="axislab">3°</text><text x="256" y="218" text-anchor="middle" class="axislab">4°</text>
+          <text x="318" y="218" text-anchor="middle" class="axislab">5°</text><text x="380" y="218" text-anchor="middle" class="axislab">6°</text>
+          <text x="240" y="245" text-anchor="middle" class="axislab" style="font-weight:600">Scontrino per progressivo, euro</text>
+        </svg>
+        <div class="note">Dopo la conferma al 2° ordine, il ritmo si stabilizza intorno ai 220 euro.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 TEMPI RIACQUISTO -->
+  <section id="s8">
+    <div class="shead"><span class="snum">08</span><h2>Tempi tra un acquisto e il successivo</h2></div>
+    <p class="sintro">Base di calcolo, 933 Campioni con 1° e 2° ordine osservabili. Mediana 126 giorni, circa 4 mesi. Un terzo torna entro 30 giorni, il 43% oltre i 6 mesi.</p>
+    <div class="card">
+      <div class="subttl">Distribuzione dell'intervallo 1° → 2° acquisto</div>
+      <svg viewBox="0 0 900 360" width="100%" preserveAspectRatio="xMidYMid meet">
+        <line x1="70" y1="40" x2="70" y2="300" stroke="#e6e8ea"/><line x1="70" y1="300" x2="860" y2="300" stroke="#e6e8ea"/>
+        <g>
+          <rect x="89" y="209" width="60" height="91" rx="4" fill="#FF9F98"/>
+          <rect x="188" y="211" width="60" height="89" rx="4" fill="#FF9F98"/>
+          <rect x="287" y="191" width="60" height="109" rx="4" fill="#FFCFCC"/>
+          <rect x="386" y="231" width="60" height="69" rx="4" fill="#FFCFCC"/>
+          <rect x="484" y="263" width="60" height="37" rx="4" fill="#FFCFCC"/>
+          <rect x="583" y="202" width="60" height="98" rx="4" fill="#FF9F98"/>
+          <rect x="682" y="167" width="60" height="133" rx="4" fill="#FF9F98"/>
+          <rect x="781" y="62" width="60" height="238" rx="4" fill="#E52217"/>
+        </g>
+        <text class="blab" x="119" y="203" text-anchor="middle" style="fill:#E52217">10,5%</text>
+        <text class="blab" x="218" y="205" text-anchor="middle" style="fill:#E52217">10,3%</text>
+        <text class="blab" x="317" y="185" text-anchor="middle" style="fill:#E52217">12,6%</text>
+        <text class="blab" x="416" y="225" text-anchor="middle" style="fill:#E52217">8,0%</text>
+        <text class="blab" x="514" y="257" text-anchor="middle" style="fill:#E52217">4,3%</text>
+        <text class="blab" x="613" y="196" text-anchor="middle" style="fill:#E52217">11,3%</text>
+        <text class="blab" x="712" y="161" text-anchor="middle" style="fill:#E52217">15,4%</text>
+        <text class="blab" x="811" y="56" text-anchor="middle" style="fill:#E52217">27,5%</text>
+        <polyline points="119,273 218,246 317,213 416,192 514,181 613,152 712,112 811,40" fill="none" stroke="#191919" stroke-width="2.5" stroke-dasharray="5 4"/>
+        <g fill="#191919"><circle cx="119" cy="273" r="3.5"/><circle cx="218" cy="246" r="3.5"/><circle cx="317" cy="213" r="3.5"/><circle cx="416" cy="192" r="3.5"/><circle cx="514" cy="181" r="3.5"/><circle cx="613" cy="152" r="3.5"/><circle cx="712" cy="112" r="3.5"/><circle cx="811" cy="40" r="3.5"/></g>
+        <g class="clab" text-anchor="middle">
+          <text x="119" y="264">10,5%</text><text x="218" y="237">20,8%</text><text x="317" y="204">33,4%</text><text x="416" y="183">41,5%</text>
+          <text x="514" y="172">45,8%</text><text x="613" y="143">57,0%</text><text x="712" y="103">72,5%</text><text x="811" y="31">100%</text>
+        </g>
+        <g class="axislab" text-anchor="middle">
+          <text x="119" y="320">0-7 gg</text><text x="218" y="320">8-14</text><text x="317" y="320">15-30</text>
+          <text x="416" y="320">31-60</text><text x="514" y="320">61-90</text><text x="613" y="320">91-180</text>
+          <text x="712" y="320">181-365</text><text x="811" y="320">oltre 1a</text>
+        </g>
+        <text class="axislab" x="465" y="345" text-anchor="middle" style="font-weight:600">Giorni tra primo e secondo ordine</text>
+      </svg>
+      <div class="legend"><span><span class="dot" style="background:var(--r70)"></span>Quota per fascia</span><span><span class="dot" style="background:#191919"></span>Quota cumulata</span></div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="subttl">Accelerazione, mediana giorni tra un ordine e il successivo</div>
+      <svg viewBox="0 0 720 220" width="100%" preserveAspectRatio="xMidYMid meet">
+        <line x1="60" y1="20" x2="60" y2="170" stroke="#e6e8ea"/><line x1="60" y1="170" x2="700" y2="170" stroke="#e6e8ea"/>
+        <polyline points="120,35 265,39 410,93 555,129 660,91" fill="none" stroke="#E52217" stroke-width="3.5" stroke-linejoin="round"/>
+        <circle cx="120" cy="35" r="6" fill="#E52217" stroke="#fff" stroke-width="2"/><circle cx="265" cy="39" r="5" fill="#E52217"/>
+        <circle cx="410" cy="93" r="5" fill="#E52217"/><circle cx="555" cy="129" r="6" fill="#E52217" stroke="#fff" stroke-width="2"/><circle cx="660" cy="91" r="5" fill="#E52217"/>
+        <text class="blab" x="120" y="24" text-anchor="middle">126 gg</text><text class="blab" x="265" y="28" text-anchor="middle">123</text>
+        <text class="blab" x="410" y="82" text-anchor="middle">82</text><text class="blab" x="555" y="150" text-anchor="middle">54</text><text class="blab" x="660" y="80" text-anchor="middle">83</text>
+        <g class="axislab" text-anchor="middle">
+          <text x="120" y="190">1°→2°</text><text x="265" y="190">2°→3°</text><text x="410" y="190">3°→4°</text><text x="555" y="190">4°→5°</text><text x="660" y="190">5°→6°</text>
+        </g>
+      </svg>
+      <div class="note">Il primo salto è il più lungo. Superata la soglia del secondo acquisto, la cadenza si accorcia progressivamente.</div>
+    </div>
+  </section>
+
+  <!-- 09 NEWSLETTER -->
+  <section id="s9">
+    <div class="shead"><span class="snum">09</span><h2>Iscrizione newsletter</h2></div>
+    <p class="sintro">I Campioni hanno il tasso di iscrizione più alto tra gli 11 segmenti, ma restano comunque in minoranza.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Tasso di iscrizione per segmento</div>
+        <div class="fq"><div class="nm">Campioni</div><div class="tr"><div class="ff" style="width:98%;background:var(--red)"></div></div><div class="vv">29,5%</div></div>
+        <div class="fq"><div class="nm">Da Non Perdere</div><div class="tr"><div class="ff" style="width:78%;background:var(--orange)"></div></div><div class="vv">23,3%</div></div>
+        <div class="fq"><div class="nm">Promettenti</div><div class="tr"><div class="ff" style="width:71%;background:var(--violet)"></div></div><div class="vv">21,4%</div></div>
+        <div class="fq"><div class="nm">Nuovi Clienti</div><div class="tr"><div class="ff" style="width:56%;background:var(--blue)"></div></div><div class="vv">16,7%</div></div>
+        <div class="note">Media base 21,6%. Dato sull'intera base di 55.687 clienti al 20 luglio 2026.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Campioni, iscritti contro non iscritti</div>
+        <div class="fq"><div class="nm">Iscritti</div><div class="tr"><div class="ff" style="width:29.5%;background:var(--red)"></div></div><div class="vv">804</div></div>
+        <div class="fq"><div class="nm">Non iscritti</div><div class="tr"><div class="ff" style="width:70.5%;background:#c4c8cc"></div></div><div class="vv">1.921</div></div>
+        <div class="note">Anche nel segmento più fedele, meno di un cliente su tre è raggiungibile via email.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 INSIGHT -->
+  <section id="s10">
+    <div class="shead"><span class="snum">10</span><h2>Insight strategici di sintesi</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>Motore di crescita, non solo di mantenimento.</b> Con +90% anno su anno nel 2026, meritano investimenti di crescita, non solo attività difensive.</li>
+        <li><b>Fedeltà reale, non guidata dallo sconto.</b> Scontrino premium stabile e saldi al 26% del fatturato.</li>
+        <li><b>Il valore del primo ordine predice il cliente di alto valore.</b> Un Campione entra spendendo circa 371 euro, molto più di ogni altro segmento.</li>
+        <li><b>Il secondo ordine è il momento della verità.</b> È insieme la prova di fedeltà e il picco di spesa, a 578 euro.</li>
+        <li><b>Hlo! e il gruppo Max Mara</b> sono i pattern d'ingresso più efficaci da valorizzare in acquisizione.</li>
+        <li><b>Il salto critico è tra 3° e 4° ordine,</b> un possibile obiettivo per attività di nurturing dedicate.</li>
+        <li><b>I tempi di riacquisto sono bimodali,</b> serve un piano di flussi su più finestre, aggancio rapido nei primi 30 giorni e riattivazione stagionale oltre i 120.</li>
+        <li><b>Due debolezze operative da colmare,</b> il 16,3% di clienti senza regione e il 70,5% non iscritto alla newsletter, entrambe limitano la capacità di attivare le leve individuate.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot"><span>Moca Interactive per Pellizzari</span><span>Analisi RFM 2026 &nbsp;/&nbsp; Dossier completo, Segmento Campioni</span></div>
+</div>
+</body>
+</html>
