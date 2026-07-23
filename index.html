@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisi RFM Pellizzari - Categorie per segmento</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap');
+:root{--red:#E52217;--white:#FFFFFF;--lgray:#F4F5F6;--dark:#191919;--text:#595959;
+ --r100:#FF5147;--r90:#FF6B62;--r80:#FF857D;--r70:#FF9F98;--r60:#FFB9B5;--r50:#FFC4C1;--r40:#FFCFCC;--r30:#FFD9D8;--r20:#FFE2E1;--r10:#FFE7E6;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px 60px}
+header{background:var(--dark);color:var(--white);padding:34px 0 0;position:sticky;top:0;z-index:20}
+.head-in{max-width:1160px;margin:0 auto;padding:0 20px}
+.logo{height:24px;margin-bottom:22px}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+h1{font-weight:700;font-size:30px;color:var(--white);text-transform:uppercase;line-height:1.1;letter-spacing:-.5px}
+.tabbar{display:flex;gap:4px;margin-top:22px;overflow-x:auto}
+.tabbar button{font-family:'Figtree';font-weight:500;font-size:13.5px;cursor:pointer;white-space:nowrap;
+ border:none;background:transparent;color:#c9c9c9;padding:13px 18px;border-bottom:3px solid transparent;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
+.tabbar button:hover{color:#fff}
+.tabbar button.on{color:#fff;border-bottom-color:var(--red);font-weight:700}
+.panel{display:none}
+.panel.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--white);border-radius:14px;padding:30px 32px;margin-bottom:24px;box-shadow:0 1px 3px rgba(25,25,25,.05)}
+.kicker{color:var(--red);font-weight:700;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px}
+h2{font-weight:500;font-size:24px;color:var(--dark);text-transform:uppercase;margin-bottom:6px;letter-spacing:-.3px}
+.lead{font-size:14px;margin:6px 0 22px}
+ul.ins{list-style:none;margin-top:18px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:14px;font-size:15px}
+ul.ins li:before{content:"";position:absolute;left:2px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+/* segment head */
+.seghead{margin:6px 0 24px}
+.eyebrow2{color:var(--red);font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.segtitle{font-weight:700;font-size:28px;color:var(--dark);text-transform:uppercase;letter-spacing:-.3px}
+.segmeta{margin-top:16px;display:flex;gap:26px;flex-wrap:wrap}
+.segmeta .k{color:#9a9a9a;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;display:block}
+.segmeta .v{color:var(--dark);font-size:22px;font-weight:700;margin-top:2px;display:block}
+.segmeta .v.small{font-size:15px;padding-top:5px}
+/* toggle */
+.toggle{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.toggle button{font-family:'Figtree';font-weight:500;font-size:13px;cursor:pointer;border:1.5px solid #e3e3e5;background:var(--white);color:var(--text);padding:9px 16px;border-radius:999px;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
+.toggle button:hover{border-color:var(--red)}
+.toggle button.on{background:var(--red);border-color:var(--red);color:var(--white)}
+/* bars */
+.bar-row{display:grid;grid-template-columns:150px 1fr 92px;align-items:center;gap:14px;margin-bottom:9px}
+.bar-lab{font-size:13px;color:var(--dark);font-weight:500;text-align:right;line-height:1.15}
+.bar-track{background:var(--lgray);border-radius:6px;height:26px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;transition:width .5s cubic-bezier(.4,0,.2,1);min-width:2px}
+.bar-val{font-size:13px;font-weight:700;color:var(--dark);text-align:left}
+.bar-val small{font-weight:400;color:#9a9a9a;font-size:11px}
+/* seg table */
+table.tab{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:4px}
+table.tab th{text-align:right;font-weight:700;color:var(--dark);text-transform:uppercase;font-size:10.5px;letter-spacing:.6px;padding:10px;border-bottom:2px solid var(--dark)}
+table.tab th:first-child,table.tab td:first-child{text-align:left}
+table.tab td{padding:9px 10px;text-align:right;border-bottom:1px solid #eee;color:var(--text)}
+table.tab td:first-child{color:var(--dark);font-weight:500}
+table.tab tr:hover td{background:#fbfbfb}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:middle}
+/* brands */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:20px}
+.bcol h3{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--dark);letter-spacing:1px;margin-bottom:12px;padding-bottom:8px;border-bottom:1.5px solid var(--red)}
+.brow{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;margin-bottom:9px;font-size:13.5px}
+.brow .n{color:#bbb;font-weight:700;font-size:12px}
+.brow .bn{color:var(--dark);font-weight:500}
+.brow .bv{color:var(--text);font-weight:700}
+.mini-track{height:5px;background:var(--lgray);border-radius:3px;margin-top:3px;grid-column:2/4}
+.mini-fill{height:100%;background:var(--red);border-radius:3px}
+.catbrand{margin-top:8px}
+.cb-item{margin-bottom:18px}
+.cb-item .cbt{font-size:13px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--lgray);border-radius:8px;padding:7px 12px;font-size:12.5px}
+.chip b{color:var(--dark);font-weight:700}
+.chip small{color:#9a9a9a;display:block;font-size:11px}
+/* progressivo */
+.pgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin-top:22px}
+.pcol{background:var(--lgray);border-radius:12px;padding:18px 18px 20px}
+.pcol .ph{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--dark);margin-bottom:3px}
+.pcol .pmeta{font-size:11px;color:#9a9a9a;margin-bottom:14px}
+.prow{margin-bottom:10px}
+.prow .pl{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:3px}
+.prow .pl b{color:var(--dark);font-weight:500}
+.prow .pl span{color:var(--text);font-weight:700}
+.ptrack{height:5px;background:#e6e7e9;border-radius:3px}
+.pfill{height:100%;border-radius:3px;background:var(--red)}
+/* kpi (conf) */
+.kpigrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi{background:var(--lgray);border-radius:12px;padding:20px 18px;border-top:3px solid var(--red)}
+.kpi .kn{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dark);margin-bottom:2px}
+.kpi .kp{font-size:11px;color:#9a9a9a;margin-bottom:14px}
+.kpi .krow{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-bottom:1px solid #e6e7e9}
+.kpi .krow:last-child{border-bottom:none}
+.kpi .krow .kl{color:var(--text)}
+.kpi .krow .kv{color:var(--dark);font-weight:700}
+.kpi .krow .kv.hot{color:var(--red)}
+/* heatmap (conf) */
+.hmwrap{overflow-x:auto}
+table.hm{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+table.hm th{padding:10px 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dark);border-bottom:2px solid var(--dark);text-align:center;vertical-align:bottom}
+table.hm th.cat{text-align:left;width:180px}
+table.hm td{padding:0;text-align:center;border:2px solid var(--white)}
+table.hm td .cell{padding:9px 6px;font-weight:700;font-size:12.5px;border-radius:5px}
+table.hm td.catname{text-align:left;font-weight:500;color:var(--dark);padding:9px 8px;font-size:13px}
+.legend{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:11px;color:#9a9a9a}
+.legend .grad{height:10px;width:180px;border-radius:5px;background:linear-gradient(90deg,#FFE7E6,#E52217)}
+.rrgrid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.rcol h3{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--dark);letter-spacing:1px;margin-bottom:14px;padding-bottom:8px;border-bottom:1.5px solid var(--red)}
+/* note */
+.note{background:var(--dark);color:#cfcfcf;border-radius:14px;padding:26px 30px;font-size:13px}
+.note .kicker{color:var(--r80)}
+.note ul{list-style:none}
+.note li{position:relative;padding-left:20px;margin-bottom:9px}
+.note li:before{content:"";position:absolute;left:2px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--r80)}
+.note b{color:var(--white);font-weight:700}
+footer{text-align:center;color:#9a9a9a;font-size:11px;margin-top:34px;letter-spacing:.5px}
+@media(max-width:900px){.kpigrid{grid-template-columns:1fr 1fr}.rrgrid{grid-template-columns:1fr}.bgrid{grid-template-columns:1fr}.pgrid{grid-template-columns:1fr}}
+@media(max-width:600px){h1{font-size:24px}.segtitle{font-size:22px}.kpigrid{grid-template-columns:1fr}.card{padding:24px 20px}.bar-row{grid-template-columns:104px 1fr 78px;gap:8px}.bar-lab{font-size:11px}}
+</style>
+</head>
+<body>
+<header><div class="head-in"><img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca"><div class="eyebrow">Analisi RFM Pellizzari · Categorie merceologiche</div><h1>Analisi categorie per segmento</h1><div class="tabbar"><button class="on" data-tab="conf">Confronto</button><button data-tab="dnp">Da Non Perdere</button><button data-tab="prom">Promettenti</button><button data-tab="nuovi">Nuovi Clienti</button><button data-tab="camp">Campioni</button></div></div></header>
+<div class="wrap">
+<section class="panel active" data-panel="conf">
+
+
+  <div class="card">
+    <div class="kicker">Executive summary</div>
+    <h2>Cosa distingue i segmenti</h2>
+    <ul class="ins">
+      <li><b>Due mondi opposti per valore.</b> Da Non Perdere, Promettenti e Campioni comprano capi a scontrino alto, prezzo medio 123, 144 euro a capo, mentre i Nuovi Clienti entrano a soli 46 euro a capo, su prodotti di ingresso a basso impegno.</li>
+      <li><b>La porta di ingresso cambia col valore del cliente.</b> I Nuovi Clienti entrano dalle Scarpe, 31,8 percento del loro fatturato, i Campioni dalla Maglieria al primo ordine. Il capospalla pesante, Cappotti e Piumini, è invece il motore dei segmenti già maturi, fino al 29 percento del fatturato.</li>
+      <li><b>Il reso è il segnale più forte dei Nuovi Clienti.</b> Rendono il 21,9 percento dei capi, contro il 2 percento dei segmenti intermedi e l'8,5 dei Campioni. E lo fanno in modo selettivo: provano il capospalla costoso e lo restituiscono nell'80 percento dei casi, tenendo solo l'entry price.</li>
+      <li><b>Il carrello cresce con la fedeltà.</b> Si passa da 1,04 articoli per ordine dei Nuovi Clienti a 1,78 dei Campioni, che riempiono il carrello e comprano a tutto tondo su molte categorie.</li>
+      <li><b>Le Borse sono la categoria più trasversale.</b> Presenti con quota rilevante in tutti i segmenti, sono un ottimo aggancio comune, guidate da Pinko e Mc2 Saint Barth.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Profilo dei segmenti</div>
+    <h2>KPI a confronto</h2>
+    <div class="kpigrid" id="kpi"></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Mix categorie</div>
+    <h2>Peso di ogni categoria sul fatturato</h2>
+    <p style="font-size:14px;margin:6px 0 20px">Percentuale del fatturato netto di ciascun segmento per categoria del sito. Colore più intenso, quota più alta. Le categorie sono ordinate per peso complessivo. Si legge in orizzontale il profilo di ogni categoria tra i segmenti, in verticale il mix di ciascun segmento.</p>
+    <div class="hmwrap">
+      <table class="hm" id="hm"></table>
+    </div>
+    <div class="legend"><span>0%</span><div class="grad"></div><span>quota alta</span></div>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Comportamento di reso</div>
+    <h2>Tasso di reso per segmento</h2>
+    <p style="font-size:14px;margin:6px 0 20px">Quota di capi ordinati che vengono poi restituiti, calcolata sulle righe con reso completo o parziale a quantità zero, sul totale dei capi ordinati.</p>
+    <div class="rrgrid">
+      <div class="rcol">
+        <h3>Tasso di reso complessivo</h3>
+        <div id="rrseg"></div>
+      </div>
+      <div class="rcol">
+        <h3>Nuovi Clienti, reso per categoria</h3>
+        <div id="rrnuovi"></div>
+        <p style="font-size:12px;color:#8a8a8a;margin-top:12px">Il reso dei nuovi clienti è concentrato sui capi ad alto valore, provano e restituiscono. Categorie con almeno 30 capi ordinati.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="kicker">Nota metodologica</div>
+    <ul>
+      <li><b>Categorie:</b> tassonomia del menu di negozipellizzari.it, prodotti associati leggendo la descrizione articolo. Uomo e donna uniti in categorie merceologiche comuni, il file non riporta il genere. Copertura media della classificazione oltre il 99 percento.</li>
+      <li><b>Valori:</b> fatturato al netto dei resi, cioè il valore effettivamente tenuto dai clienti. I file sono lordo resi, i resi sono presenti come righe a quantità e valore zero, che vengono escluse dal fatturato ma usate per il tasso di reso.</li>
+      <li><b>Tasso di reso:</b> capi restituiti su capi ordinati, a livello di riga articolo. Disponibile per tutti e quattro i segmenti.</li>
+      <li><b>Finestre temporali diverse:</b> Da Non Perdere copre 2023, 2024, Promettenti e Nuovi Clienti 2024, 2026, Campioni tutto l'arco 2023, 2026. Il mix percentuale è confrontabile tra segmenti, i volumi assoluti no.</li>
+      <li><b>Progressivo ordine:</b> Promettenti e Nuovi Clienti contengono solo primi ordini, Da Non Perdere il 91 percento, i Campioni tutta la storia fino al 76 ordine. Resta da confermare se per Promettenti e Nuovi Clienti sia una scelta di estrazione o un comportamento reale.</li>
+      <li><b>Numerosità:</b> clienti nei file allineati ai benchmark aggiornati, delta tra 0,3 e 2,3 percento. Colonna cliente con intestazioni diverse nei file, id utente, Id utente, ic cliente, ID cliente, uniformate in lettura.</li>
+    </ul>
+  </div>
+
+  
+
+</section>
+<section class="panel" data-panel="dnp">
+<div class="seghead"><div class="eyebrow2">Segmento</div><div class="segtitle">Da Non Perdere</div><div class="segmeta"><div><span class="k">Periodo</span><span class="v small">Gen 2023 · Lug 2024</span></div><div><span class="k">Clienti</span><span class="v">6.566</span></div><div><span class="k">Capi</span><span class="v">9.939</span></div><div><span class="k">Articoli / ordine</span><span class="v">1,44</span></div><div><span class="k">Fatturato</span><span class="v small">€ 1.333.051</span></div></div></div>
+<div class="card"><div class="kicker">Executive summary</div><h2>Cosa comprano i Da Non Perdere</h2><ul class="ins" style="margin-top:18px">
+      <li>Il segmento è trainato dai <b>capispalla pesanti</b>: Cappotti e Giacconi più Piumini valgono insieme il <b>29,3 percento del fatturato</b> pur essendo solo il 15,2 percento dei capi, segno di un acquisto ad alto scontrino stagionale, tipicamente autunno inverno.</li>
+      <li>Le <b>Borse</b> sono il terzo motore di fatturato e la categoria con la <b>penetrazione più alta</b>, il 13 percento dei clienti ne ha comprata almeno una, quindi è la porta di ingresso trasversale del segmento, guidata da Pinko e Mc2 Saint Barth.</li>
+      <li>Categorie ad alta frequenza ma basso valore, <b>Scarpe, Maglieria, Pantaloni e T-shirt</b>, portano molti pezzi ma scontrino unitario contenuto, dai 42 ai 105 euro a capo: sono leve di riacquisto più che di valore.</li>
+      <li>Le <b>Scarpe</b> muovono più pezzi di tutti, 1.263 capi, ma con prezzo medio di 75 euro: forte volume trainato dalle Friulane Le Papù, utile come amo per la riattivazione.</li>
+      <li>La coda lunga, da Gonne a Intimo, pesa poco: l'assortimento rilevante per questo segmento è concentrato in circa <b>otto categorie</b>, un dato utile per costruire flussi e vetrine mirati.</li>
+    </ul></div>
+<div class="card"><div class="kicker">Distribuzione categorie</div><h2>Classifica per metrica</h2><p class="lead">Ordina le categorie del sito per fatturato, capi venduti o penetrazione clienti.</p><div class="toggle" data-seg="dnp"><button data-k="fatturato" class="on">Fatturato</button><button data-k="pezzi">Capi venduti</button><button data-k="penetrazione">Penetrazione clienti</button></div><div id="bars-dnp"></div></div>
+<div class="card"><div class="kicker">Dettaglio completo</div><h2>Tabella categorie</h2><div style="overflow-x:auto"><table class="tab"><thead><tr><th>Categoria sito</th><th>Capi</th><th>% capi</th><th>Clienti</th><th>Penetraz.</th><th>Capi / ordine</th><th>Fatturato</th><th>% fatt.</th><th>Prezzo medio capo</th></tr></thead><tbody id="tbody-dnp"></tbody></table></div></div>
+<div class="card"><div class="kicker">Marchi</div><h2>Chi guida il segmento</h2><div class="bgrid"><div class="bcol"><h3>Top marchi per fatturato</h3><div id="brands-dnp"></div></div><div class="bcol"><h3>Marchio guida nelle categorie principali</h3><div class="catbrand" id="catbrand-dnp"></div></div></div></div>
+<div class="note"><div class="kicker">Nota metodologica</div><ul>
+      <li><b>Fonte categorie:</b> tassonomia reale del menu di negozipellizzari.it, i prodotti sono stati associati alle categorie del sito analizzando la descrizione articolo. Uomo e donna sono uniti in categorie merceologiche comuni, perché il file transazionale non riporta il genere.</li>
+      <li><b>Copertura:</b> il classificatore assegna una categoria al 99,64 percento delle righe. Lo 0,36 percento non classificato, più Gift Card e resi totali, è escluso dalle percentuali di mix.</li>
+      <li><b>Perimetro:</b> escluse le righe con stato Full refund e le righe a quantità zero. I resi parziali sono mantenuti per la parte effettivamente acquistata. Valori al lordo dei resi parziali.</li>
+      <li><b>Numerosità:</b> 6.566 clienti nel file, contro 6.615 del benchmark aggiornato senza aborted e pending payment, delta dello 0,7 percento dovuto a clienti con ultimo ordine anteriore al 2023.</li>
+      <li><b>Progressivo ordine:</b> nel segmento il 91 percento delle righe è primo ordine, per questo la vista è aggregata e non suddivisa per progressivo, a differenza di quanto previsto per i Campioni.</li>
+    </ul></div>
+</section>
+<section class="panel" data-panel="prom">
+<div class="seghead"><div class="eyebrow2">Segmento</div><div class="segtitle">Promettenti</div><div class="segmeta"><div><span class="k">Periodo</span><span class="v small">Lug 2024 · Lug 2026</span></div><div><span class="k">Clienti</span><span class="v">11.385</span></div><div><span class="k">Capi</span><span class="v">14.962</span></div><div><span class="k">Articoli / ordine</span><span class="v">1,30</span></div><div><span class="k">Fatturato</span><span class="v small">€ 2.153.216</span></div></div></div>
+<div class="card"><div class="kicker">Executive summary</div><h2>Cosa comprano i Promettenti</h2><ul class="ins" style="margin-top:18px">
+      <li>Tutte le righe del segmento sono <b>primo ordine</b>: questa vista fotografa quindi il <b>mix di ingresso</b> dei Promettenti, cioè con cosa entrano i clienti che il modello considera in crescita.</li>
+      <li>Anche qui il fatturato è trainato dai <b>capispalla pesanti</b>: Cappotti e Giacconi più Piumini pesano il <b>28,8 percento del fatturato</b>, acquisto stagionale ad alto scontrino, tipicamente autunno inverno.</li>
+      <li>Le <b>Borse</b> sono il secondo motore di fatturato e la categoria a <b>penetrazione più alta</b>, il 15,5 percento dei clienti ne acquista almeno una al primo ordine, ancora più che nei Da Non Perdere: è la porta di ingresso principale, guidata da Pinko e Mc2 Saint Barth.</li>
+      <li>Il carrello è piccolo, <b>1,30 articoli medi per ordine</b>, coerente con un primo acquisto. Fanno eccezione T-shirt 1,60 e Scarpe 1,50 capi per ordine, categorie da acquisto multiplo utili per meccaniche a bundle.</li>
+      <li>La struttura del mix è quasi identica a quella dei Da Non Perdere, segno che i due segmenti condividono lo stesso DNA di catalogo, ma su finestre temporali diverse, il che apre a flussi di crescita replicabili.</li>
+    </ul></div>
+<div class="card"><div class="kicker">Distribuzione categorie</div><h2>Classifica per metrica</h2><p class="lead">Ordina le categorie del sito per fatturato, capi venduti o penetrazione clienti.</p><div class="toggle" data-seg="prom"><button data-k="fatturato" class="on">Fatturato</button><button data-k="pezzi">Capi venduti</button><button data-k="penetrazione">Penetrazione clienti</button></div><div id="bars-prom"></div></div>
+<div class="card"><div class="kicker">Dettaglio completo</div><h2>Tabella categorie</h2><div style="overflow-x:auto"><table class="tab"><thead><tr><th>Categoria sito</th><th>Capi</th><th>% capi</th><th>Clienti</th><th>Penetraz.</th><th>Capi / ordine</th><th>Fatturato</th><th>% fatt.</th><th>Prezzo medio capo</th></tr></thead><tbody id="tbody-prom"></tbody></table></div></div>
+<div class="card"><div class="kicker">Marchi</div><h2>Chi guida il segmento</h2><div class="bgrid"><div class="bcol"><h3>Top marchi per fatturato</h3><div id="brands-prom"></div></div><div class="bcol"><h3>Marchio guida nelle categorie principali</h3><div class="catbrand" id="catbrand-prom"></div></div></div></div>
+<div class="note"><div class="kicker">Nota metodologica</div><ul>
+      <li><b>Fonte categorie:</b> tassonomia reale del menu di negozipellizzari.it, i prodotti sono stati associati alle categorie del sito analizzando la descrizione articolo. Uomo e donna sono uniti in categorie merceologiche comuni, perché il file transazionale non riporta il genere.</li>
+      <li><b>Copertura:</b> il classificatore assegna una categoria al 99,45 percento delle righe. Lo 0,36 percento non classificato, più Gift Card e resi totali, è escluso dalle percentuali di mix.</li>
+      <li><b>Perimetro:</b> escluse le righe con stato Full refund e le righe a quantità zero. I resi parziali sono mantenuti. Valori al lordo. Periodo del file 20/07/2024, 21/07/2026, diverso da quello dei Da Non Perdere 2023, 2024, per cui il mix percentuale è confrontabile tra segmenti ma non i volumi assoluti.</li>
+      <li><b>Numerosità:</b> 11.385 clienti nel file, contro 11.437 del benchmark aggiornato senza aborted e pending payment, delta dello 0,5 percento.</li>
+      <li><b>Progressivo ordine:</b> nel file dei Promettenti il 100 percento delle righe è primo ordine, quindi la vista coincide con il mix di primo acquisto del segmento.</li>
+    </ul></div>
+</section>
+<section class="panel" data-panel="nuovi">
+<div class="seghead"><div class="eyebrow2">Segmento</div><div class="segtitle">Nuovi Clienti</div><div class="segmeta"><div><span class="k">Periodo</span><span class="v small">Lug 2024 · Lug 2026</span></div><div><span class="k">Clienti</span><span class="v">6.394</span></div><div><span class="k">Capi</span><span class="v">5.210</span></div><div><span class="k">Articoli / ordine</span><span class="v">1,04</span></div><div><span class="k">Fatturato</span><span class="v small">€ 240.952</span></div></div></div>
+<div class="card"><div class="kicker">Executive summary</div><h2>Cosa comprano i Nuovi Clienti</h2><ul class="ins" style="margin-top:18px">
+      <li>Il primo acquisto dei nuovi clienti è dominato dalle <b>Scarpe</b>: il 31,8 percento del fatturato tenuto e una <b>penetrazione del 30,8 percento</b>, cioè quasi un nuovo cliente su tre entra con un paio di scarpe, trainato dalle Friulane Le Papù che da sole valgono un quarto del fatturato del segmento.</li>
+      <li>L'ingresso avviene su prodotti a <b>basso prezzo</b>: scontrino medio a capo tra 38 e 65 euro, contro i 100, 284 euro dei segmenti fedeli. Scarpe, Borse e Accessori, tutti sotto i 50 euro a capo, pesano insieme oltre il <b>56 percento</b> del fatturato tenuto.</li>
+      <li>Segnale chiave, il <b>tasso di reso è altissimo e concentrato</b>: i nuovi clienti ordinano capispalla costoso e lo restituiscono quasi sempre. Cappotti e Piumini vengono resi nell'<b>83 percento</b> dei casi, Giacche e Capispalla oltre il 60, mentre Scarpe e Accessori restano sotto il 11 percento.</li>
+      <li>Di fatto i nuovi clienti <b>provano l'alto di gamma e tengono l'entry price</b>. Questo spiega perché il fatturato netto del file, circa 241 mila euro, è la metà del benchmark lordo, il valore restituito è tutto sui capi cari.</li>
+      <li>Carrello minimo, <b>1,04 articoli per ordine</b>: il nuovo cliente compra un solo pezzo. La leva di attivazione al secondo acquisto deve partire da qui, dalle categorie a basso attrito che già tengono.</li>
+    </ul></div>
+<div class="card"><div class="kicker">Distribuzione categorie</div><h2>Classifica per metrica</h2><p class="lead">Ordina le categorie del sito per fatturato, capi venduti o penetrazione clienti.</p><div class="toggle" data-seg="nuovi"><button data-k="fatturato" class="on">Fatturato</button><button data-k="pezzi">Capi venduti</button><button data-k="penetrazione">Penetrazione clienti</button></div><div id="bars-nuovi"></div></div>
+<div class="card"><div class="kicker">Dettaglio completo</div><h2>Tabella categorie</h2><div style="overflow-x:auto"><table class="tab"><thead><tr><th>Categoria sito</th><th>Capi</th><th>% capi</th><th>Clienti</th><th>Penetraz.</th><th>Capi / ordine</th><th>Fatturato</th><th>% fatt.</th><th>Prezzo medio capo</th></tr></thead><tbody id="tbody-nuovi"></tbody></table></div></div>
+<div class="card">
+    <div class="kicker">Comportamento di reso</div>
+    <h2>Cosa provano e cosa restituiscono</h2>
+    <p style="font-size:14px;margin:6px 0 20px">Tasso di reso totale per categoria, calcolato come righe con reso completo su righe consegnate più rese, sulle categorie con almeno 30 righe. Un valore alto significa che quella categoria viene ordinata ma quasi sempre restituita.</p>
+    <div id="resi-nuovi"></div>
+    <p style="font-size:13px;margin-top:18px;color:#8a8a8a">Nel segmento il 19,9 percento delle righe è un reso totale, contro meno dell'1 percento negli altri segmenti analizzati. Il reso è tutto concentrato sui capi ad alto valore, quindi il nuovo cliente tende a tenere solo l'entry price.</p>
+  </div>
+
+  <div class="card">
+    <div class="kicker">Marchi</div>
+    <h2>Chi guida il segmento</h2>
+    <div class="bgrid" style="margin-top:20px">
+      <div class="bcol">
+        <h3>Top marchi per fatturato</h3>
+        <div id="brands"></div>
+      </div>
+<div class="card"><div class="kicker">Marchi</div><h2>Chi guida il segmento</h2><div class="bgrid"><div class="bcol"><h3>Top marchi per fatturato</h3><div id="brands-nuovi"></div></div><div class="bcol"><h3>Marchio guida nelle categorie principali</h3><div class="catbrand" id="catbrand-nuovi"></div></div></div></div>
+<div class="note"><div class="kicker">Nota metodologica</div><ul>
+      <li><b>Fonte categorie:</b> tassonomia reale del menu di negozipellizzari.it, i prodotti sono stati associati alle categorie del sito analizzando la descrizione articolo. Uomo e donna sono uniti in categorie merceologiche comuni, perché il file transazionale non riporta il genere.</li>
+      <li><b>Copertura:</b> il classificatore assegna una categoria al 98,73 percento delle righe. Lo 0,36 percento non classificato, più Gift Card e resi totali, è escluso dalle percentuali di mix.</li>
+      <li><b>Perimetro e resi:</b> il mix di categoria è calcolato al netto dei resi totali, escludendo le righe Full refund e a quantità zero. Il fatturato netto del file, circa 241 mila euro, è circa la metà del benchmark di segmento, 497 mila euro, perché il benchmark è verosimilmente al lordo dei resi e in questo segmento il reso sui capi cari è molto alto. Confermare se il benchmark è lordo o netto.</li>
+      <li><b>Numerosità:</b> 6.394 clienti nel file, contro 6.416 del benchmark aggiornato, delta dello 0,3 percento. La colonna cliente nel file arriva con intestazione ic cliente, corretta in fase di lettura.</li>
+      <li><b>Progressivo ordine:</b> nel file dei Nuovi Clienti il 100 percento delle righe è primo ordine, coerente con la definizione del segmento.</li>
+    </ul></div>
+</section>
+<section class="panel" data-panel="camp">
+<div class="seghead"><div class="eyebrow2">Segmento</div><div class="segtitle">Campioni</div><div class="segmeta"><div><span class="k">Periodo</span><span class="v small">Gen 2023 · Lug 2026</span></div><div><span class="k">Clienti</span><span class="v">2.369</span></div><div><span class="k">Capi</span><span class="v">10.050</span></div><div><span class="k">Articoli / ordine</span><span class="v">1,78</span></div><div><span class="k">Fatturato</span><span class="v small">€ 1.238.539</span></div></div></div>
+<div class="card"><div class="kicker">Executive summary</div><h2>Cosa comprano i Campioni</h2><ul class="ins" style="margin-top:18px">
+      <li>Il mix dei Campioni è il più <b>equilibrato e ampio</b> di tutti i segmenti: nessuna categoria supera il 14 percento del fatturato. Guidano Pantaloni, 13,6 percento, e Maglieria, 13 percento, seguiti da Cappotti e Giacche. Il campione compra a tutto tondo, non su una singola categoria.</li>
+      <li><b>Penetrazione altissima e diffusa</b>: Pantaloni e Maglieria toccano circa il 28 percento dei clienti, Giacche il 20, Cappotti e Borse il 16. Il guardaroba è completo, non specializzato.</li>
+      <li>Carrello più ricco di tutti, <b>1,78 articoli per ordine</b>, contro 1,0, 1,4 degli altri segmenti: il campione riempie il carrello, non compra il pezzo singolo.</li>
+      <li>Il mix <b>cambia lungo il ciclo di vita</b>: al primo ordine domina la Maglieria, dal secondo al quinto entra con forza il capospalla pesante, ad alto valore, mentre dal sesto ordine in poi il riacquisto si concentra sui capi base, Pantaloni e Maglieria. Vedi la sezione dedicata.</li>
+      <li>La <b>Maglieria è la porta di ingresso</b> del campione, 15 percento del primo ordine, un aggancio a scontrino medio da valorizzare in acquisizione. I capispalla arrivano dopo, quando la fiducia è consolidata.</li>
+    </ul></div>
+<div class="card"><div class="kicker">Distribuzione categorie</div><h2>Classifica per metrica</h2><p class="lead">Ordina le categorie del sito per fatturato, capi venduti o penetrazione clienti.</p><div class="toggle" data-seg="camp"><button data-k="fatturato" class="on">Fatturato</button><button data-k="pezzi">Capi venduti</button><button data-k="penetrazione">Penetrazione clienti</button></div><div id="bars-camp"></div></div>
+<div class="card"><div class="kicker">Dettaglio completo</div><h2>Tabella categorie</h2><div style="overflow-x:auto"><table class="tab"><thead><tr><th>Categoria sito</th><th>Capi</th><th>% capi</th><th>Clienti</th><th>Penetraz.</th><th>Capi / ordine</th><th>Fatturato</th><th>% fatt.</th><th>Prezzo medio capo</th></tr></thead><tbody id="tbody-camp"></tbody></table></div></div>
+<div class="card">
+    <div class="kicker">Ciclo di vita</div>
+    <h2>Come cambia il mix per progressivo ordine</h2>
+    <p style="font-size:14px;margin:6px 0 4px">Peso di ogni categoria sul fatturato, per fase del ciclo di acquisto del campione. Primo ordine, ordini dal secondo al quinto, ordini dal sesto in poi. Si legge il passaggio da ingresso, a investimento sul capospalla, a riacquisto dei capi base.</p>
+    <div class="pgrid" id="pgrid-camp"></div>
+  </div>
+<div class="card"><div class="kicker">Marchi</div><h2>Chi guida il segmento</h2><div class="bgrid"><div class="bcol"><h3>Top marchi per fatturato</h3><div id="brands-camp"></div></div><div class="bcol"><h3>Marchio guida nelle categorie principali</h3><div class="catbrand" id="catbrand-camp"></div></div></div></div>
+<div class="note"><div class="kicker">Nota metodologica</div><ul>
+      <li><b>Fonte categorie:</b> tassonomia reale del menu di negozipellizzari.it, i prodotti sono stati associati alle categorie del sito analizzando la descrizione articolo. Uomo e donna sono uniti in categorie merceologiche comuni, perché il file transazionale non riporta il genere.</li>
+      <li><b>Copertura:</b> il classificatore assegna una categoria al 99,53 percento delle righe. Lo 0,36 percento non classificato, più Gift Card e resi totali, è escluso dalle percentuali di mix.</li>
+      <li><b>Perimetro:</b> escluse le righe Full refund e a quantità zero, resi parziali mantenuti, valori al lordo. Fatturato netto del file circa 1,24 milioni, contro 1,42 del benchmark, delta del 12 percento legato anche alla quota alta di resi parziali, 19 percento delle righe. Periodo del file gennaio 2023, luglio 2026, copre entrambe le finestre degli altri segmenti.</li>
+      <li><b>Numerosità:</b> 2.369 clienti nel file, contro 2.426 del benchmark aggiornato, delta del 2,3 percento. La colonna cliente arriva con intestazione ID cliente, gestita in lettura.</li>
+      <li><b>Progressivo ordine:</b> il file copre ordini dal primo al settantaseiesimo, quindi il progressivo è analizzato nella sezione dedicata, con tre fasi: primo ordine, ordini dal secondo al quinto, ordini dal sesto in poi.</li>
+    </ul></div>
+</section>
+<footer>Moca Interactive · Analisi RFM Pellizzari · Quattro segmenti su undici · Anno di riferimento 2026</footer>
+</div>
+<script>
+
+const SEGS=[
+  {n:"Da Non Perdere",periodo:"01/2023 - 07/2024",clienti:6566,fatturato:1334270,apo:1.44,pm:134,reso:2.5},
+  {n:"Promettenti",periodo:"07/2024 - 07/2026",clienti:11385,fatturato:2153216,apo:1.30,pm:144,reso:2.1},
+  {n:"Nuovi Clienti",periodo:"07/2024 - 07/2026",clienti:6394,fatturato:240952,apo:1.04,pm:46,reso:21.9},
+  {n:"Campioni",periodo:"01/2023 - 07/2026",clienti:2369,fatturato:1238539,apo:1.78,pm:123,reso:8.5}
+];
+const MIX=[
+  {c:"Scarpe",v:[7.2,5.0,31.8,3.4]},
+  {c:"Cappotti e Giacconi",v:[17.0,16.3,0.8,12.1]},
+  {c:"Borse",v:[10.7,13.1,13.0,6.1]},
+  {c:"Maglieria",v:[9.3,9.4,8.4,13.0]},
+  {c:"Pantaloni",v:[8.2,7.3,3.8,13.6]},
+  {c:"Piumini",v:[12.2,12.5,0.6,7.0]},
+  {c:"Giacche",v:[7.0,7.9,1.7,10.5]},
+  {c:"Capispalla leggeri",v:[6.7,7.3,1.2,6.1]},
+  {c:"Abiti",v:[6.1,4.9,2.3,5.3]},
+  {c:"Camicie e Top",v:[2.7,3.0,4.4,5.4]},
+  {c:"Accessori",v:[0.8,1.7,11.5,1.3]},
+  {c:"T-shirt",v:[1.6,2.0,6.8,3.6]},
+  {c:"Jeans",v:[3.8,3.0,2.0,4.4]},
+  {c:"Mare",v:[1.5,1.5,4.6,1.3]},
+  {c:"Polo",v:[0.9,1.4,2.3,2.3]},
+  {c:"Felpe",v:[1.3,1.4,1.5,1.4]},
+  {c:"Pantaloni corti",v:[1.1,0.7,1.4,1.4]},
+  {c:"Completi",v:[1.1,0.7,1.1,0.6]},
+  {c:"Gonne",v:[0.7,0.7,0.4,1.1]},
+  {c:"Arredo e Casa",v:[0.1,0.2,0.5,0.1]},
+  {c:"Intimo",v:[0.0,0.0,0.0,0.0]}
+];
+const RESO_NUOVI=[{c:"Piumini",rate:83},{c:"Cappotti e Giacconi",rate:82},{c:"Capispalla leggeri",rate:65},{c:"Giacche",rate:61},{c:"Abiti",rate:48},{c:"Pantaloni",rate:40},{c:"Jeans",rate:40},{c:"Maglieria",rate:23},{c:"Borse",rate:16},{c:"Scarpe",rate:12},{c:"T-shirt",rate:10},{c:"Accessori",rate:6}];
+
+const eur=n=>"€ "+n.toLocaleString("it-IT");
+const num=n=>n.toLocaleString("it-IT");
+const dec=n=>n.toLocaleString("it-IT",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// KPI cards
+document.getElementById("kpi").innerHTML=SEGS.map(s=>`
+  <div class="kpi">
+    <div class="kn">${s.n}</div><div class="kp">${s.periodo}</div>
+    <div class="krow"><span class="kl">Clienti</span><span class="kv">${num(s.clienti)}</span></div>
+    <div class="krow"><span class="kl">Fatturato netto</span><span class="kv">${eur(s.fatturato)}</span></div>
+    <div class="krow"><span class="kl">Prezzo medio capo</span><span class="kv">${eur(s.pm)}</span></div>
+    <div class="krow"><span class="kl">Articoli / ordine</span><span class="kv">${dec(s.apo)}</span></div>
+    <div class="krow"><span class="kl">Tasso di reso</span><span class="kv ${s.reso>=10?'hot':''}">${dec(s.reso)}%</span></div>
+  </div>`).join("");
+
+// Heatmap
+function cellColor(v){
+  const t=Math.min(v/18,1); // 0..1
+  // interpola da #FFE7E6 (chiaro) a #E52217 (rosso)
+  const c1=[255,231,230], c2=[229,34,23];
+  const r=Math.round(c1[0]+(c2[0]-c1[0])*t);
+  const g=Math.round(c1[1]+(c2[1]-c1[1])*t);
+  const b=Math.round(c1[2]+(c2[2]-c1[2])*t);
+  const dark=t>0.55;
+  return {bg:`rgb(${r},${g},${b})`, fg: dark?'#fff':'#191919'};
+}
+let hm='<thead><tr><th class="cat">Categoria</th>'+SEGS.map(s=>`<th>${s.n}</th>`).join('')+'</tr></thead><tbody>';
+MIX.forEach(row=>{
+  hm+=`<tr><td class="catname">${row.c}</td>`;
+  row.v.forEach(v=>{
+    const c=cellColor(v);
+    hm+=`<td><div class="cell" style="background:${c.bg};color:${c.fg}">${dec(v)}%</div></td>`;
+  });
+  hm+='</tr>';
+});
+hm+='</tbody>';
+document.getElementById("hm").innerHTML=hm;
+
+// Return rate per segment
+(function(){
+  const el=document.getElementById("rrseg");
+  const max=Math.max(...SEGS.map(s=>s.reso));
+  SEGS.slice().sort((a,b)=>b.reso-a.reso).forEach((s,i)=>{
+    const w=(s.reso/max*100).toFixed(1);
+    const color=s.reso>=10?"#E52217":"#FFB9B5";
+    const row=document.createElement("div"); row.className="bar-row";
+    row.innerHTML=`<div class="bar-lab">${s.n}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%;background:${color}"></div></div>
+      <div class="bar-val">${dec(s.reso)}%</div>`;
+    el.appendChild(row);
+    requestAnimationFrame(()=>setTimeout(()=>row.querySelector(".bar-fill").style.width=w+"%",60*i));
+  });
+})();
+
+// Return by category, Nuovi Clienti
+(function(){
+  const el=document.getElementById("rrnuovi");
+  const max=Math.max(...RESO_NUOVI.map(x=>x.rate));
+  RESO_NUOVI.forEach((x,i)=>{
+    const w=(x.rate/max*100).toFixed(1);
+    const color=x.rate>=50?"#E52217":(x.rate>=25?"#FF857D":"#FFB9B5");
+    const row=document.createElement("div"); row.className="bar-row";
+    row.innerHTML=`<div class="bar-lab">${x.c}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%;background:${color}"></div></div>
+      <div class="bar-val">${x.rate}%</div>`;
+    el.appendChild(row);
+    requestAnimationFrame(()=>setTimeout(()=>row.querySelector(".bar-fill").style.width=w+"%",30*i));
+  });
+})();
+
+
+const D = {"dnp": {"meta": {"cli": 6566, "cap": 9939, "fat": 1333051, "apo": 1.44}, "cat": [{"c": "Cappotti e Giacconi", "pezzi": 834, "pct_pezzi": 8.4, "clienti": 811, "penetrazione": 12.4, "fatturato": 227305, "pct_fatt": 17.1, "pm": 273, "cpo": 1.02}, {"c": "Piumini", "pezzi": 680, "pct_pezzi": 6.8, "clienti": 670, "penetrazione": 10.3, "fatturato": 162924, "pct_fatt": 12.2, "pm": 240, "cpo": 1.01}, {"c": "Borse", "pezzi": 942, "pct_pezzi": 9.5, "clienti": 850, "penetrazione": 13.0, "fatturato": 141896, "pct_fatt": 10.6, "pm": 151, "cpo": 1.1}, {"c": "Maglieria", "pezzi": 1178, "pct_pezzi": 11.9, "clienti": 838, "penetrazione": 12.9, "fatturato": 123666, "pct_fatt": 9.3, "pm": 105, "cpo": 1.37}, {"c": "Pantaloni", "pezzi": 1054, "pct_pezzi": 10.6, "clienti": 785, "penetrazione": 12.0, "fatturato": 109504, "pct_fatt": 8.2, "pm": 104, "cpo": 1.29}, {"c": "Scarpe", "pezzi": 1263, "pct_pezzi": 12.7, "clienti": 706, "penetrazione": 10.8, "fatturato": 95338, "pct_fatt": 7.2, "pm": 75, "cpo": 1.78}, {"c": "Giacche", "pezzi": 549, "pct_pezzi": 5.5, "clienti": 522, "penetrazione": 8.0, "fatturato": 92918, "pct_fatt": 7.0, "pm": 169, "cpo": 1.04}, {"c": "Capispalla leggeri", "pezzi": 423, "pct_pezzi": 4.3, "clienti": 404, "penetrazione": 6.2, "fatturato": 89600, "pct_fatt": 6.7, "pm": 212, "cpo": 1.04}, {"c": "Abiti", "pezzi": 515, "pct_pezzi": 5.2, "clienti": 459, "penetrazione": 7.0, "fatturato": 81701, "pct_fatt": 6.1, "pm": 159, "cpo": 1.1}, {"c": "Jeans", "pezzi": 407, "pct_pezzi": 4.1, "clienti": 316, "penetrazione": 4.9, "fatturato": 50948, "pct_fatt": 3.8, "pm": 125, "cpo": 1.22}, {"c": "Camicie e Top", "pezzi": 395, "pct_pezzi": 4.0, "clienti": 310, "penetrazione": 4.8, "fatturato": 36278, "pct_fatt": 2.7, "pm": 92, "cpo": 1.25}, {"c": "T-shirt", "pezzi": 500, "pct_pezzi": 5.0, "clienti": 267, "penetrazione": 4.1, "fatturato": 21009, "pct_fatt": 1.6, "pm": 42, "cpo": 1.83}, {"c": "Mare", "pezzi": 248, "pct_pezzi": 2.5, "clienti": 175, "penetrazione": 2.7, "fatturato": 19769, "pct_fatt": 1.5, "pm": 80, "cpo": 1.39}, {"c": "Felpe", "pezzi": 181, "pct_pezzi": 1.8, "clienti": 154, "penetrazione": 2.4, "fatturato": 17554, "pct_fatt": 1.3, "pm": 97, "cpo": 1.16}, {"c": "Pantaloni corti", "pezzi": 205, "pct_pezzi": 2.1, "clienti": 127, "penetrazione": 1.9, "fatturato": 14648, "pct_fatt": 1.1, "pm": 71, "cpo": 1.55}, {"c": "Completi", "pezzi": 105, "pct_pezzi": 1.1, "clienti": 91, "penetrazione": 1.4, "fatturato": 14301, "pct_fatt": 1.1, "pm": 136, "cpo": 1.12}, {"c": "Polo", "pezzi": 161, "pct_pezzi": 1.6, "clienti": 107, "penetrazione": 1.6, "fatturato": 12377, "pct_fatt": 0.9, "pm": 77, "cpo": 1.48}, {"c": "Accessori", "pezzi": 190, "pct_pezzi": 1.9, "clienti": 141, "penetrazione": 2.2, "fatturato": 10818, "pct_fatt": 0.8, "pm": 57, "cpo": 1.35}, {"c": "Gonne", "pezzi": 81, "pct_pezzi": 0.8, "clienti": 77, "penetrazione": 1.2, "fatturato": 9512, "pct_fatt": 0.7, "pm": 117, "cpo": 1.05}, {"c": "Arredo e Casa", "pezzi": 20, "pct_pezzi": 0.2, "clienti": 12, "penetrazione": 0.2, "fatturato": 780, "pct_fatt": 0.1, "pm": 39, "cpo": 1.67}, {"c": "Intimo", "pezzi": 8, "pct_pezzi": 0.1, "clienti": 6, "penetrazione": 0.1, "fatturato": 204, "pct_fatt": 0.0, "pm": 26, "cpo": 1.33}], "brands": [{"b": "Weekend Max Mara", "f": 77180, "p": 5.8}, {"b": "Marella", "f": 70160, "p": 5.3}, {"b": "Patrizia Pepe", "f": 58142, "p": 4.4}, {"b": "Woolrich", "f": 54306, "p": 4.1}, {"b": "Mc2 Saint Barth", "f": 51519, "p": 3.9}, {"b": "Pinko", "f": 51298, "p": 3.8}, {"b": "Emme Marella", "f": 51166, "p": 3.8}, {"b": "Colmar Originals", "f": 50404, "p": 3.8}, {"b": "Barbour", "f": 50127, "p": 3.8}, {"b": "Jeckerson", "f": 49295, "p": 3.7}, {"b": "Hlo!", "f": 47021, "p": 3.5}, {"b": "R.R.D.", "f": 37418, "p": 2.8}], "catbrand": {"Cappotti e Giacconi": [["Weekend Max Mara", 28477], ["Woolrich", 28240], ["Patrizia Pepe", 20000]], "Piumini": [["Colmar Originals", 36886], ["Blauer", 21262], ["Woolrich", 19231]], "Borse": [["Pinko", 33069], ["Mc2 Saint Barth", 25331], ["Patrizia Pepe", 16666]], "Maglieria": [["Polo Ralph Lauren", 17162], ["Marella", 12549], ["Mc2 Saint Barth", 8977]], "Scarpe": [["Le Papù", 34865], ["Birkenstock", 15865], ["Ugg", 8810]]}}, "prom": {"meta": {"cli": 11385, "cap": 14962, "fat": 2153216, "apo": 1.3}, "cat": [{"c": "Cappotti e Giacconi", "pezzi": 1236, "pct_pezzi": 8.3, "clienti": 1214, "penetrazione": 10.8, "fatturato": 351596, "pct_fatt": 16.3, "pm": 284, "cpo": 1.02}, {"c": "Borse", "pezzi": 1879, "pct_pezzi": 12.6, "clienti": 1745, "penetrazione": 15.5, "fatturato": 282498, "pct_fatt": 13.1, "pm": 150, "cpo": 1.07}, {"c": "Piumini", "pezzi": 1032, "pct_pezzi": 6.9, "clienti": 1023, "penetrazione": 9.1, "fatturato": 270060, "pct_fatt": 12.5, "pm": 262, "cpo": 1.01}, {"c": "Maglieria", "pezzi": 1723, "pct_pezzi": 11.5, "clienti": 1420, "penetrazione": 12.6, "fatturato": 201725, "pct_fatt": 9.4, "pm": 117, "cpo": 1.21}, {"c": "Giacche", "pezzi": 933, "pct_pezzi": 6.2, "clienti": 889, "penetrazione": 7.9, "fatturato": 171138, "pct_fatt": 7.9, "pm": 183, "cpo": 1.05}, {"c": "Capispalla leggeri", "pezzi": 718, "pct_pezzi": 4.8, "clienti": 697, "penetrazione": 6.2, "fatturato": 157091, "pct_fatt": 7.3, "pm": 219, "cpo": 1.03}, {"c": "Pantaloni", "pezzi": 1499, "pct_pezzi": 10.0, "clienti": 1224, "penetrazione": 10.9, "fatturato": 156560, "pct_fatt": 7.3, "pm": 104, "cpo": 1.22}, {"c": "Scarpe", "pezzi": 1157, "pct_pezzi": 7.7, "clienti": 772, "penetrazione": 6.9, "fatturato": 107267, "pct_fatt": 5.0, "pm": 93, "cpo": 1.5}, {"c": "Abiti", "pezzi": 688, "pct_pezzi": 4.6, "clienti": 625, "penetrazione": 5.6, "fatturato": 106288, "pct_fatt": 4.9, "pm": 154, "cpo": 1.1}, {"c": "Jeans", "pezzi": 581, "pct_pezzi": 3.9, "clienti": 508, "penetrazione": 4.5, "fatturato": 64626, "pct_fatt": 3.0, "pm": 111, "cpo": 1.14}, {"c": "Camicie e Top", "pezzi": 671, "pct_pezzi": 4.5, "clienti": 537, "penetrazione": 4.8, "fatturato": 63686, "pct_fatt": 3.0, "pm": 95, "cpo": 1.25}, {"c": "T-shirt", "pezzi": 809, "pct_pezzi": 5.4, "clienti": 505, "penetrazione": 4.5, "fatturato": 42140, "pct_fatt": 2.0, "pm": 52, "cpo": 1.6}, {"c": "Accessori", "pezzi": 482, "pct_pezzi": 3.2, "clienti": 405, "penetrazione": 3.6, "fatturato": 36334, "pct_fatt": 1.7, "pm": 75, "cpo": 1.19}, {"c": "Mare", "pezzi": 406, "pct_pezzi": 2.7, "clienti": 299, "penetrazione": 2.7, "fatturato": 32661, "pct_fatt": 1.5, "pm": 80, "cpo": 1.35}, {"c": "Felpe", "pezzi": 313, "pct_pezzi": 2.1, "clienti": 274, "penetrazione": 2.4, "fatturato": 30983, "pct_fatt": 1.4, "pm": 99, "cpo": 1.14}, {"c": "Polo", "pezzi": 327, "pct_pezzi": 2.2, "clienti": 251, "penetrazione": 2.2, "fatturato": 29704, "pct_fatt": 1.4, "pm": 91, "cpo": 1.3}, {"c": "Gonne", "pezzi": 133, "pct_pezzi": 0.9, "clienti": 127, "penetrazione": 1.1, "fatturato": 15958, "pct_fatt": 0.7, "pm": 120, "cpo": 1.05}, {"c": "Pantaloni corti", "pezzi": 207, "pct_pezzi": 1.4, "clienti": 151, "penetrazione": 1.3, "fatturato": 14807, "pct_fatt": 0.7, "pm": 72, "cpo": 1.37}, {"c": "Completi", "pezzi": 129, "pct_pezzi": 0.9, "clienti": 119, "penetrazione": 1.1, "fatturato": 14352, "pct_fatt": 0.7, "pm": 111, "cpo": 1.08}, {"c": "Arredo e Casa", "pezzi": 31, "pct_pezzi": 0.2, "clienti": 26, "penetrazione": 0.2, "fatturato": 3473, "pct_fatt": 0.2, "pm": 112, "cpo": 1.19}, {"c": "Intimo", "pezzi": 8, "pct_pezzi": 0.1, "clienti": 5, "penetrazione": 0.0, "fatturato": 269, "pct_fatt": 0.0, "pm": 34, "cpo": 1.6}], "brands": [{"b": "Weekend Max Mara", "f": 138679, "p": 6.4}, {"b": "Emme Marella", "f": 126469, "p": 5.9}, {"b": "Barbour", "f": 120783, "p": 5.6}, {"b": "Pinko", "f": 120456, "p": 5.6}, {"b": "Mc2 Saint Barth", "f": 106869, "p": 5.0}, {"b": "Woolrich", "f": 96015, "p": 4.5}, {"b": "Marella", "f": 92733, "p": 4.3}, {"b": "Polo Ralph Lauren", "f": 75338, "p": 3.5}, {"b": "Patrizia Pepe", "f": 70058, "p": 3.3}, {"b": "Colmar Originals", "f": 69775, "p": 3.2}], "catbrand": {"Cappotti e Giacconi": [["Emme Marella", 48090], ["Woolrich", 48055], ["Weekend Max Mara", 45918]], "Borse": [["Pinko", 68902], ["Mc2 Saint Barth", 43641], ["Weekend Max Mara", 25053]], "Piumini": [["Colmar Originals", 53597], ["Blauer", 46404], ["Save The Duck", 36439]], "Maglieria": [["Polo Ralph Lauren", 33836], ["Mc2 Saint Barth", 21134], ["Weekend Max Mara", 17358]], "Giacche": [["Barbour", 42390], ["Emme Marella", 17792], ["Marella", 16691]]}}, "nuovi": {"meta": {"cli": 6394, "cap": 5210, "fat": 240952, "apo": 1.04}, "cat": [{"c": "Scarpe", "pezzi": 1548, "pct_pezzi": 29.7, "clienti": 1527, "penetrazione": 30.8, "fatturato": 76509, "pct_fatt": 31.8, "pm": 49, "cpo": 1.01}, {"c": "Borse", "pezzi": 741, "pct_pezzi": 14.2, "clienti": 719, "penetrazione": 14.5, "fatturato": 31423, "pct_fatt": 13.0, "pm": 42, "cpo": 1.03}, {"c": "Accessori", "pezzi": 682, "pct_pezzi": 13.1, "clienti": 662, "penetrazione": 13.4, "fatturato": 27643, "pct_fatt": 11.5, "pm": 41, "cpo": 1.03}, {"c": "Maglieria", "pezzi": 462, "pct_pezzi": 8.9, "clienti": 432, "penetrazione": 8.7, "fatturato": 20237, "pct_fatt": 8.4, "pm": 44, "cpo": 1.06}, {"c": "T-shirt", "pezzi": 428, "pct_pezzi": 8.2, "clienti": 377, "penetrazione": 7.6, "fatturato": 16453, "pct_fatt": 6.8, "pm": 38, "cpo": 1.14}, {"c": "Mare", "pezzi": 239, "pct_pezzi": 4.6, "clienti": 232, "penetrazione": 4.7, "fatturato": 10973, "pct_fatt": 4.6, "pm": 46, "cpo": 1.03}, {"c": "Camicie e Top", "pezzi": 200, "pct_pezzi": 3.8, "clienti": 197, "penetrazione": 4.0, "fatturato": 10567, "pct_fatt": 4.4, "pm": 53, "cpo": 1.02}, {"c": "Pantaloni", "pezzi": 166, "pct_pezzi": 3.2, "clienti": 161, "penetrazione": 3.2, "fatturato": 9049, "pct_fatt": 3.8, "pm": 55, "cpo": 1.03}, {"c": "Polo", "pezzi": 108, "pct_pezzi": 2.1, "clienti": 104, "penetrazione": 2.1, "fatturato": 5502, "pct_fatt": 2.3, "pm": 51, "cpo": 1.04}, {"c": "Abiti", "pezzi": 113, "pct_pezzi": 2.2, "clienti": 108, "penetrazione": 2.2, "fatturato": 5498, "pct_fatt": 2.3, "pm": 49, "cpo": 1.05}, {"c": "Jeans", "pezzi": 89, "pct_pezzi": 1.7, "clienti": 88, "penetrazione": 1.8, "fatturato": 4834, "pct_fatt": 2.0, "pm": 54, "cpo": 1.01}, {"c": "Giacche", "pezzi": 69, "pct_pezzi": 1.3, "clienti": 67, "penetrazione": 1.4, "fatturato": 4123, "pct_fatt": 1.7, "pm": 60, "cpo": 1.03}, {"c": "Felpe", "pezzi": 73, "pct_pezzi": 1.4, "clienti": 72, "penetrazione": 1.5, "fatturato": 3633, "pct_fatt": 1.5, "pm": 50, "cpo": 1.01}, {"c": "Pantaloni corti", "pezzi": 69, "pct_pezzi": 1.3, "clienti": 66, "penetrazione": 1.3, "fatturato": 3260, "pct_fatt": 1.4, "pm": 47, "cpo": 1.05}, {"c": "Capispalla leggeri", "pezzi": 43, "pct_pezzi": 0.8, "clienti": 41, "penetrazione": 0.8, "fatturato": 2776, "pct_fatt": 1.2, "pm": 65, "cpo": 1.05}, {"c": "Completi", "pezzi": 69, "pct_pezzi": 1.3, "clienti": 63, "penetrazione": 1.3, "fatturato": 2762, "pct_fatt": 1.1, "pm": 40, "cpo": 1.1}, {"c": "Cappotti e Giacconi", "pezzi": 37, "pct_pezzi": 0.7, "clienti": 37, "penetrazione": 0.7, "fatturato": 2038, "pct_fatt": 0.8, "pm": 55, "cpo": 1.0}, {"c": "Piumini", "pezzi": 24, "pct_pezzi": 0.5, "clienti": 24, "penetrazione": 0.5, "fatturato": 1537, "pct_fatt": 0.6, "pm": 64, "cpo": 1.0}, {"c": "Arredo e Casa", "pezzi": 30, "pct_pezzi": 0.6, "clienti": 27, "penetrazione": 0.5, "fatturato": 1184, "pct_fatt": 0.5, "pm": 39, "cpo": 1.11}, {"c": "Gonne", "pezzi": 15, "pct_pezzi": 0.3, "clienti": 15, "penetrazione": 0.3, "fatturato": 857, "pct_fatt": 0.4, "pm": 57, "cpo": 1.0}, {"c": "Intimo", "pezzi": 5, "pct_pezzi": 0.1, "clienti": 4, "penetrazione": 0.1, "fatturato": 94, "pct_fatt": 0.0, "pm": 19, "cpo": 1.25}], "brands": [{"b": "Le Papù", "f": 59158, "p": 24.6}, {"b": "Mc2 Saint Barth", "f": 27120, "p": 11.3}, {"b": "Emme Marella", "f": 13571, "p": 5.6}, {"b": "Havaianas", "f": 8378, "p": 3.5}, {"b": "Hlo!", "f": 7684, "p": 3.2}, {"b": "Paul Baker", "f": 5296, "p": 2.2}, {"b": "Mayoral", "f": 5162, "p": 2.1}, {"b": "My Stuff", "f": 4699, "p": 2.0}, {"b": "Armani Exchange", "f": 4696, "p": 1.9}, {"b": "Guess Kids", "f": 4301, "p": 1.8}], "catbrand": {"Scarpe": [["Le Papù", 59158], ["Havaianas", 8216], ["Colors Of California", 2927]], "Borse": [["Mc2 Saint Barth", 17353], ["Anna Cecere", 3594], ["Rains", 1385]], "Accessori": [["Colmar Originals", 2205], ["Hlo!", 1975], ["Goorin Bros", 1558]], "Maglieria": [["Emme Marella", 4991], ["Paul Baker", 3263], ["Hlo!", 1723]], "T-shirt": [["Mc2 Saint Barth", 2911], ["Emme Marella", 1431], ["Weekend Max Mara", 1098]]}, "resi": [{"c": "Piumini", "rate": 83, "n": 134}, {"c": "Cappotti e Giacconi", "rate": 83, "n": 204}, {"c": "Capispalla leggeri", "rate": 66, "n": 119}, {"c": "Giacche", "rate": 60, "n": 163}, {"c": "Gonne", "rate": 56, "n": 32}, {"c": "Abiti", "rate": 47, "n": 198}, {"c": "Jeans", "rate": 40, "n": 136}, {"c": "Pantaloni", "rate": 38, "n": 237}, {"c": "Camicie e Top", "rate": 23, "n": 235}, {"c": "Maglieria", "rate": 21, "n": 545}, {"c": "Felpe", "rate": 19, "n": 85}, {"c": "Completi", "rate": 16, "n": 76}, {"c": "Polo", "rate": 16, "n": 115}, {"c": "Borse", "rate": 15, "n": 821}, {"c": "Scarpe", "rate": 11, "n": 1647}, {"c": "Non classificato", "rate": 11, "n": 85}, {"c": "T-shirt", "rate": 9, "n": 424}, {"c": "Mare", "rate": 9, "n": 243}, {"c": "Accessori", "rate": 6, "n": 693}, {"c": "Pantaloni corti", "rate": 5, "n": 60}]}, "camp": {"meta": {"cli": 2369, "cap": 10050, "fat": 1238539, "apo": 1.78}, "cat": [{"c": "Pantaloni", "pezzi": 1645, "pct_pezzi": 16.4, "clienti": 647, "penetrazione": 28.0, "fatturato": 168790, "pct_fatt": 13.6, "pm": 103, "cpo": 1.42}, {"c": "Maglieria", "pezzi": 1604, "pct_pezzi": 16.0, "clienti": 654, "penetrazione": 28.3, "fatturato": 161362, "pct_fatt": 13.0, "pm": 101, "cpo": 1.44}, {"c": "Cappotti e Giacconi", "pezzi": 481, "pct_pezzi": 4.8, "clienti": 382, "penetrazione": 16.5, "fatturato": 149829, "pct_fatt": 12.1, "pm": 311, "cpo": 1.03}, {"c": "Giacche", "pezzi": 698, "pct_pezzi": 6.9, "clienti": 472, "penetrazione": 20.4, "fatturato": 130480, "pct_fatt": 10.5, "pm": 187, "cpo": 1.1}, {"c": "Piumini", "pezzi": 303, "pct_pezzi": 3.0, "clienti": 265, "penetrazione": 11.5, "fatturato": 86421, "pct_fatt": 7.0, "pm": 285, "cpo": 1.02}, {"c": "Capispalla leggeri", "pezzi": 346, "pct_pezzi": 3.4, "clienti": 268, "penetrazione": 11.6, "fatturato": 76099, "pct_fatt": 6.1, "pm": 220, "cpo": 1.06}, {"c": "Borse", "pezzi": 473, "pct_pezzi": 4.7, "clienti": 355, "penetrazione": 15.4, "fatturato": 74967, "pct_fatt": 6.1, "pm": 158, "cpo": 1.12}, {"c": "Camicie e Top", "pezzi": 754, "pct_pezzi": 7.5, "clienti": 369, "penetrazione": 16.0, "fatturato": 66920, "pct_fatt": 5.4, "pm": 89, "cpo": 1.34}, {"c": "Abiti", "pezzi": 447, "pct_pezzi": 4.4, "clienti": 274, "penetrazione": 11.9, "fatturato": 66137, "pct_fatt": 5.3, "pm": 148, "cpo": 1.23}, {"c": "Jeans", "pezzi": 457, "pct_pezzi": 4.5, "clienti": 262, "penetrazione": 11.3, "fatturato": 54406, "pct_fatt": 4.4, "pm": 119, "cpo": 1.19}, {"c": "T-shirt", "pezzi": 910, "pct_pezzi": 9.1, "clienti": 297, "penetrazione": 12.8, "fatturato": 44038, "pct_fatt": 3.6, "pm": 48, "cpo": 1.8}, {"c": "Scarpe", "pezzi": 496, "pct_pezzi": 4.9, "clienti": 192, "penetrazione": 8.3, "fatturato": 42454, "pct_fatt": 3.4, "pm": 86, "cpo": 1.79}, {"c": "Polo", "pezzi": 345, "pct_pezzi": 3.4, "clienti": 145, "penetrazione": 6.3, "fatturato": 28166, "pct_fatt": 2.3, "pm": 82, "cpo": 1.51}, {"c": "Felpe", "pezzi": 190, "pct_pezzi": 1.9, "clienti": 119, "penetrazione": 5.1, "fatturato": 17365, "pct_fatt": 1.4, "pm": 91, "cpo": 1.23}, {"c": "Pantaloni corti", "pezzi": 252, "pct_pezzi": 2.5, "clienti": 108, "penetrazione": 4.7, "fatturato": 17289, "pct_fatt": 1.4, "pm": 69, "cpo": 1.57}, {"c": "Mare", "pezzi": 202, "pct_pezzi": 2.0, "clienti": 97, "penetrazione": 4.2, "fatturato": 16540, "pct_fatt": 1.3, "pm": 82, "cpo": 1.67}, {"c": "Accessori", "pezzi": 245, "pct_pezzi": 2.4, "clienti": 155, "penetrazione": 6.7, "fatturato": 15580, "pct_fatt": 1.3, "pm": 64, "cpo": 1.24}, {"c": "Gonne", "pezzi": 105, "pct_pezzi": 1.0, "clienti": 85, "penetrazione": 3.7, "fatturato": 13033, "pct_fatt": 1.1, "pm": 124, "cpo": 1.14}, {"c": "Completi", "pezzi": 69, "pct_pezzi": 0.7, "clienti": 45, "penetrazione": 1.9, "fatturato": 7435, "pct_fatt": 0.6, "pm": 108, "cpo": 1.3}, {"c": "Arredo e Casa", "pezzi": 15, "pct_pezzi": 0.1, "clienti": 8, "penetrazione": 0.3, "fatturato": 938, "pct_fatt": 0.1, "pm": 63, "cpo": 1.88}, {"c": "Intimo", "pezzi": 13, "pct_pezzi": 0.1, "clienti": 7, "penetrazione": 0.3, "fatturato": 292, "pct_fatt": 0.0, "pm": 22, "cpo": 1.86}], "brands": [{"b": "Weekend Max Mara", "f": 106739, "p": 8.6}, {"b": "Emme Marella", "f": 83886, "p": 6.8}, {"b": "Marella", "f": 74407, "p": 6.0}, {"b": "Jurerê", "f": 55251, "p": 4.5}, {"b": "Barbour", "f": 52524, "p": 4.2}, {"b": "Polo Ralph Lauren", "f": 46924, "p": 3.8}, {"b": "Patrizia Pepe", "f": 46371, "p": 3.7}, {"b": "Hlo!", "f": 43685, "p": 3.5}, {"b": "Max Mara Studio", "f": 42600, "p": 3.4}, {"b": "Woolrich", "f": 38351, "p": 3.1}], "catbrand": {"Pantaloni": [["Jurerê", 17749], ["Weekend Max Mara", 15375], ["Emme Marella", 12762]], "Maglieria": [["Weekend Max Mara", 21643], ["Marella", 16872], ["Polo Ralph Lauren", 15579]], "Cappotti e Giacconi": [["Max Mara Studio", 24026], ["Weekend Max Mara", 20749], ["Emme Marella", 19787]], "Giacche": [["Barbour", 21691], ["Marella", 12582], ["Emme Marella", 12473]], "Piumini": [["Colmar Originals", 14664], ["Woolrich", 11023], ["Save The Duck", 10538]]}, "prog": [{"nome": "1° ordine", "fatt": 263480, "clienti": 1113, "cat": [{"c": "Maglieria", "pct": 15.0}, {"c": "Pantaloni", "pct": 13.6}, {"c": "Cappotti e Giacconi", "pct": 12.6}, {"c": "Giacche", "pct": 11.0}, {"c": "Piumini", "pct": 7.0}, {"c": "Borse", "pct": 6.2}, {"c": "Abiti", "pct": 5.3}, {"c": "Jeans", "pct": 5.0}]}, {"nome": "2°-5° ordine", "fatt": 764123, "clienti": 2180, "cat": [{"c": "Cappotti e Giacconi", "pct": 13.4}, {"c": "Pantaloni", "pct": 13.0}, {"c": "Maglieria", "pct": 11.6}, {"c": "Giacche", "pct": 10.9}, {"c": "Piumini", "pct": 7.3}, {"c": "Capispalla leggeri", "pct": 7.0}, {"c": "Borse", "pct": 6.7}, {"c": "Abiti", "pct": 5.3}]}, {"nome": "6° ordine e oltre", "fatt": 210935, "clienti": 306, "cat": [{"c": "Pantaloni", "pct": 15.7}, {"c": "Maglieria", "pct": 15.5}, {"c": "Giacche", "pct": 8.8}, {"c": "Camicie e Top", "pct": 7.4}, {"c": "Cappotti e Giacconi", "pct": 6.8}, {"c": "Piumini", "pct": 5.8}, {"c": "T-shirt", "pct": 5.7}, {"c": "Abiti", "pct": 5.4}]}]}};
+const RAMP=["#E52217","#FF5147","#FF6B62","#FF857D","#FF9F98","#FFB9B5","#FFC4C1","#FFCFCC","#FFD9D8","#FFE2E1","#FFE7E6"];
+const curMetric={dnp:'fatturato',prom:'fatturato',nuovi:'fatturato',camp:'fatturato'};
+function fmtM(k,v){ if(k==='fatturato')return eur(v); if(k==='penetrazione')return v.toFixed(1).replace('.',',')+'%'; return num(v); }
+function pctLabelM(k,d){ if(k==='fatturato')return d.pct_fatt+'% fatt.'; if(k==='pezzi')return d.pct_pezzi+'% capi'; return num(d.clienti)+' clienti'; }
+function segBars(key,metric){
+  const arr=[...D[key].cat].sort((a,b)=>b[metric]-a[metric]);
+  const max=Math.max(...arr.map(d=>d[metric]));
+  const el=document.getElementById('bars-'+key); el.innerHTML='';
+  arr.forEach((d,i)=>{
+    const w=(d[metric]/max*100).toFixed(1); const color=RAMP[Math.min(i,RAMP.length-1)];
+    const row=document.createElement('div'); row.className='bar-row';
+    row.innerHTML='<div class="bar-lab">'+d.c+'</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:'+color+'"></div></div><div class="bar-val">'+fmtM(metric,d[metric])+'<br><small>'+pctLabelM(metric,d)+'</small></div>';
+    el.appendChild(row);
+    requestAnimationFrame(()=>setTimeout(()=>row.querySelector('.bar-fill').style.width=w+'%',30*i));
+  });
+}
+function segTable(key){
+  const tb=document.getElementById('tbody-'+key); tb.innerHTML='';
+  D[key].cat.forEach((d,i)=>{
+    const color=RAMP[Math.min(i,RAMP.length-1)];
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td><span class="dot" style="background:'+color+'"></span>'+d.c+'</td><td>'+num(d.pezzi)+'</td><td>'+d.pct_pezzi+'%</td><td>'+num(d.clienti)+'</td><td>'+d.penetrazione+'%</td><td>'+dec(d.cpo)+'</td><td>'+eur(d.fatturato)+'</td><td>'+d.pct_fatt+'%</td><td>'+eur(d.pm)+'</td>';
+    tb.appendChild(tr);
+  });
+}
+function segBrands(key){
+  const el=document.getElementById('brands-'+key); el.innerHTML='';
+  const max=D[key].brands[0].f;
+  D[key].brands.forEach((d,i)=>{
+    const w=(d.f/max*100).toFixed(0);
+    const row=document.createElement('div'); row.className='brow';
+    row.innerHTML='<div class="n">'+String(i+1).padStart(2,'0')+'</div><div class="bn">'+d.b+'</div><div class="bv">'+eur(d.f)+'</div><div class="mini-track"><div class="mini-fill" style="width:'+w+'%"></div></div>';
+    el.appendChild(row);
+  });
+}
+function segCatBrand(key){
+  const el=document.getElementById('catbrand-'+key); el.innerHTML='';
+  Object.entries(D[key].catbrand).forEach(([cat,arr])=>{
+    const div=document.createElement('div'); div.className='cb-item';
+    const chips=arr.map(x=>'<div class="chip"><b>'+x[0]+'</b><small>'+eur(x[1])+'</small></div>').join('');
+    div.innerHTML='<div class="cbt">'+cat+'</div><div class="chips">'+chips+'</div>';
+    el.appendChild(div);
+  });
+}
+function segResi(key){
+  const el=document.getElementById('resi-'+key); if(!el||!D[key].resi)return; el.innerHTML='';
+  const max=Math.max(...D[key].resi.map(d=>d.rate));
+  D[key].resi.forEach((d,i)=>{
+    const w=(d.rate/max*100).toFixed(1);
+    const color=d.rate>=50?'#E52217':(d.rate>=25?'#FF857D':'#FFB9B5');
+    const row=document.createElement('div'); row.className='bar-row';
+    row.innerHTML='<div class="bar-lab">'+d.c+'</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:'+color+'"></div></div><div class="bar-val">'+d.rate+'%<br><small>'+d.n+' righe</small></div>';
+    el.appendChild(row);
+    requestAnimationFrame(()=>setTimeout(()=>row.querySelector('.bar-fill').style.width=w+'%',30*i));
+  });
+}
+function segProg(key){
+  const el=document.getElementById('pgrid-'+key); if(!el||!D[key].prog)return; el.innerHTML='';
+  D[key].prog.forEach(b=>{
+    const max=Math.max(...b.cat.map(x=>x.pct));
+    const rows=b.cat.map(x=>'<div class="prow"><div class="pl"><b>'+x.c+'</b><span>'+dec(x.pct)+'%</span></div><div class="ptrack"><div class="pfill" style="width:'+(x.pct/max*100).toFixed(0)+'%"></div></div></div>').join('');
+    const div=document.createElement('div'); div.className='pcol';
+    div.innerHTML='<div class="ph">'+b.nome+'</div><div class="pmeta">'+eur(b.fatt)+' · '+num(b.clienti)+' clienti</div>'+rows;
+    el.appendChild(div);
+  });
+}
+function renderSeg(key){
+  segBars(key,curMetric[key]); segTable(key); segBrands(key); segCatBrand(key);
+  if(D[key].resi)segResi(key); if(D[key].prog)segProg(key);
+}
+// toggle metric
+document.querySelectorAll('.toggle').forEach(t=>t.addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return; const seg=t.dataset.seg;
+  t.querySelectorAll('button').forEach(b=>b.classList.remove('on')); e.target.classList.add('on');
+  curMetric[seg]=e.target.dataset.k; segBars(seg,curMetric[seg]);
+}));
+// tabs
+const rendered={conf:true};
+document.querySelectorAll('.tabbar button').forEach(btn=>btn.addEventListener('click',()=>{
+  const tab=btn.dataset.tab;
+  document.querySelectorAll('.tabbar button').forEach(x=>x.classList.remove('on')); btn.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===tab));
+  if(tab!=='conf'){ renderSeg(tab); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+</script>
+</body>
+</html>
