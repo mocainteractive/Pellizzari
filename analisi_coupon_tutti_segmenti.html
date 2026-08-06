@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Analisi Coupon Per Segmento, Pellizzari</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&display=swap');
+
+  :root {
+    --moca-red: #E52217;
+    --moca-white: #FFFFFF;
+    --moca-light-gray: #F4F5F6;
+    --moca-dark: #191919;
+    --moca-text: #595959;
+    --red-10: #FFE7E6;
+    --red-30: #FFD9D8;
+    --red-60: #FFB9B5;
+    --red-100: #FF5147;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Figtree', sans-serif;
+    background: var(--moca-light-gray);
+    color: var(--moca-text);
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--moca-white);
+  }
+
+  header {
+    background: var(--moca-dark);
+    padding: 48px 56px 32px;
+  }
+
+  header .logo img { height: 28px; margin-bottom: 24px; }
+
+  header .tag {
+    color: var(--red-100);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  header h1 {
+    color: var(--moca-white);
+    font-size: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  header .sub {
+    color: #C9C9C9;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  nav.tabs {
+    display: flex;
+    background: var(--moca-dark);
+    border-top: 1px solid #333;
+    padding: 0 56px;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: #999;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .tab-btn:hover {
+    color: var(--moca-white);
+  }
+
+  .tab-btn.active {
+    color: var(--moca-white);
+    border-bottom: 3px solid var(--moca-red);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  main { padding: 48px 56px; }
+
+  section { margin-bottom: 48px; }
+
+  h2.section-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--moca-dark);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--moca-red);
+  }
+
+  h3.subtitle {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--moca-dark);
+    margin: 28px 0 12px;
+  }
+
+  p { margin-bottom: 12px; color: var(--moca-text); }
+
+  ul { list-style: none; margin-bottom: 12px; }
+  ul li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 8px;
+    color: var(--moca-text);
+  }
+  ul li::before {
+    content: "•";
+    color: var(--moca-red);
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .highlight { color: var(--moca-dark); font-weight: 700; }
+  .highlight-red { color: var(--moca-red); font-weight: 700; }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .kpi-card {
+    background: var(--moca-light-gray);
+    padding: 22px 18px;
+    border-left: 4px solid var(--moca-red);
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--moca-dark);
+    line-height: 1.1;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--moca-text);
+    text-transform: uppercase;
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 12px;
+  }
+
+  th {
+    background: var(--moca-dark);
+    color: var(--moca-white);
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--moca-light-gray);
+  }
+
+  tr:nth-child(even) td { background: var(--moca-light-gray); }
+
+  .bar-row { display: flex; align-items: center; margin-bottom: 10px; gap: 12px; }
+  .bar-label { width: 130px; font-size: 12px; color: var(--moca-dark); font-weight: 500; flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--red-10); border-radius: 3px; height: 22px; position: relative; overflow: hidden; }
+  .bar-fill { background: var(--moca-red); height: 100%; border-radius: 3px 0 0 3px; display: flex; align-items: center; justify-content: flex-end; }
+  .bar-fill span { color: white; font-size: 11px; font-weight: 700; padding-right: 8px; white-space: nowrap; }
+  .bar-count { width: 110px; font-size: 11px; color: var(--moca-text); text-align: right; flex-shrink: 0; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+
+  .compare-card {
+    background: var(--moca-light-gray);
+    padding: 20px 22px;
+  }
+
+  .compare-card .card-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--moca-text);
+    margin-bottom: 6px;
+  }
+
+  .compare-card .card-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--moca-dark);
+  }
+
+  .note {
+    font-size: 11px;
+    color: var(--moca-text);
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  .insight-box {
+    background: var(--red-10);
+    border-left: 4px solid var(--moca-red);
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .insight-box .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--moca-red);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .warning-box {
+    background: var(--moca-light-gray);
+    border-left: 4px solid var(--moca-dark);
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+
+  .warning-box .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--moca-dark);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  footer {
+    padding: 32px 56px;
+    background: var(--moca-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer img { height: 20px; }
+
+  footer .footer-text {
+    color: #999;
+    font-size: 11px;
+  }
+
+  @media (max-width: 700px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    header { padding: 32px 24px 24px; }
+    nav.tabs { padding: 0 24px; }
+    main { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="logo"><img src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca Interactive"></div>
+    <div class="tag">Pellizzari, Analisi RFM</div>
+    <h1>Uso Coupon Per Segmento</h1>
+    <div class="sub">Quattro dossier segmento per segmento, dati aggiornati al 31 luglio 2026</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showTab('campioni')" id="btn-campioni">Campioni</button>
+<button class="tab-btn" onclick="showTab('promettenti')" id="btn-promettenti">Promettenti</button>
+<button class="tab-btn" onclick="showTab('da_non_perdere')" id="btn-da_non_perdere">Da Non Perdere</button>
+<button class="tab-btn" onclick="showTab('nuovi_clienti')" id="btn-nuovi_clienti">Nuovi Clienti</button>
+
+  </nav>
+
+  <main>
+    <div class="tab-panel active" id="panel-campioni">
+
+
+    <section>
+      <h2 class="section-title">Executive Summary</h2>
+      <ul>
+        <li>Il coupon è uno strumento marginale nel comportamento d'acquisto dei Campioni: solo il <span class="highlight-red">9,1% dei clienti</span> lo ha usato almeno una volta, e riguarda il <span class="highlight">4,6% degli ordini totali</span>. La fedeltà di questo segmento non è guidata dallo sconto.</li>
+        <li>Chi usa il coupon al primo ordine mostra una probabilità di tornare per un secondo acquisto leggermente <span class="highlight-red">più bassa</span> rispetto a chi non lo usa (84,7% contro 93,5%, differenza statisticamente significativa ma su base ridotta, 59 clienti).</li>
+        <li>Al contrario di quanto ci si potrebbe aspettare, lo scontrino del primo ordine con coupon è <span class="highlight">più alto</span>, non più basso, rispetto a chi non lo usa (€ 292 contro € 211). Il coupon sembra accompagnare acquisti di valore, non generarli.</li>
+        <li>L'uso del coupon resta stabile e contenuto lungo tutta la relazione con il cliente, tra il 3,9% e il 6,6% degli ordini in ogni fascia di progressivo, senza un pattern di dipendenza crescente o decrescente.</li>
+        <li>Il coupon <span class="highlight">10PELLIZZARI</span> da solo copre metà degli utilizzi complessivi (140 su 279 ordini), seguito da coupon legati a campagne stagionali (XMAS25, EXTRABF24) più che da leve di fidelizzazione dedicate.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Panoramica Generale</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">2.424</div>
+          <div class="kpi-label">Clienti Campioni analizzati</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">6.028</div>
+          <div class="kpi-label">Ordini totali</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">9,1%</div>
+          <div class="kpi-label">Clienti che hanno usato almeno un coupon</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">4,6%</div>
+          <div class="kpi-label">Ordini totali con coupon</div>
+        </div>
+      </div>
+      <p class="note">Periodo di riferimento: intero storico ordini disponibile per il segmento Campioni, dati IEM al 31 luglio 2026. Base di calcolo: 6.028 ordini distinti, aggregati dalle 11.059 righe articolo del file sorgente al netto delle righe di footer.</p>
+    </section>
+
+    <section>
+      <h3 class="subtitle">Chi Usa Il Coupon, E Quanto</h3>
+      <p>Su 2.424 clienti Campioni, <span class="highlight">221 clienti (9,1%)</span> hanno utilizzato almeno un coupon nel loro percorso d'acquisto, mentre <span class="highlight">2.203 clienti (90,9%)</span> non lo hanno mai fatto. Tra chi lo utilizza, l'uso resta perlopiù episodico:</p>
+      <table>
+        <tr><th>Numero di ordini con coupon</th><th>Numero clienti</th></tr>
+        <tr><td>1 ordine con coupon</td><td>190</td></tr>
+        <tr><td>2 ordini con coupon</td><td>25</td></tr>
+        <tr><td>3 ordini con coupon</td><td>5</td></tr>
+        <tr><td>24 ordini con coupon (caso outlier)</td><td>1</td></tr>
+      </table>
+      <p class="note">Il caso con 24 utilizzi è un singolo cliente outlier su un totale di 76 ordini effettuati, probabile utente di profilazione interna o dipendente. Da verificare se va escluso dal calcolo RFM standard.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon Per Progressivo Ordine</h2>
+      <p>L'incidenza del coupon sul totale ordini resta stabile lungo tutto il percorso cliente, senza una tendenza chiara di crescita o calo:</p>
+
+      <div class="bar-row">
+        <div class="bar-label">1° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:71%"><span>4,7%</span></div></div>
+        <div class="bar-count">59 / 1.261</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">2° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:76%"><span>5,0%</span></div></div>
+        <div class="bar-count">91 / 1.825</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">3°-5° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:59%"><span>3,9%</span></div></div>
+        <div class="bar-count">71 / 1.805</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">6°-10° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:65%"><span>4,3%</span></div></div>
+        <div class="bar-count">31 / 725</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">11°+ ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"><span>6,6%</span></div></div>
+        <div class="bar-count">27 / 412</div>
+      </div>
+
+      <p class="note">Percentuali calcolate sul totale ordini per fascia di progressivo, non sul totale clienti. Le barre sono scalate sul valore massimo della serie (6,6%).</p>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Non emerge un pattern di dipendenza dal coupon che si rafforza con la fedeltà, né un uso concentrato solo in fase di acquisizione. La leggera risalita al progressivo 11+ (6,6%) è coerente con l'uso di coupon come leva occasionale di riattivazione più che come abitudine strutturale, ma la base ordini in questa fascia è più ridotta (412 ordini) e va letta con cautela.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon E Qualità Del Primo Acquisto</h2>
+      <p>Il confronto tra clienti che hanno usato un coupon al primo ordine e chi non lo ha fatto mostra due segnali in direzioni opposte:</p>
+
+      <div class="two-col">
+        <div class="compare-card">
+          <div class="card-label">Tasso di riacquisto (2° ordine)</div>
+          <div class="card-value">84,7%</div>
+          <p class="note">Con coupon al 1° ordine, base 59 clienti</p>
+        </div>
+        <div class="compare-card">
+          <div class="card-label">Tasso di riacquisto (2° ordine)</div>
+          <div class="card-value">93,5%</div>
+          <p class="note">Senza coupon al 1° ordine, base 1.202 clienti</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio 1° ordine</div>
+          <div class="card-value">€ 292</div>
+          <p class="note">Con coupon</p>
+        </div>
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio 1° ordine</div>
+          <div class="card-value">€ 212</div>
+          <p class="note">Senza coupon</p>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il differenziale sul tasso di riacquisto è statisticamente significativo (test chi quadrato, p uguale a 0,02), ma la base di 59 clienti resta contenuta e suggerisce prudenza prima di trarre conclusioni operative definitive. Il dato più solido è che il coupon al primo ordine <span class="highlight">non</span> è associato a un valore d'acquisto più basso, anzi lo scontrino medio è superiore di circa 80 euro. Questo va contro l'ipotesi che il coupon serva solo a chiudere vendite di basso valore, e apre invece a due letture alternative: coupon usati su capispalla o prodotti stagionali di prezzo elevato, oppure coupon distribuiti selettivamente a clienti già propensi a spendere di più, ad esempio via campagne mirate. Andrebbe verificato incrociando il nome del coupon con la categoria merceologica acquistata.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon Più Utilizzati</h2>
+      <table>
+        <tr><th>Coupon</th><th>Ordini</th><th>Quota sul totale coupon</th></tr>
+        <tr><td>10PELLIZZARI</td><td>140</td><td>50,2%</td></tr>
+        <tr><td>XMAS25</td><td>36</td><td>12,9%</td></tr>
+        <tr><td>SOV10</td><td>27</td><td>9,7%</td></tr>
+        <tr><td>RECENSIONE</td><td>16</td><td>5,7%</td></tr>
+        <tr><td>CAPOSPALLA20</td><td>13</td><td>4,7%</td></tr>
+        <tr><td>10PE21</td><td>12</td><td>4,3%</td></tr>
+        <tr><td>EXTRABF24</td><td>12</td><td>4,3%</td></tr>
+        <tr><td>PROFILAZIONE</td><td>7</td><td>2,5%</td></tr>
+      </table>
+      <p class="note">Totale ordini con coupon: 279. I primi 3 coupon coprono già il 72,8% degli utilizzi totali.</p>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il coupon <span class="highlight">10PELLIZZARI</span> domina nettamente e appare come un codice generico o di benvenuto piuttosto che una campagna dedicata alla fidelizzazione dei Campioni. Coupon come XMAS25, EXTRABF24 e 10PE21 sono legati a finestre stagionali o commerciali specifiche, non a un programma fedeltà strutturato per questo segmento. Non emergono, in questa prima estrazione, coupon dedicati esplicitamente a Campioni o VIP.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Considerazioni Metodologiche</h2>
+      <ul>
+        <li>Il file sorgente è a livello articolo (11.059 righe utili dopo rimozione footer), aggregato a livello ordine (6.028 ordini) verificando che il coupon fosse coerente su tutte le righe dello stesso ordine, condizione confermata senza eccezioni.</li>
+        <li>Sono stati inclusi tutti gli stati ordine presenti nel file (Delivered, Sent, Preparation, Closed, Partial refund, Full refund), come da indicazione ricevuta, senza esclusioni aggiuntive.</li>
+        <li>Il file esclude già a monte gli ordini Aborted e Pending Payment, come indicato nel footer di estrazione IEM.</li>
+        <li>Il cliente con 24 utilizzi di coupon su 76 ordini rappresenta un outlier che meriterebbe una verifica puntuale, potendo alterare leggermente le medie se non isolato.</li>
+      </ul>
+    </section>
+
+  
+</div>
+<div class="tab-panel" id="panel-promettenti">
+
+
+    <section>
+      <h2 class="section-title">Executive Summary</h2>
+      <ul>
+        <li>Anche nei Promettenti il coupon resta uno strumento marginale: solo il <span class="highlight-red">4,8% degli ordini</span> lo utilizza, un'incidenza sostanzialmente in linea con quella osservata nei Campioni (4,6%).</li>
+        <li>Si conferma il pattern già visto nei Campioni: lo scontrino medio con coupon è <span class="highlight">più alto</span>, non più basso, rispetto a chi non lo usa (€ 255 contro € 187), differenza altamente significativa. Il coupon non sembra una leva per chiudere vendite di basso valore.</li>
+        <li>Il coupon <span class="highlight">10PELLIZZARI</span> resta il più diffuso (287 utilizzi su 554, 51,8%), seguito da campagne stagionali come XMAS25 ed EXTRABF24, confermando che non esiste, in questa estrazione, un coupon dedicato specificamente alla fidelizzazione dei Promettenti.</li>
+        <li>Per questo segmento, a differenza dei Campioni, <span class="highlight">non è stato possibile analizzare l'incidenza del coupon per fascia di progressivo ordine</span>, a causa di un'anomalia strutturale nel campo che identifica la sequenza degli ordini, approfondita di seguito.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Panoramica Generale</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">11.490</div>
+          <div class="kpi-label">Clienti Promettenti analizzati</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">11.536</div>
+          <div class="kpi-label">Ordini totali</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">4,8%</div>
+          <div class="kpi-label">Ordini totali con coupon</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">554</div>
+          <div class="kpi-label">Ordini con coupon</div>
+        </div>
+      </div>
+      <p class="note">Periodo di riferimento: intero storico ordini disponibile per il segmento Promettenti, dati IEM al 31 luglio 2026. Base di calcolo: 11.536 ordini distinti, aggregati dalle 15.368 righe articolo del file sorgente al netto delle righe di footer. Inclusi tutti gli stati ordine presenti nel file (Delivered, Partial refund, Sent, Preparation, Closed, Full refund).</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Anomalia Nel Campo Progressivo Ordine</h2>
+      <div class="warning-box">
+        <div class="label">Limite Metodologico Da Segnalare</div>
+        <p>A differenza del file Campioni, nel file Promettenti il campo <span class="highlight">progressivo ordine</span> riporta sempre il valore "1° ordine", per tutte le 15.368 righe valide. Un'ispezione puntuale ha rilevato <span class="highlight">46 clienti</span> con 2 ordini distinti, anche a diversi mesi o anni di distanza, entrambi etichettati "1° ordine". Il confronto con il file anagrafico master non ha permesso di validare questi casi, poiché gli ID cliente sono numerati in modo indipendente in ciascuna estrazione e non sono incrociabili tra i due file. L'analisi dei 46 casi non ha isolato un'unica causa tecnica (gap temporale, canale o stato ordine non spiegano il fenomeno in modo sistematico): l'ipotesi più coerente con i dati osservati è che il segmento Promettenti registri il progressivo ordine in modo relativo al ciclo di permanenza nel segmento, e non rispetto allo storico assoluto del cliente. Per questo motivo, in questa analisi il coupon è stato misurato solo in termini aggregati (sì/no), senza segmentazione per progressivo ordine.</p>
+      </div>
+
+      <h3 class="subtitle">Impatto Sul Calcolo Del Coupon</h3>
+      <p>Per verificare se questa anomalia alteri i risultati, è stato simulato il ricalcolo tenendo un solo ordine per ciascuno dei 46 clienti coinvolti, quello cronologicamente precedente:</p>
+      <div class="two-col">
+        <div class="compare-card">
+          <div class="card-label">Quota ordini con coupon, dato originale</div>
+          <div class="card-value">4,80%</div>
+        </div>
+        <div class="compare-card">
+          <div class="card-label">Quota ordini con coupon, dopo correzione</div>
+          <div class="card-value">4,78%</div>
+        </div>
+      </div>
+      <p class="note">I 46 casi rappresentano lo 0,4% degli ordini totali del segmento (46 su 11.536). La differenza tra le due percentuali è trascurabile e non modifica in alcun modo le conclusioni di questa analisi.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon E Qualità Dell'Ordine</h2>
+      <div class="two-col">
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio con coupon</div>
+          <div class="card-value">€ 255</div>
+          <p class="note">Base 554 ordini</p>
+        </div>
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio senza coupon</div>
+          <div class="card-value">€ 187</div>
+          <p class="note">Base 10.982 ordini</p>
+        </div>
+      </div>
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>La differenza è ampia e altamente significativa dal punto di vista statistico. Coerentemente con quanto osservato per i Campioni, gli ordini con coupon nei Promettenti hanno uno scontrino medio più alto di circa 68 euro, il 36% in più rispetto agli ordini senza coupon. Questo secondo riscontro sullo stesso pattern, su una base molto più ampia (554 ordini contro i 59 dei Campioni al primo ordine), rafforza l'ipotesi che il coupon in Pellizzari non sia una leva per abbassare la soglia d'acquisto, ma accompagni acquisti già di valore più alto, probabilmente veicolato da campagne su categorie o prezzi specifici piuttosto che da sconti generalisti.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon Più Utilizzati</h2>
+      <table>
+        <tr><th>Coupon</th><th>Ordini</th><th>Quota sul totale coupon</th></tr>
+        <tr><td>10PELLIZZARI</td><td>287</td><td>51,8%</td></tr>
+        <tr><td>XMAS25</td><td>97</td><td>17,5%</td></tr>
+        <tr><td>SOV10</td><td>68</td><td>12,3%</td></tr>
+        <tr><td>EXTRABF24</td><td>61</td><td>11,0%</td></tr>
+        <tr><td>PRIMAVERA25</td><td>15</td><td>2,7%</td></tr>
+        <tr><td>RECENSIONE</td><td>8</td><td>1,4%</td></tr>
+        <tr><td>CAPOSPALLA20</td><td>7</td><td>1,3%</td></tr>
+      </table>
+      <p class="note">Totale ordini con coupon: 554. I primi 4 coupon coprono il 92,6% degli utilizzi totali, una concentrazione ancora maggiore rispetto ai Campioni (dove i primi 3 coprivano il 72,8%).</p>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il quadro dei coupon utilizzati è quasi identico a quello dei Campioni, sia nella composizione (10PELLIZZARI, XMAS25, SOV10, EXTRABF24 compaiono in entrambi i segmenti) sia nella logica sottostante: si tratta di campagne generaliste o stagionali, non di iniziative segmentate per stadio di fedeltà. Questo indica che oggi non c'è differenziazione nell'uso del coupon tra un Promettente e un Campione, un'opportunità per costruire coupon dedicati a ciascun segmento con logiche diverse, ad esempio più aggressivi per attivare i Promettenti verso il secondo acquisto, più selettivi o assenti per i Campioni che già acquistano senza incentivo.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Confronto Con Il Segmento Campioni</h2>
+      <table>
+        <tr><th>Indicatore</th><th>Campioni</th><th>Promettenti</th></tr>
+        <tr><td>Quota ordini con coupon</td><td>4,6%</td><td>4,8%</td></tr>
+        <tr><td>Scontrino medio senza coupon</td><td>€ 209</td><td>€ 187</td></tr>
+        <tr><td>Scontrino medio con coupon</td><td>€ 248</td><td>€ 255</td></tr>
+        <tr><td>Coupon più usato</td><td>10PELLIZZARI (50,2%)</td><td>10PELLIZZARI (51,8%)</td></tr>
+      </table>
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il comportamento verso il coupon è sorprendentemente omogeneo tra i due segmenti, sia in termini di incidenza sia di premium sullo scontrino medio. Questo suggerisce che l'uso del coupon a Pellizzari non sia oggi un fattore distintivo del percorso di fidelizzazione, ma una leva trasversale legata più alla campagna attiva nel momento dell'acquisto che al profilo del cliente. Le prossime estrazioni, in particolare su Da Non Perdere e Nuovi Clienti, permetteranno di verificare se questo pattern regge anche nei segmenti a rischio o in fase di acquisizione, dove un comportamento diverso sarebbe più atteso.</p>
+      </div>
+    </section>
+
+  
+</div>
+<div class="tab-panel" id="panel-da_non_perdere">
+
+
+    <section>
+      <h2 class="section-title">Executive Summary</h2>
+      <ul>
+        <li>Nel segmento Da Non Perdere il coupon ha un'incidenza più alta rispetto a Campioni e Promettenti: <span class="highlight-red">7,3% degli ordini</span> lo utilizza, contro il 4,6% dei Campioni e il 4,8% dei Promettenti.</li>
+        <li>Si conferma per la terza volta il pattern già visto negli altri due segmenti: lo scontrino medio con coupon è <span class="highlight">più alto</span> rispetto a senza (€ 238 contro € 193), differenza statisticamente significativa.</li>
+        <li>A differenza degli altri segmenti, qui il coupon si concentra maggiormente sul <span class="highlight">primo ordine</span> (7,4% dei casi) rispetto ai riacquisti successivi (5,4% al secondo ordine, 6,2% dal terzo al quinto), un segnale coerente con un uso più orientato all'acquisizione che alla fidelizzazione in corso.</li>
+        <li>Il coupon <span class="highlight">10PELLIZZARI</span> copre da solo il 74,9% degli utilizzi, una concentrazione ancora più marcata rispetto agli altri segmenti già analizzati, seguito da 10PE21 (17,9%). I primi due coupon coprono insieme il 92,8% degli utilizzi totali.</li>
+        <li>Anche in questo file è stata rilevata la stessa anomalia sul campo progressivo ordine già segnalata per i Promettenti, con un elemento aggiuntivo interessante: in alcuni casi la sequenza non solo si ripete ma <span class="highlight">torna indietro</span>, rafforzando l'ipotesi di un reset del contatore legato al ciclo di permanenza nel segmento, approfondito di seguito.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Panoramica Generale</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">6.651</div>
+          <div class="kpi-label">Clienti Da Non Perdere analizzati</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">6.915</div>
+          <div class="kpi-label">Ordini totali</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">7,3%</div>
+          <div class="kpi-label">Ordini totali con coupon</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">502</div>
+          <div class="kpi-label">Ordini con coupon</div>
+        </div>
+      </div>
+      <p class="note">Periodo di riferimento: intero storico ordini disponibile per il segmento Da Non Perdere, dati IEM al 31 luglio 2026. Base di calcolo: 6.915 ordini distinti, aggregati dalle 10.155 righe articolo del file sorgente al netto delle righe di footer. Inclusi tutti gli stati ordine presenti nel file (Delivered, Partial refund, Sent, Full refund, Closed, Preparation).</p>
+    </section>
+
+    <section>
+      <h3 class="subtitle">Chi Usa Il Coupon, E Quanto</h3>
+      <p>Su 6.651 clienti Da Non Perdere, <span class="highlight">499 clienti (7,5%)</span> hanno utilizzato almeno un coupon, mentre <span class="highlight">6.152 clienti (92,5%)</span> non lo hanno mai fatto. L'uso resta quasi sempre episodico: 496 clienti su 499 lo hanno utilizzato una sola volta, solo 3 clienti lo hanno usato su 2 ordini distinti.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Anomalia Nel Campo Progressivo Ordine, Aggiornamento</h2>
+      <div class="warning-box">
+        <div class="label">Conferma E Nuovo Elemento</div>
+        <p>Anche nel file Da Non Perdere è stata rilevata la stessa anomalia già segnalata per i Promettenti: <span class="highlight">34 clienti su 6.651 (0,5%)</span> mostrano un progressivo ordine incoerente con la reale sequenza cronologica dei loro acquisti. In 31 di questi 34 casi il valore duplicato è "1° ordine", identico al pattern Promettenti. Nei restanti 3 casi è emerso un elemento più significativo: la sequenza non solo si ripete, ma <span class="highlight">retrocede</span>. Un cliente, ad esempio, presenta 3 ordini cronologici numerati 2°, 1°, 2°, la numerazione riparte da 1 dopo il primo ordine invece di proseguire linearmente. Questo rafforza l'ipotesi, già proposta dal team, che il progressivo ordine venga calcolato da IEM in modo relativo al ciclo di permanenza nel segmento attuale, azzerandosi quando il cliente rientra in un segmento dopo esserne uscito, piuttosto che riferirsi allo storico assoluto degli acquisti del cliente.</p>
+      </div>
+      <p class="note">Le 34 anomalie coinvolgono 113 righe articolo su 10.155 (1,1%) e 71 ordini su 6.915 (1,0%). L'impatto sui risultati aggregati di questa analisi è trascurabile, per lo stesso motivo già verificato sui Promettenti: la quota di ordini con coupon non cambia in modo apprezzabile isolando questi casi.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon E Qualità Dell'Ordine</h2>
+      <div class="two-col">
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio con coupon</div>
+          <div class="card-value">€ 238</div>
+          <p class="note">Base 502 ordini</p>
+        </div>
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio senza coupon</div>
+          <div class="card-value">€ 193</div>
+          <p class="note">Base 6.413 ordini</p>
+        </div>
+      </div>
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il differenziale è ampio (+23%) e statisticamente significativo. Per la terza volta su tre segmenti analizzati, il coupon non è associato a ordini di valore più basso, anzi il contrario. Questo pattern ricorrente rende sempre più solida l'ipotesi che i coupon Pellizzari siano distribuiti prevalentemente su campagne, categorie o momenti dell'anno che già generano scontrini elevati, piuttosto che come leva di sconto su acquisti di ingresso o di basso valore.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon Per Progressivo Ordine</h2>
+      <div class="bar-row">
+        <div class="bar-label">1° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%"><span>7,41%</span></div></div>
+        <div class="bar-count">466 / 6.291</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">2° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:73%"><span>5,40%</span></div></div>
+        <div class="bar-count">19 / 352</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">3°-5° ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:84%"><span>6,23%</span></div></div>
+        <div class="bar-count">16 / 257</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">6°+ ordine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%"><span>6,67%</span></div></div>
+        <div class="bar-count">1 / 15</div>
+      </div>
+      <p class="note">Percentuali calcolate sul totale ordini per fascia di progressivo. Dato da leggere con la cautela indicata sopra riguardo all'affidabilità parziale del campo progressivo ordine. La fascia 6°+ ha una base molto ridotta (15 ordini) e va considerata puramente indicativa.</p>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>A differenza dei Campioni, dove l'incidenza del coupon era sostanzialmente piatta lungo tutto il percorso cliente, qui emerge una concentrazione più marcata sul primo ordine. Questo è coerente con la natura del segmento Da Non Perdere, che unisce clienti di valore storico alto ma oggi inattivi: è plausibile che il coupon sia stato uno strumento di acquisizione iniziale più che di riattivazione, e che la leva di riattivazione vera e propria per questi clienti vada cercata altrove, ad esempio in campagne email dedicate piuttosto che in sconti.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon Più Utilizzati</h2>
+      <table>
+        <tr><th>Coupon</th><th>Ordini</th><th>Quota sul totale coupon</th></tr>
+        <tr><td>10PELLIZZARI</td><td>376</td><td>74,9%</td></tr>
+        <tr><td>10PE21</td><td>90</td><td>17,9%</td></tr>
+        <tr><td>BTS23</td><td>10</td><td>2,0%</td></tr>
+        <tr><td>ACCESSORIMARE</td><td>7</td><td>1,4%</td></tr>
+        <tr><td>CERIMONIA23</td><td>5</td><td>1,0%</td></tr>
+        <tr><td>HALLOWEEN23</td><td>3</td><td>0,6%</td></tr>
+      </table>
+      <p class="note">Totale ordini con coupon: 502. I primi 2 coupon coprono da soli il 92,8% degli utilizzi, la concentrazione più alta osservata tra i tre segmenti analizzati finora.</p>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il coupon 10PE21, che non comparivamo tra i principali né nei Campioni né nei Promettenti, ha qui un peso rilevante (17,9%) e il nome richiama l'anno 2021, coerente con il fatto che questo segmento include clienti storici oggi inattivi. Questo suggerisce che i coupon utilizzati da questi clienti risalgono in parte a campagne datate, un altro indizio della loro natura di clienti "congelati" in un momento specifico del passato piuttosto che di una relazione continuativa con il brand.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Confronto Tra I Tre Segmenti Analizzati</h2>
+      <table>
+        <tr><th>Indicatore</th><th>Campioni</th><th>Promettenti</th><th>Da Non Perdere</th></tr>
+        <tr><td>Quota ordini con coupon</td><td>4,6%</td><td>4,8%</td><td>7,3%</td></tr>
+        <tr><td>Scontrino medio senza coupon</td><td>€ 209</td><td>€ 187</td><td>€ 193</td></tr>
+        <tr><td>Scontrino medio con coupon</td><td>€ 248</td><td>€ 255</td><td>€ 238</td></tr>
+        <tr><td>Coupon più usato</td><td>10PELLIZZARI (50,2%)</td><td>10PELLIZZARI (51,8%)</td><td>10PELLIZZARI (74,9%)</td></tr>
+        <tr><td>Concentrazione primo coupon</td><td>Media</td><td>Alta</td><td>Molto alta</td></tr>
+      </table>
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il pattern del premium sullo scontrino medio con coupon si conferma su tutti e tre i segmenti, un segnale ormai consolidato che merita di essere validato anche su Nuovi Clienti prima di essere considerato un comportamento strutturale della customer base Pellizzari. L'incidenza del coupon cresce invece progressivamente da Campioni a Da Non Perdere, un pattern che potrebbe indicare che i clienti oggi più fedeli abbiano avuto storicamente meno bisogno di incentivi economici, mentre i clienti oggi dormienti sono stati acquisiti o attivati più spesso tramite sconto. Questa lettura, se confermata anche su Nuovi Clienti, avrebbe un'implicazione strategica diretta sulle politiche di couponing in fase di acquisizione.</p>
+      </div>
+    </section>
+
+  
+</div>
+<div class="tab-panel" id="panel-nuovi_clienti">
+
+
+    <section>
+      <h2 class="section-title">Executive Summary</h2>
+      <ul>
+        <li>Nei Nuovi Clienti il coupon è lo strumento meno utilizzato tra tutti i segmenti analizzati finora: solo il <span class="highlight-red">3,5% degli ordini</span> lo utilizza, contro il 4,6% dei Campioni, il 4,8% dei Promettenti e il 7,3% di Da Non Perdere.</li>
+        <li>Qui si rompe per la prima volta il pattern osservato negli altri tre segmenti: lo scontrino medio con coupon è <span class="highlight">leggermente più basso</span>, non più alto (€ 34 contro € 38), differenza statisticamente significativa e confermata anche con test robusti agli outlier.</li>
+        <li>Il mix dei coupon più usati è diverso da quello degli altri segmenti: qui domina <span class="highlight">XMAS25</span> (29,5%), seguito da 10PELLIZZARI (26,9%), mentre negli altri tre segmenti 10PELLIZZARI era sempre il coupon nettamente più usato.</li>
+        <li>Anche qui è stata rilevata la stessa anomalia sul progressivo ordine già vista su Promettenti e Da Non Perdere, ma con un'incidenza molto più contenuta (11 clienti su 6.486, 0,2%), il valore più basso tra tutti i segmenti dove il fenomeno è presente.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="section-title">Panoramica Generale</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">6.486</div>
+          <div class="kpi-label">Clienti Nuovi Clienti analizzati</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">6.497</div>
+          <div class="kpi-label">Ordini totali</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">3,5%</div>
+          <div class="kpi-label">Ordini totali con coupon</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">227</div>
+          <div class="kpi-label">Ordini con coupon</div>
+        </div>
+      </div>
+      <p class="note">Periodo di riferimento: intero storico ordini disponibile per il segmento Nuovi Clienti, dati IEM al 31 luglio 2026. Base di calcolo: 6.497 ordini distinti, aggregati dalle 6.860 righe articolo del file sorgente al netto delle righe di footer. Inclusi tutti gli stati ordine presenti nel file (Delivered, Full refund, Partial refund, Sent, Preparation, Closed).</p>
+      <p class="note">Nota metodologica: la prima estrazione ricevuta per questo segmento conteneva solo 199 righe con la colonna coupon interamente vuota, un'anomalia poi corretta con una seconda estrazione, quella utilizzata in questa analisi.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon E Qualità Dell'Ordine, Un'Inversione Di Tendenza</h2>
+      <div class="two-col">
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio con coupon</div>
+          <div class="card-value">€ 34</div>
+          <p class="note">Base 227 ordini</p>
+        </div>
+        <div class="compare-card">
+          <div class="card-label">Scontrino medio senza coupon</div>
+          <div class="card-value">€ 38</div>
+          <p class="note">Base 6.270 ordini</p>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Per la prima volta su quattro segmenti analizzati, il coupon è associato a uno scontrino leggermente più basso, non più alto. La differenza sulla media (circa 4 euro) è più contenuta rispetto ai forti differenziali osservati su Campioni, Promettenti e Da Non Perdere, ed è stata confermata anche con un test non parametrico robusto agli outlier, quindi non è un artefatto statistico. Guardando la mediana, però, la differenza si riduce quasi a zero (€ 39,00 con coupon contro € 39,92 senza), a indicare che il pattern è reale ma di entità modesta, non un fenomeno di grande impatto pratico. La lettura più coerente è che nei Nuovi Clienti, il cui scontrino medio è comunque strutturalmente basso (attorno ai 46 euro secondo le analisi precedenti del progetto), il coupon venga talvolta usato su acquisti di ingresso più contenuti, in linea con una logica di acquisizione a basso rischio, diversa dalla logica osservata negli altri segmenti dove il coupon accompagna acquisti già di valore più alto.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Anomalia Nel Campo Progressivo Ordine, Conferma Su Quattro Segmenti</h2>
+      <div class="warning-box">
+        <div class="label">Aggiornamento Complessivo</div>
+        <p>Anche nei Nuovi Clienti si rileva la stessa anomalia già segnalata per Promettenti e Da Non Perdere: <span class="highlight">11 clienti su 6.486 (0,2%)</span> risultano con 2 ordini distinti entrambi etichettati "1° ordine". È l'incidenza più bassa tra i tre segmenti in cui il fenomeno compare (Promettenti 0,4%, Da Non Perdere 0,5%, Nuovi Clienti 0,2%). Nei Campioni il fenomeno non è mai comparso, verosimilmente perché il progressivo ordine in quel file copre correttamente l'intera sequenza fino al 76° ordine, un segnale che l'anomalia riguarda in modo specifico i segmenti diversi dai Campioni, forse legata proprio ai passaggi di segmento più frequenti che caratterizzano Promettenti, Da Non Perdere e Nuovi Clienti rispetto alla stabilità dei Campioni.</p>
+      </div>
+      <p class="note">L'impatto sui risultati di questa analisi resta trascurabile, coerentemente con quanto verificato sugli altri segmenti: 11 ordini su 6.497 (0,2%) non alterano in modo apprezzabile le percentuali riportate.</p>
+    </section>
+
+    <section>
+      <h2 class="section-title">Coupon Più Utilizzati</h2>
+      <table>
+        <tr><th>Coupon</th><th>Ordini</th><th>Quota sul totale coupon</th></tr>
+        <tr><td>XMAS25</td><td>67</td><td>29,5%</td></tr>
+        <tr><td>10PELLIZZARI</td><td>61</td><td>26,9%</td></tr>
+        <tr><td>SOV10</td><td>41</td><td>18,1%</td></tr>
+        <tr><td>EXTRABF24</td><td>36</td><td>15,9%</td></tr>
+        <tr><td>CERIMONIA26</td><td>12</td><td>5,3%</td></tr>
+        <tr><td>PRIMAVERA25</td><td>4</td><td>1,8%</td></tr>
+      </table>
+      <p class="note">Totale ordini con coupon: 227. A differenza degli altri segmenti, qui il mix è più distribuito: i primi due coupon coprono il 56,4% degli utilizzi, contro il 72,8% dei Campioni, il 69,7% dei Promettenti e il 92,8% di Da Non Perdere.</p>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica</div>
+        <p>Il coupon XMAS25 qui è il più utilizzato in assoluto, mentre in nessuno degli altri tre segmenti compariva al primo posto. Questo è coerente con l'ipotesi che i Nuovi Clienti vengano acquisiti in modo particolarmente concentrato durante le campagne stagionali natalizie, un pattern che meriterebbe di essere confrontato con l'andamento annuale del segmento già analizzato nelle fasi precedenti del progetto per verificare se dicembre è effettivamente il mese di picco per l'acquisizione di nuovi clienti.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Confronto Tra I Quattro Segmenti</h2>
+      <table>
+        <tr><th>Indicatore</th><th>Campioni</th><th>Promettenti</th><th>Da Non Perdere</th><th>Nuovi Clienti</th></tr>
+        <tr><td>Quota ordini con coupon</td><td>4,6%</td><td>4,8%</td><td>7,3%</td><td>3,5%</td></tr>
+        <tr><td>Scontrino medio senza coupon</td><td>€ 209</td><td>€ 187</td><td>€ 193</td><td>€ 38</td></tr>
+        <tr><td>Scontrino medio con coupon</td><td>€ 248</td><td>€ 255</td><td>€ 238</td><td>€ 34</td></tr>
+        <tr><td>Effetto coupon su scontrino</td><td>Positivo</td><td>Positivo</td><td>Positivo</td><td>Leggermente negativo</td></tr>
+        <tr><td>Coupon più usato</td><td>10PELLIZZARI</td><td>10PELLIZZARI</td><td>10PELLIZZARI</td><td>XMAS25</td></tr>
+      </table>
+
+      <div class="insight-box">
+        <div class="label">Lettura Strategica Complessiva</div>
+        <p>Il quadro sui quattro segmenti mostra una chiara distinzione tra i Nuovi Clienti e tutti gli altri tre. Nei segmenti con storia d'acquisto (Campioni, Promettenti, Da Non Perdere) il coupon è sistematicamente associato a uno scontrino più alto, un pattern robusto e ripetuto che indica come lo sconto in Pellizzari accompagni acquisti già di valore, probabilmente su categorie o momenti specifici. Nei Nuovi Clienti, dove lo scontrino medio è strutturalmente molto più basso e il rapporto con il brand è appena iniziato, l'effetto si inverte, seppure di poco: il coupon compare leggermente più spesso su acquisti di ingresso contenuti. L'incidenza del coupon cresce da Campioni a Da Non Perdere e poi crolla sui Nuovi Clienti, un andamento che vale la pena approfondire nella sintesi comparativa complessiva del progetto, incrociandolo con il canale di acquisizione e la categoria del primo acquisto.</p>
+      </div>
+    </section>
+
+  
+</div>
+
+  </main>
+
+  <footer>
+    <img src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca Interactive">
+    <div class="footer-text">Analisi RFM Pellizzari, Moca Interactive, 2026</div>
+  </footer>
+
+</div>
+
+<script>
+function showTab(key) {
+  document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('panel-' + key).classList.add('active');
+  document.getElementById('btn-' + key).classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+
+</body>
+</html>
