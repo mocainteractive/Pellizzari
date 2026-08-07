@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ordini Aborted e Pending Payment, Segmento Campioni</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+:root{--red:#E52217;--white:#FFFFFF;--lgray:#F4F5F6;--dark:#191919;--text:#595959;
+--green:#118541;--blue:#5781FF;--violet:#551FC4;--pink:#CE2A59;--orange:#DB5E29;
+--r100:#FF5147;--r70:#FF9F98;--r40:#FFCFCC;--r20:#FFE2E1;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.hero{background:var(--dark);color:#fff;padding:40px 0 44px;margin-bottom:36px}
+.hero .wrap{padding-bottom:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.logo{height:26px}.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:40px;font-weight:800;line-height:1.06;text-transform:uppercase;color:#fff;letter-spacing:-.01em}
+.hero h1 .thin{font-weight:500;color:#c9c9c9;display:block;font-size:19px;letter-spacing:0;text-transform:none;margin-top:8px}
+.hero-note{margin-top:20px;font-size:12.5px;color:#8f8f8f;max-width:760px;border-left:2px solid var(--red);padding-left:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:44px}
+.kpi{background:#fff;border-radius:14px;padding:22px 20px;border:1px solid #eceef0}
+.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--dark);margin-bottom:10px}
+.kpi .val{font-size:29px;font-weight:800;color:var(--dark);line-height:1}
+.kpi .sub{font-size:12px;color:var(--text);margin-top:7px}
+.kpi.accent{background:var(--red);border-color:var(--red)}.kpi.accent .lab,.kpi.accent .val,.kpi.accent .sub{color:#fff}
+.kpi.dark{background:var(--dark);border-color:var(--dark)}.kpi.dark .lab,.kpi.dark .val,.kpi.dark .sub{color:#fff}
+.kpi.dark .val{color:var(--r70)}
+section{margin-bottom:48px}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.snum{font-size:13px;font-weight:800;color:var(--red)}
+h2{font-size:22px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.005em}
+.sintro{font-size:14px;color:var(--text);margin:8px 0 20px;max-width:800px}
+.card{background:#fff;border-radius:14px;padding:26px 28px;border:1px solid #eceef0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.subttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dark);margin-bottom:16px}
+.axislab{font-size:11px;fill:var(--text);font-family:'Figtree'}
+.pointlab{font-size:12px;font-weight:700;fill:var(--dark);font-family:'Figtree'}
+.bar-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:10px}
+.bar-row .nm{font-size:13px;color:var(--dark);font-weight:500;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:var(--lgray);border-radius:6px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px}
+.bar-row .vl{font-size:12.5px;font-weight:700;color:var(--dark);text-align:left}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;align-items:end;height:170px;margin-top:8px}
+.mcol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.mbar{width:100%;border-radius:5px 5px 0 0;background:var(--r40)}
+.mbar.peak{background:var(--red)}
+.mlab{font-size:10px;color:var(--text);margin-top:6px;text-transform:uppercase;font-weight:600}
+.msub{font-size:9px;color:var(--text);margin-bottom:3px;font-weight:700}
+.fq{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:12px}
+.fq .nm{font-size:13px;font-weight:600;color:var(--dark);text-align:right}
+.fq .tr{background:var(--lgray);border-radius:6px;height:24px;overflow:hidden}
+.fq .ff{height:100%;border-radius:6px}
+.fq .vv{font-size:12.5px;font-weight:800;color:var(--dark)}
+.note{font-size:11.5px;color:#8a8a8a;margin-top:14px;font-style:italic}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.warn{background:#2a1414;border:1px solid var(--red);border-radius:12px;padding:18px 20px;margin-top:16px}
+.warn .wt{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--r70);margin-bottom:8px}
+.warn p{font-size:13px;color:#e8c8c6}
+.split{display:flex;flex-direction:column;gap:14px}
+.splitrow .h{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.splitrow .h b{color:var(--dark);font-weight:700}
+.dual{display:flex;height:9px;border-radius:5px;overflow:hidden;background:var(--lgray)}
+.dual span{display:block;height:100%}
+.callout{background:#191919;border-radius:14px;padding:26px 30px;color:#fff;margin-top:4px}
+.callout .ct{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9a9a9a;font-weight:700;margin-bottom:18px}
+.twin{display:flex;align-items:stretch;gap:16px;flex-wrap:wrap}
+.twin .box{flex:1;min-width:150px;background:#232323;border-radius:10px;padding:18px 20px}
+.twin .box.hl{background:#2a1414;border:1px solid var(--red)}
+.twin .box .n{font-size:26px;font-weight:800;line-height:1}
+.twin .box .n.g{color:#9a9a9a}.twin .box .n.r{color:var(--r70)}
+.twin .box .l{font-size:11.5px;color:#c4c4c4;margin-top:8px;line-height:1.4}
+.callout .cnote{font-size:13px;color:#d0d0d0;margin-top:20px;border-top:1px solid #333;padding-top:16px}
+.callout .cnote b{color:#fff}
+ul.ins{list-style:none;margin-top:4px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:14px;font-size:14px;color:var(--text)}
+ul.ins li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+.foot{border-top:1px solid #e2e4e6;margin-top:56px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.hero h1{font-size:28px}.bar-row{grid-template-columns:110px 1fr 52px}}
+</style>
+</head>
+<body>
+
+<div class="hero"><div class="wrap">
+  <div class="hero-top"><img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca"><div class="tag">Analisi RFM Pellizzari</div></div>
+  <div class="eyebrow">Approfondimento dati, segmento Campioni</div>
+  <h1>Ordini Aborted e Pending Payment<span class="thin">Quasi un ordine su due dei Campioni non arriva a buon fine</span></h1>
+  <div class="hero-note">Analisi condotta sul file completo, comprensivo degli stati d'ordine esclusi dall'estrazione originale. Dati lordi dei resi. Periodo, dato giornaliero 2023-2026 (2026 parziale al 20 luglio). Base, 10.219 ordini distinti, 2.736 clienti.</div>
+</div></div>
+
+<div class="wrap">
+
+  <div class="kpis">
+    <div class="kpi accent"><div class="lab">Ordini Aborted o Pending</div><div class="val">40,7%</div><div class="sub">4.159 su 10.219 ordini totali</div></div>
+    <div class="kpi"><div class="lab">Clienti coinvolti</div><div class="val">71,7%</div><div class="sub">1.962 clienti su 2.736 con almeno un fallimento</div></div>
+    <div class="kpi dark"><div class="lab">Valore in gioco</div><div class="val">1,08 mln</div><div class="sub">valore degli ordini non completati</div></div>
+    <div class="kpi"><div class="lab">Recuperati entro 7 giorni</div><div class="val">53,6%</div><div class="sub">2.229 su 4.159 riacquistano a breve</div></div>
+  </div>
+
+  <!-- 01 TUTTI GLI STATI ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>Il quadro completo degli stati d'ordine</h2></div>
+    <p class="sintro">Prima di isolare Aborted e Pending Payment, ecco come si distribuisce l'intero universo di 10.219 ordini distinti per stato. Il quadro chiarisce dove si concentra davvero il problema, quasi tutto nello stato Aborted, con Pending Payment marginale.</p>
+    <div class="card">
+      <div class="subttl">Quota di ordini per stato, sul totale</div>
+      <div class="bar-row"><div class="nm">Delivered</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#c4c8cc"></div></div><div class="vl">47,97%</div></div>
+      <div class="bar-row"><div class="nm">Aborted</div><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--red)"></div></div><div class="vl">40,62%</div></div>
+      <div class="bar-row"><div class="nm">Partial refund</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--r40)"></div></div><div class="vl">6,17%</div></div>
+      <div class="bar-row"><div class="nm">Full refund</div><div class="bar-track"><div class="bar-fill" style="width:7%;background:var(--r40)"></div></div><div class="vl">3,18%</div></div>
+      <div class="bar-row"><div class="nm">Sent</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--r20)"></div></div><div class="vl">1,55%</div></div>
+      <div class="bar-row"><div class="nm">Closed</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,25%</div></div>
+      <div class="bar-row"><div class="nm">Preparation</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,18%</div></div>
+      <div class="bar-row"><div class="nm">Pending Payment</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,08%</div></div>
+      <div class="note">Aborted da solo pesa il 40,62% del totale, contro appena lo 0,08% di Pending Payment. I due stati sono trattati insieme nel resto del report, ma il fenomeno è quasi interamente riconducibile ad Aborted.</div>
+    </div>
+  </section>
+
+  <!-- 02 VOLUMI E TREND -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Un fenomeno grande e in crescita</h2></div>
+    <p class="sintro">Il tasso di fallimento non è marginale né stabile. È quasi raddoppiato dal 2023 al 2026, un segnale che merita attenzione indipendentemente dall'impatto sull'analisi RFM.</p>
+    <div class="card">
+      <div class="subttl">Quota di ordini Aborted o Pending Payment per anno</div>
+      <div class="bar-row"><div class="nm">2023</div><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--red)"></div></div><div class="vl">30,3%</div></div>
+      <div class="bar-row"><div class="nm">2024</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--r70)"></div></div><div class="vl">27,7%</div></div>
+      <div class="bar-row"><div class="nm">2025</div><div class="bar-track"><div class="bar-fill" style="width:87%;background:var(--red)"></div></div><div class="vl">43,6%</div></div>
+      <div class="bar-row"><div class="nm">2026*</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--red)"></div></div><div class="vl">45,2%</div></div>
+      <div class="note">* 2026 parziale, dato fino al 20 luglio. Il salto dal 2024 al 2025 è il più marcato, da 27,7% a 43,6%.</div>
+    </div>
+  </section>
+
+  <!-- 03 VALORE -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Il valore economico in gioco</h2></div>
+    <p class="sintro">Gli ordini falliti non sono a basso valore, anzi. Lo scontrino medio di un ordine Aborted o Pending è più alto di quello di un ordine completato, un indizio che il fallimento colpisce più spesso i carrelli più costosi.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Valore totale coinvolto</div>
+        <div class="fq"><div class="nm">Ordini validi</div><div class="tr"><div class="ff" style="width:100%;background:#c4c8cc"></div></div><div class="vv">€ 1,39 mln</div></div>
+        <div class="fq"><div class="nm">Aborted / Pending</div><div class="tr"><div class="ff" style="width:78%;background:var(--red)"></div></div><div class="vv">€ 1,08 mln</div></div>
+        <div class="note">Il valore in gioco negli ordini falliti equivale al 78% del fatturato effettivamente registrato dal segmento.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Scontrino medio per ordine</div>
+        <div class="fq"><div class="nm">Ordine valido</div><div class="tr"><div class="ff" style="width:88%;background:#c4c8cc"></div></div><div class="vv">€ 229</div></div>
+        <div class="fq"><div class="nm">Ordine Aborted / Pending</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">€ 261</div></div>
+        <div class="note">+14% di valore medio negli ordini falliti rispetto a quelli completati.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PROGRESSIVO -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Il primo ordine è il più fragile</h2></div>
+    <p class="sintro">Il tasso di fallimento è massimo proprio al primo tentativo d'acquisto, oltre un ordine su due, per poi stabilizzarsi su un livello comunque alto negli ordini successivi.</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per progressivo d'ordine</div>
+      <div class="bar-row"><div class="nm">1° ordine</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">54,7%</div></div>
+      <div class="bar-row"><div class="nm">2° ordine</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:var(--r70)"></div></div><div class="vl">34,4%</div></div>
+      <div class="bar-row"><div class="nm">3° ordine</div><div class="bar-track"><div class="bar-fill" style="width:61%;background:var(--r70)"></div></div><div class="vl">33,5%</div></div>
+      <div class="bar-row"><div class="nm">4°-6° ordine</div><div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--r40)"></div></div><div class="vl">~34%</div></div>
+      <div class="bar-row"><div class="nm">7°-10° ordine</div><div class="bar-track"><div class="bar-fill" style="width:66%;background:var(--r40)"></div></div><div class="vl">~36%</div></div>
+      <div class="note">Il primo ordine ha un tasso di fallimento del 59% superiore alla media di tutti gli ordini successivi. Questo spiega perché tanti clienti risultavano senza un "1° ordine" valido nel file filtrato.</div>
+    </div>
+  </section>
+
+  <!-- 04 STAGIONALITA -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Il fallimento cresce a dicembre</h2></div>
+    <p class="sintro">Dicembre è il mese con il tasso di fallimento più alto, oltre uno su due, probabilmente per il maggior traffico legato ai regali. Settembre e aprile sono i mesi più fluidi.</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per mese, somma 2023-2026</div>
+      <div class="months">
+        <div class="mcol"><div class="msub">38%</div><div class="mbar" style="height:75%"></div><div class="mlab">Gen</div></div>
+        <div class="mcol"><div class="msub">42%</div><div class="mbar" style="height:82%"></div><div class="mlab">Feb</div></div>
+        <div class="mcol"><div class="msub">37%</div><div class="mbar" style="height:74%"></div><div class="mlab">Mar</div></div>
+        <div class="mcol"><div class="msub">37%</div><div class="mbar" style="height:72%"></div><div class="mlab">Apr</div></div>
+        <div class="mcol"><div class="msub">42%</div><div class="mbar" style="height:83%"></div><div class="mlab">Mag</div></div>
+        <div class="mcol"><div class="msub">44%</div><div class="mbar" style="height:87%"></div><div class="mlab">Giu</div></div>
+        <div class="mcol"><div class="msub">38%</div><div class="mbar" style="height:74%"></div><div class="mlab">Lug</div></div>
+        <div class="mcol"><div class="msub">38%</div><div class="mbar" style="height:76%"></div><div class="mlab">Ago</div></div>
+        <div class="mcol"><div class="msub">36%</div><div class="mbar" style="height:71%"></div><div class="mlab">Set</div></div>
+        <div class="mcol"><div class="msub">44%</div><div class="mbar" style="height:87%"></div><div class="mlab">Ott</div></div>
+        <div class="mcol"><div class="msub">46%</div><div class="mbar" style="height:91%"></div><div class="mlab">Nov</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:100%"></div><div class="msub" style="color:#fff;position:relative;top:14px">51%</div><div class="mlab">Dic</div></div>
+      </div>
+      <div class="legend"><span><span class="dot" style="background:var(--red)"></span>Dicembre, picco assoluto</span><span><span class="dot" style="background:var(--r40)"></span>Resto dell'anno</span></div>
+    </div>
+  </section>
+
+  <!-- 05 BRAND -->
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Alcuni brand si bloccano molto più di altri</h2></div>
+    <p class="sintro">Il tasso di fallimento varia enormemente per brand, da oltre il 57% a meno del 18%. Capispalla e brand premium sono i più colpiti, coerente con carrelli di valore più alto e quindi più soggetti a controlli o esitazioni sul pagamento.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Brand con il tasso di fallimento più alto (min. 30 ordini)</div>
+        <div class="bar-row"><div class="nm">Blauer</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">57,7%</div></div>
+        <div class="bar-row"><div class="nm">Lino Lino</div><div class="bar-track"><div class="bar-fill" style="width:99%;background:var(--red)"></div></div><div class="vl">57,5%</div></div>
+        <div class="bar-row"><div class="nm">Pinko</div><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--r70)"></div></div><div class="vl">53,3%</div></div>
+        <div class="bar-row"><div class="nm">Save The Duck</div><div class="bar-track"><div class="bar-fill" style="width:89%;background:var(--r70)"></div></div><div class="vl">51,5%</div></div>
+        <div class="bar-row"><div class="nm">Mc2 Saint Barth</div><div class="bar-track"><div class="bar-fill" style="width:86%;background:var(--r70)"></div></div><div class="vl">49,7%</div></div>
+        <div class="bar-row"><div class="nm">Barbour</div><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--r40)"></div></div><div class="vl">46,3%</div></div>
+      </div>
+      <div class="card">
+        <div class="subttl">Brand con il tasso di fallimento più basso (min. 30 ordini)</div>
+        <div class="bar-row"><div class="nm">Michael Coal</div><div class="bar-track"><div class="bar-fill" style="width:41%;background:var(--green)"></div></div><div class="vl">23,8%</div></div>
+        <div class="bar-row"><div class="nm">Jack &amp; Jones</div><div class="bar-track"><div class="bar-fill" style="width:41%;background:var(--green)"></div></div><div class="vl">23,4%</div></div>
+        <div class="bar-row"><div class="nm">Alley Docks</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:#4aa96c"></div></div><div class="vl">20,3%</div></div>
+        <div class="bar-row"><div class="nm">Puro Lino</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:#4aa96c"></div></div><div class="vl">17,5%</div></div>
+        <div class="bar-row"><div class="nm">Priority House</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:#4aa96c"></div></div><div class="vl">17,3%</div></div>
+        <div class="note">Il tasso più basso è meno di un terzo di quello del brand più critico.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SPEDIZIONE -->
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>Metodo di spedizione</h2></div>
+    <p class="sintro">Il tasso di fallimento varia in modo netto anche per metodo di spedizione, con BRT che si distingue nettamente dagli altri.</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per metodo di spedizione</div>
+      <div class="bar-row"><div class="nm">BRT</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">49,7%</div></div>
+      <div class="bar-row"><div class="nm">SDA</div><div class="bar-track"><div class="bar-fill" style="width:74%;background:var(--r70)"></div></div><div class="vl">36,9%</div></div>
+      <div class="bar-row"><div class="nm">Italia</div><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--r40)"></div></div><div class="vl">28,0%</div></div>
+      <div class="bar-row"><div class="nm">Custom</div><div class="bar-track"><div class="bar-fill" style="width:6%;background:#c4c8cc"></div></div><div class="vl">2,9%</div></div>
+      <div class="note">BRT copre 3.564 ordini con quasi un fallimento su due. Custom è marginale, solo 103 ordini, probabilmente spedizioni gestite fuori standard.</div>
+    </div>
+  </section>
+
+  <!-- 07 RECUPERO -->
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>Più della metà dei fallimenti si recupera da solo</h2></div>
+    <p class="sintro">Il cliente spesso riprova. Su tutti gli ordini Aborted o Pending, il 53,6% è seguito da un ordine valido dello stesso cliente entro 7 giorni, segno di un tentativo di pagamento fallito seguito da un nuovo tentativo riuscito, non di un cliente perso.</p>
+    <div class="callout">
+      <div class="ct">Cosa succede dopo un ordine fallito, entro 7 giorni</div>
+      <div class="twin">
+        <div class="box hl"><div class="n r">53,6%</div><div class="l">Recuperato<br>2.229 ordini, € 604.540 di valore riportato a bordo</div></div>
+        <div class="box"><div class="n g">46,4%</div><div class="l">Non recuperato<br>1.930 ordini, € 480.035 di valore realmente perso</div></div>
+      </div>
+      <div class="cnote">Il valore realmente a rischio è quindi circa <b>€ 480 mila</b>, meno della metà del valore nominale degli ordini falliti. È la cifra su cui ha senso costruire un business case per interventi sul checkout.</div>
+    </div>
+  </section>
+
+  <!-- 08 FOCUS 1o -> 2o ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>Il caso del primo ordine, il retry è quasi sempre lo stesso acquisto</h2></div>
+    <p class="sintro">Isolando i 1.570 clienti il cui primo ordine è Aborted o Pending e che hanno un secondo ordine, il pattern del retry immediato è ancora più netto che nella media generale.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Coincidenza tra 1° ordine falito e 2° ordine</div>
+        <div class="fq"><div class="nm">Stesso giorno</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">60,7%</div></div>
+        <div class="fq"><div class="nm">Paniere identico al 100%</div><div class="tr"><div class="ff" style="width:100%;background:var(--r70)"></div></div><div class="vv">66,8%</div></div>
+        <div class="fq"><div class="nm">Match pieno, entrambi</div><div class="tr"><div class="ff" style="width:78%;background:var(--dark)"></div></div><div class="vv">47,3%</div></div>
+      </div>
+      <div class="card">
+        <div class="subttl">Scomposizione dei 1.570 casi</div>
+        <div class="split">
+          <div class="splitrow"><div class="h"><b>Match pieno</b><span>743 casi</span></div><div class="dual"><span style="width:47.3%;background:var(--red)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Solo paniere, data diversa</b><span>306 casi</span></div><div class="dual"><span style="width:19.5%;background:var(--r70)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Solo stessa data</b><span>210 casi</span></div><div class="dual"><span style="width:13.4%;background:var(--r40)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Nessuna coincidenza</b><span>311 casi</span></div><div class="dual"><span style="width:19.8%;background:#c4c8cc"></span></div></div>
+        </div>
+        <div class="note">Il 66,8% è con certezza un retry dello stesso acquisto. Solo il 19,8% sono due episodi realmente scollegati.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 INSIGHT -->
+  <section>
+    <div class="shead"><span class="snum">→</span><h2>Implicazioni per il report Campioni e per il sito</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>Il file originale sottostimava il segmento.</b> Con il 40,7% degli ordini escluso a monte, il 1° ordine reale di moltissimi Campioni non era osservabile, distorcendo scontrino d'ingresso e tempi di riacquisto calcolati in precedenza.</li>
+        <li><b>Il fenomeno riguarda soprattutto il primo tentativo d'acquisto.</b> Il tasso di fallimento al 1° ordine, 54,7%, è il più alto della sequenza, un ostacolo che si concentra proprio nel momento più delicato dell'acquisizione.</li>
+        <li><b>Non è un problema di traffico dubbio, ma di checkout.</b> Il 66,8% dei retry ripropone lo stesso identico paniere, il cliente vuole comprare, qualcosa nel pagamento glielo impedisce la prima volta.</li>
+        <li><b>Il valore realmente perso è più contenuto del valore nominale.</b> Su 1,08 milioni di ordini falliti, solo circa 480 mila non vengono recuperati entro una settimana.</li>
+        <li><b>Brand e metodo di spedizione BRT meritano una verifica tecnica,</b> dato il tasso di fallimento nettamente superiore alla media, potrebbe indicare un problema specifico di integrazione o di costo di spedizione percepito al checkout.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot"><span>Moca Interactive per Pellizzari</span><span>Analisi RFM 2026 &nbsp;/&nbsp; Ordini Aborted e Pending Payment, Campioni</span></div>
+</div>
+</body>
+</html>
