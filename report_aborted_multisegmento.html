@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ordini Aborted e Pending Payment, Confronto Multi Segmento</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap');
+:root{--red:#E52217;--white:#FFFFFF;--lgray:#F4F5F6;--dark:#191919;--text:#595959;
+--green:#118541;--blue:#5781FF;--violet:#551FC4;--pink:#CE2A59;--orange:#DB5E29;
+--r100:#FF5147;--r70:#FF9F98;--r40:#FFCFCC;--r20:#FFE2E1;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Figtree',sans-serif;background:var(--lgray);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.hero{background:var(--dark);color:#fff;padding:40px 0 44px;margin-bottom:0}
+.hero .wrap{padding-bottom:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.logo{height:26px}.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a9a9a;font-weight:600}
+.eyebrow{color:var(--red);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero h1{font-size:38px;font-weight:800;line-height:1.08;text-transform:uppercase;color:#fff;letter-spacing:-.01em}
+.hero h1 .thin{font-weight:500;color:#c9c9c9;display:block;font-size:18px;letter-spacing:0;text-transform:none;margin-top:8px}
+.hero-note{margin-top:20px;font-size:12.5px;color:#8f8f8f;max-width:780px;border-left:2px solid var(--red);padding-left:14px}
+
+/* NAV SEGMENTI */
+.segnav{background:#111;border-top:1px solid #2a2a2a}
+.segnav .wrap{display:flex;gap:10px;padding:16px 24px;flex-wrap:wrap}
+.segpill{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:30px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;border:1px solid #333}
+.segpill .dot2{width:7px;height:7px;border-radius:50%}
+.segpill.ready{background:#1f1f1f;color:#fff}
+.segpill.ready .dot2{background:var(--green)}
+.segpill.pending{background:transparent;color:#7a7a7a;border-style:dashed}
+.segpill.pending .dot2{background:#555}
+.segpill.done{background:transparent;color:#9a9a9a}
+.segpill.done .dot2{background:var(--r70)}
+
+/* SEGMENTO BLOCK */
+.segblock{padding-top:44px}
+.seghead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap;border-bottom:2px solid var(--dark);padding-bottom:18px}
+.seghead h2.segtitle{font-size:26px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.01em}
+.seghead .segsub{font-size:12.5px;color:var(--text);max-width:640px}
+.segmeta{font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em;font-weight:700;white-space:nowrap}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:44px}
+.kpi{background:#fff;border-radius:14px;padding:22px 20px;border:1px solid #eceef0}
+.kpi .lab{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--dark);margin-bottom:10px}
+.kpi .val{font-size:29px;font-weight:800;color:var(--dark);line-height:1}
+.kpi .sub{font-size:12px;color:var(--text);margin-top:7px}
+.kpi.accent{background:var(--red);border-color:var(--red)}.kpi.accent .lab,.kpi.accent .val,.kpi.accent .sub{color:#fff}
+.kpi.dark{background:var(--dark);border-color:var(--dark)}.kpi.dark .lab,.kpi.dark .val,.kpi.dark .sub{color:#fff}
+.kpi.dark .val{color:var(--r70)}
+
+section{margin-bottom:48px}
+.shead{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.snum{font-size:13px;font-weight:800;color:var(--red)}
+h2{font-size:22px;font-weight:800;text-transform:uppercase;color:var(--dark);letter-spacing:-.005em}
+.sintro{font-size:14px;color:var(--text);margin:8px 0 20px;max-width:800px}
+.card{background:#fff;border-radius:14px;padding:26px 28px;border:1px solid #eceef0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.subttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dark);margin-bottom:16px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:10px}
+.bar-row .nm{font-size:13px;color:var(--dark);font-weight:500;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:var(--lgray);border-radius:6px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px}
+.bar-row .vl{font-size:12.5px;font-weight:700;color:var(--dark);text-align:left}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;align-items:end;height:170px;margin-top:8px}
+.mcol{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.mbar{width:100%;border-radius:5px 5px 0 0;background:var(--r40)}
+.mbar.peak{background:var(--red)}
+.mlab{font-size:10px;color:var(--text);margin-top:6px;text-transform:uppercase;font-weight:600}
+.msub{font-size:9px;color:var(--text);margin-bottom:3px;font-weight:700}
+.fq{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:12px;margin-bottom:12px}
+.fq .nm{font-size:13px;font-weight:600;color:var(--dark);text-align:right}
+.fq .tr{background:var(--lgray);border-radius:6px;height:24px;overflow:hidden}
+.fq .ff{height:100%;border-radius:6px}
+.fq .vv{font-size:12.5px;font-weight:800;color:var(--dark)}
+.note{font-size:11.5px;color:#8a8a8a;margin-top:14px;font-style:italic}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12px;color:var(--text)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.split{display:flex;flex-direction:column;gap:14px}
+.splitrow .h{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.splitrow .h b{color:var(--dark);font-weight:700}
+.dual{display:flex;height:9px;border-radius:5px;overflow:hidden;background:var(--lgray)}
+.dual span{display:block;height:100%}
+.callout{background:#191919;border-radius:14px;padding:26px 30px;color:#fff;margin-top:4px}
+.callout .ct{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9a9a9a;font-weight:700;margin-bottom:18px}
+.twin{display:flex;align-items:stretch;gap:16px;flex-wrap:wrap}
+.twin .box{flex:1;min-width:150px;background:#232323;border-radius:10px;padding:18px 20px}
+.twin .box.hl{background:#2a1414;border:1px solid var(--red)}
+.twin .box .n{font-size:26px;font-weight:800;line-height:1}
+.twin .box .n.g{color:#9a9a9a}.twin .box .n.r{color:var(--r70)}
+.twin .box .l{font-size:11.5px;color:#c4c4c4;margin-top:8px;line-height:1.4}
+.callout .cnote{font-size:13px;color:#d0d0d0;margin-top:20px;border-top:1px solid #333;padding-top:16px}
+.callout .cnote b{color:#fff}
+ul.ins{list-style:none;margin-top:4px}
+ul.ins li{position:relative;padding-left:22px;margin-bottom:14px;font-size:14px;color:var(--text)}
+ul.ins li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+ul.ins li b{color:var(--dark);font-weight:700}
+
+/* PLACEHOLDER SEGMENTI IN ARRIVO */
+.pending-block{background:#fff;border:1.5px dashed #d7dade;border-radius:14px;padding:34px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.pending-block .pt{font-size:13px;color:var(--text);max-width:600px}
+.pending-block .pt b{color:var(--dark)}
+.pending-tag{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#9a9a9a;background:var(--lgray);padding:8px 14px;border-radius:20px;white-space:nowrap}
+
+.foot{border-top:1px solid #e2e4e6;margin-top:20px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#9a9a9a;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.hero h1{font-size:26px}.bar-row{grid-template-columns:110px 1fr 52px}.seghead{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<div class="hero"><div class="wrap">
+  <div class="hero-top"><img class="logo" src="https://mocainteractive.com/assets/svg/logo-light.svg" alt="Moca"><div class="tag">Analisi RFM Pellizzari</div></div>
+  <div class="eyebrow">Approfondimento dati, confronto multi segmento</div>
+  <h1>Ordini Aborted e Pending Payment<span class="thin">Cosa cambia il quadro completo degli stati d'ordine, segmento per segmento</span></h1>
+  <div class="hero-note">Il report Campioni ha rivelato che il file filtrato originale escludeva il 40,7% degli ordini reali, distorcendo scontrino d'ingresso e tempi di riacquisto. Questo report estende la stessa analisi, sul file completo di ogni segmento, comprensivo di tutti gli stati d'ordine, a Nuovi Clienti, Da Non Perdere e Promettenti. Dati lordi dei resi.</div>
+</div></div>
+
+<div class="segnav"><div class="wrap">
+  <a class="segpill done" href="#campioni">Campioni, report a parte</a>
+  <a class="segpill ready" href="#nuovi-clienti"><span class="dot2"></span>Nuovi Clienti, pronto</a>
+  <a class="segpill pending" href="#da-non-perdere"><span class="dot2"></span>Da Non Perdere, in arrivo</a>
+  <a class="segpill ready" href="#promettenti"><span class="dot2"></span>Promettenti, pronto</a>
+</div></div>
+
+<div class="wrap">
+
+<!-- ============================================================ -->
+<!-- SEGMENTO: NUOVI CLIENTI -->
+<!-- ============================================================ -->
+<div class="segblock" id="nuovi-clienti">
+
+  <div class="seghead">
+    <div>
+      <h2 class="segtitle">Segmento Nuovi Clienti</h2>
+      <div class="segsub">Analisi condotta sul file completo, comprensivo di tutti gli stati d'ordine. Periodo, dato giornaliero dal 28 luglio 2024 al 6 agosto 2026 (2024 e 2026 parziali). Base, 7.842 ordini distinti, 7.815 clienti.</div>
+    </div>
+    <div class="segmeta">Dossier Nuovi Clienti, aggiornamento agosto 2026</div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi accent"><div class="lab">Ordini Aborted o Pending</div><div class="val">16,7%</div><div class="sub">1.311 su 7.842 ordini totali</div></div>
+    <div class="kpi"><div class="lab">Clienti coinvolti</div><div class="val">16,7%</div><div class="sub">1.306 clienti su 7.815 con almeno un fallimento</div></div>
+    <div class="kpi dark"><div class="lab">Valore in gioco</div><div class="val">€ 58.940</div><div class="sub">valore degli ordini non completati</div></div>
+    <div class="kpi"><div class="lab">Recuperati entro 7 giorni</div><div class="val">0,8%</div><div class="sub">10 su 1.311, quasi nessuno riprova</div></div>
+  </div>
+
+  <!-- 01 STATI ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>Il quadro completo degli stati d'ordine</h2></div>
+    <p class="sintro">Sui 7.842 ordini distinti del segmento, il fenomeno Aborted o Pending Payment pesa molto meno che nei Campioni, ma un altro stato inatteso emerge con forza, il Full refund, quasi un ordine su cinque.</p>
+    <div class="card">
+      <div class="subttl">Quota di ordini per stato, sul totale</div>
+      <div class="bar-row"><div class="nm">Delivered</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#c4c8cc"></div></div><div class="vl">61,72%</div></div>
+      <div class="bar-row"><div class="nm">Full refund</div><div class="bar-track"><div class="bar-fill" style="width:29%;background:var(--r40)"></div></div><div class="vl">17,73%</div></div>
+      <div class="bar-row"><div class="nm">Aborted</div><div class="bar-track"><div class="bar-fill" style="width:27%;background:var(--red)"></div></div><div class="vl">16,70%</div></div>
+      <div class="bar-row"><div class="nm">Partial refund</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--r20)"></div></div><div class="vl">2,03%</div></div>
+      <div class="bar-row"><div class="nm">Sent</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:var(--r20)"></div></div><div class="vl">1,31%</div></div>
+      <div class="bar-row"><div class="nm">Preparation</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,41%</div></div>
+      <div class="bar-row"><div class="nm">Closed</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,09%</div></div>
+      <div class="bar-row"><div class="nm">Pending Payment</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,01%</div></div>
+      <div class="note">Aborted e Pending Payment insieme pesano il 16,72%, meno della metà della quota vista nei Campioni (40,7%). Il Full refund al 17,73% non è oggetto di questo report, ma segnala un tema distinto sul primo acquisto, da approfondire separatamente.</div>
+    </div>
+  </section>
+
+  <!-- 02 TREND ANNUALE -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Un fenomeno stabile, non in crescita</h2></div>
+    <p class="sintro">A differenza dei Campioni, dove il tasso di fallimento è quasi raddoppiato in tre anni, nei Nuovi Clienti resta stabile intorno al 16, 17% dal 2024 al 2026.</p>
+    <div class="card">
+      <div class="subttl">Quota di ordini Aborted o Pending Payment per anno</div>
+      <div class="bar-row"><div class="nm">2024*</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">19,0%</div></div>
+      <div class="bar-row"><div class="nm">2025</div><div class="bar-track"><div class="bar-fill" style="width:86%;background:var(--r70)"></div></div><div class="vl">16,3%</div></div>
+      <div class="bar-row"><div class="nm">2026*</div><div class="bar-track"><div class="bar-fill" style="width:87%;background:var(--r70)"></div></div><div class="vl">16,6%</div></div>
+      <div class="note">* 2024 parziale, dato da fine luglio, base solo 882 ordini. 2026 parziale, dato fino al 6 agosto. Il tasso oscilla in un intervallo ristretto, nessun trend di deterioramento come nei Campioni.</div>
+    </div>
+  </section>
+
+  <!-- 03 VALORE -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Il valore economico in gioco</h2></div>
+    <p class="sintro">Anche per i Nuovi Clienti gli ordini falliti hanno uno scontrino più alto della media, coerente con quanto osservato nei Campioni.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Valore totale coinvolto</div>
+        <div class="fq"><div class="nm">Ordini validi</div><div class="tr"><div class="ff" style="width:100%;background:#c4c8cc"></div></div><div class="vv">€ 250.641</div></div>
+        <div class="fq"><div class="nm">Aborted / Pending</div><div class="tr"><div class="ff" style="width:24%;background:var(--red)"></div></div><div class="vv">€ 58.940</div></div>
+        <div class="note">Il valore in gioco negli ordini falliti equivale al 23,5% del fatturato effettivamente registrato dal segmento, una quota più contenuta di quella dei Campioni (78%).</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Scontrino medio per ordine</div>
+        <div class="fq"><div class="nm">Ordine valido</div><div class="tr"><div class="ff" style="width:85%;background:#c4c8cc"></div></div><div class="vv">€ 38,38</div></div>
+        <div class="fq"><div class="nm">Ordine Aborted / Pending</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">€ 44,96</div></div>
+        <div class="note">+17,1% di valore medio negli ordini falliti rispetto a quelli completati, uno scarto simile a quello dei Campioni (+14%).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PRIMO E QUASI UNICO ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Il primo ordine è anche quasi sempre l'unico</h2></div>
+    <p class="sintro">Diversamente dai Campioni, qui il campo progressivo ordine non nasconde un'anomalia da correggere, riflette la natura stessa del segmento. Il 99,65% dei clienti ha un solo ordine osservabile in questo file, quindi un fallimento al primo tentativo non ha quasi mai un secondo ordine su cui appoggiarsi.</p>
+    <div class="card">
+      <div class="subttl">Clienti per numero di ordini osservabili</div>
+      <div class="bar-row"><div class="nm">1 ordine</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#c4c8cc"></div></div><div class="vl">99,65%</div></div>
+      <div class="bar-row"><div class="nm">2 ordini</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r40)"></div></div><div class="vl">0,35%</div></div>
+      <div class="note">7.788 clienti su 7.815 si fermano a un solo ordine osservabile, 27 arrivano a un secondo. Il tasso di fallimento è 16,7% al primo ordine (1.306 su 7.815) e 18,5% al secondo (5 su 27), su una base però troppo piccola per essere conclusiva.</div>
+    </div>
+  </section>
+
+  <!-- 05 STAGIONALITA -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Il fallimento cresce in piena stagione estiva</h2></div>
+    <p class="sintro">Giugno e settembre sono i mesi con il tasso di fallimento più alto, oltre uno su cinque. Marzo è il mese più fluido. Un pattern diverso da quello dei Campioni, dove il picco era a dicembre.</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per mese, somma 2024-2026</div>
+      <div class="months">
+        <div class="mcol"><div class="msub">14%</div><div class="mbar" style="height:65%"></div><div class="mlab">Gen</div></div>
+        <div class="mcol"><div class="msub">15%</div><div class="mbar" style="height:71%"></div><div class="mlab">Feb</div></div>
+        <div class="mcol"><div class="msub">11%</div><div class="mbar" style="height:51%"></div><div class="mlab">Mar</div></div>
+        <div class="mcol"><div class="msub">12%</div><div class="mbar" style="height:57%"></div><div class="mlab">Apr</div></div>
+        <div class="mcol"><div class="msub">14%</div><div class="mbar" style="height:68%"></div><div class="mlab">Mag</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:99%"></div><div class="msub" style="color:#fff;position:relative;top:14px">21%</div><div class="mlab">Giu</div></div>
+        <div class="mcol"><div class="msub">18%</div><div class="mbar" style="height:82%"></div><div class="mlab">Lug</div></div>
+        <div class="mcol"><div class="msub">17%</div><div class="mbar" style="height:79%"></div><div class="mlab">Ago</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:100%"></div><div class="msub" style="color:#fff;position:relative;top:14px">21%</div><div class="mlab">Set</div></div>
+        <div class="mcol"><div class="msub">19%</div><div class="mbar" style="height:87%"></div><div class="mlab">Ott</div></div>
+        <div class="mcol"><div class="msub">16%</div><div class="mbar" style="height:73%"></div><div class="mlab">Nov</div></div>
+        <div class="mcol"><div class="msub">17%</div><div class="mbar" style="height:80%"></div><div class="mlab">Dic</div></div>
+      </div>
+      <div class="legend"><span><span class="dot" style="background:var(--red)"></span>Giugno e settembre, picco assoluto</span><span><span class="dot" style="background:var(--r40)"></span>Resto dell'anno</span></div>
+    </div>
+  </section>
+
+  <!-- 06 BRAND -->
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Alcuni brand di primo acquisto si bloccano molto più di altri</h2></div>
+    <p class="sintro">Il tasso di fallimento varia da oltre il 35% a meno del 3%. Mc2 Saint Barth, il brand più venduto in assoluto ai Nuovi Clienti con 1.000 ordini su 7.842 (12,7% del totale), ha un tasso di fallimento del 27,7%, ben sopra la media del segmento.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Brand con il tasso di fallimento più alto (min. 30 ordini)</div>
+        <div class="bar-row"><div class="nm">Guess</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">35,5%</div></div>
+        <div class="bar-row"><div class="nm">Lyle &amp; Scott</div><div class="bar-track"><div class="bar-fill" style="width:83%;background:var(--r70)"></div></div><div class="vl">29,4%</div></div>
+        <div class="bar-row"><div class="nm">Ea7</div><div class="bar-track"><div class="bar-fill" style="width:81%;background:var(--r70)"></div></div><div class="vl">28,9%</div></div>
+        <div class="bar-row"><div class="nm">Mc2 Saint Barth</div><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--r70)"></div></div><div class="vl">27,7%</div></div>
+        <div class="bar-row"><div class="nm">Calvin Klein Kids</div><div class="bar-track"><div class="bar-fill" style="width:77%;background:var(--r40)"></div></div><div class="vl">27,3%</div></div>
+        <div class="bar-row"><div class="nm">Nina</div><div class="bar-track"><div class="bar-fill" style="width:77%;background:var(--r40)"></div></div><div class="vl">27,3%</div></div>
+        <div class="note">Mc2 Saint Barth da solo rappresenta 277 dei 1.311 ordini falliti del segmento, circa un quinto del totale.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Brand con il tasso di fallimento più basso (min. 30 ordini)</div>
+        <div class="bar-row"><div class="nm">Rains</div><div class="bar-track"><div class="bar-fill" style="width:8%;background:#4aa96c"></div></div><div class="vl">2,8%</div></div>
+        <div class="bar-row"><div class="nm">Rodolfo Pellizzari</div><div class="bar-track"><div class="bar-fill" style="width:16%;background:#4aa96c"></div></div><div class="vl">5,7%</div></div>
+        <div class="bar-row"><div class="nm">Jurerê</div><div class="bar-track"><div class="bar-fill" style="width:17%;background:#4aa96c"></div></div><div class="vl">5,9%</div></div>
+        <div class="bar-row"><div class="nm">Barbour</div><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--green)"></div></div><div class="vl">6,8%</div></div>
+        <div class="bar-row"><div class="nm">Alley Docks</div><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--green)"></div></div><div class="vl">7,1%</div></div>
+        <div class="bar-row"><div class="nm">Ashki.I</div><div class="bar-track"><div class="bar-fill" style="width:23%;background:var(--green)"></div></div><div class="vl">8,3%</div></div>
+        <div class="note">Il brand del cliente stesso, Rodolfo Pellizzari, è tra i più solidi come primo acquisto, 5,7% di fallimento su 88 ordini.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SPEDIZIONE -->
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>Il metodo di spedizione non è il problema, qui</h2></div>
+    <p class="sintro">A differenza dei Campioni, dove BRT si distingueva nettamente, nei Nuovi Clienti BRT e SDA hanno un tasso di fallimento praticamente identico. Il problema non sembra legato alla logistica.</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per metodo di spedizione</div>
+      <div class="bar-row"><div class="nm">BRT</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--r70)"></div></div><div class="vl">17,0%</div></div>
+      <div class="bar-row"><div class="nm">SDA</div><div class="bar-track"><div class="bar-fill" style="width:97%;background:var(--r70)"></div></div><div class="vl">16,4%</div></div>
+      <div class="bar-row"><div class="nm">Custom</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:#c4c8cc"></div></div><div class="vl">0,0%</div></div>
+      <div class="note">BRT copre 4.278 ordini e SDA 3.554, con uno scarto di appena mezzo punto percentuale tra i due. Custom è marginale, solo 3 ordini. Diversamente dai Campioni, qui una verifica tecnica sullo specifico vettore BRT non è prioritaria.</div>
+    </div>
+  </section>
+
+  <!-- 08 RECUPERO -->
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>Quasi nessuno riprova, il fallimento è quasi sempre definitivo</h2></div>
+    <p class="sintro">La differenza più marcata rispetto ai Campioni è qui. Su tutti gli ordini Aborted o Pending, solo lo 0,8% è seguito da un ordine valido dello stesso cliente entro 7 giorni, contro il 53,6% dei Campioni. Il 98,9% dei clienti con un ordine fallito non ha alcun altro ordine osservabile in questo file, non solo entro 7 giorni.</p>
+    <div class="callout">
+      <div class="ct">Cosa succede dopo un ordine fallito, entro 7 giorni</div>
+      <div class="twin">
+        <div class="box hl"><div class="n r">0,8%</div><div class="l">Recuperato<br>10 ordini, € 444 di valore riportato a bordo</div></div>
+        <div class="box"><div class="n g">99,2%</div><div class="l">Non recuperato<br>1.301 ordini, € 58.497 di valore realmente perso</div></div>
+      </div>
+      <div class="cnote">Per i Nuovi Clienti il fallimento del pagamento non è un intoppo temporaneo come per i Campioni, è quasi sempre l'ultima interazione con il brand. Il valore realmente a rischio, circa <b>€ 58,5 mila</b>, corrisponde praticamente all'intero valore nominale degli ordini falliti.</div>
+    </div>
+  </section>
+
+  <!-- 09 FOCUS 1o -> 2o ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>Quando il retry avviene, il pattern è identico ai Campioni</h2></div>
+    <p class="sintro">Isolando i clienti il cui primo ordine è Aborted o Pending e che hanno un secondo ordine osservabile, il campione è minuscolo, appena 15 clienti su 1.306 con un primo ordine fallito, l'1,1%. Ma chi riprova lo fa nello stesso modo visto nei Campioni.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Coincidenza tra 1° ordine fallito e 2° ordine (15 casi)</div>
+        <div class="fq"><div class="nm">Stesso giorno</div><div class="tr"><div class="ff" style="width:80%;background:var(--red)"></div></div><div class="vv">80,0%</div></div>
+        <div class="fq"><div class="nm">Paniere identico al 100%</div><div class="tr"><div class="ff" style="width:93%;background:var(--r70)"></div></div><div class="vv">93,3%</div></div>
+        <div class="fq"><div class="nm">Match pieno, entrambi</div><div class="tr"><div class="ff" style="width:80%;background:var(--dark)"></div></div><div class="vv">80,0%</div></div>
+        <div class="note">Il campione, solo 15 casi, non è statisticamente robusto, ma la direzione è coerente con quanto visto nei Campioni.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Esito dei 15 tentativi di retry</div>
+        <div class="split">
+          <div class="splitrow"><div class="h"><b>Retry riuscito</b><span>10 casi</span></div><div class="dual"><span style="width:66.7%;background:var(--green)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Retry fallito di nuovo</b><span>5 casi</span></div><div class="dual"><span style="width:33.3%;background:var(--red)"></span></div></div>
+        </div>
+        <div class="note">Anche tra i pochi che riprovano, un terzo fallisce una seconda volta. Il gruppo che alla fine si converte è quindi ancora più piccolo, appena 10 clienti su 1.306 partiti da un primo ordine fallito.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLICAZIONI NUOVI CLIENTI -->
+  <section>
+    <div class="shead"><span class="snum">→</span><h2>Implicazioni per il segmento Nuovi Clienti</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>Il fallimento del primo ordine equivale quasi sempre alla perdita del cliente.</b> Il tasso di recupero entro 7 giorni è dello 0,8%, contro il 53,6% dei Campioni, perché il 98,9% dei clienti con un ordine fallito non ha alcun secondo ordine osservabile in questo file, non solo entro la settimana.</li>
+        <li><b>L'incidenza è più contenuta ma il danno è proporzionalmente più grave.</b> Il 16,7% di ordini falliti è meno della metà della quota Campioni (40,7%), ma quasi tutto il valore a rischio, circa € 58,5 mila su € 58,9 mila, è da considerare perso in via definitiva, non temporaneamente sospeso.</li>
+        <li><b>Mc2 Saint Barth merita una verifica di checkout prioritaria.</b> È il primo brand per volume di acquisizione, 12,7% degli ordini del segmento, con un tasso di fallimento del 27,7% contro una media del 16,6%, e pesa per un quinto di tutti gli ordini falliti del segmento.</li>
+        <li><b>Il problema non è la logistica.</b> A differenza dei Campioni, BRT e SDA hanno tassi di fallimento quasi identici, 17,0% contro 16,4%: la causa è più probabilmente nel momento del primo contatto con il brand, meno familiare con il checkout, il metodo di pagamento o il form.</li>
+        <li><b>Il retry, quando c'è, è un ottimo segnale.</b> Nei rari casi in cui il cliente riprova, lo fa nell'80% dei casi lo stesso giorno con lo stesso paniere, ed è riuscito 2 volte su 3. Recuperare anche solo una parte dei clienti che oggi non riprovano affatto è la leva più grande per questo segmento.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+<!-- fine segblock nuovi-clienti -->
+
+<!-- ============================================================ -->
+<!-- SEGMENTO: DA NON PERDERE (placeholder) -->
+<!-- ============================================================ -->
+<div class="segblock" id="da-non-perdere">
+  <div class="seghead">
+    <div>
+      <h2 class="segtitle">Segmento Da Non Perdere</h2>
+      <div class="segsub">In attesa del file completo, comprensivo di tutti gli stati d'ordine.</div>
+    </div>
+    <div class="segmeta">In arrivo</div>
+  </div>
+  <div class="pending-block">
+    <div class="pt"><b>Dati non ancora disponibili.</b> Appena arriva il file completo di Da Non Perdere, con lo stesso formato del dettaglio acquisti già usato per Campioni e Nuovi Clienti, questa sezione verrà popolata con le stesse analisi, quadro stati ordine, trend annuale, valore economico, fragilità del primo ordine, stagionalità, brand, spedizione, recupero entro 7 giorni, focus primo e secondo ordine.</div>
+    <div class="pending-tag">Sezione in costruzione</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SEGMENTO: PROMETTENTI -->
+<!-- ============================================================ -->
+<div class="segblock" id="promettenti">
+
+  <div class="seghead">
+    <div>
+      <h2 class="segtitle">Segmento Promettenti</h2>
+      <div class="segsub">Analisi condotta sul file completo, comprensivo di tutti gli stati d'ordine. Periodo, dato giornaliero dal 28 luglio 2024 al 6 agosto 2026 (2024 e 2026 parziali). Base, 14.614 ordini distinti, 14.497 clienti.</div>
+    </div>
+    <div class="segmeta">Dossier Promettenti, aggiornamento agosto 2026</div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi accent"><div class="lab">Ordini Aborted o Pending</div><div class="val">20,6%</div><div class="sub">3.004 su 14.614 ordini totali</div></div>
+    <div class="kpi"><div class="lab">Clienti coinvolti</div><div class="val">20,6%</div><div class="sub">2.985 clienti su 14.497 con almeno un fallimento</div></div>
+    <div class="kpi dark"><div class="lab">Valore in gioco</div><div class="val">€ 644.790</div><div class="sub">valore degli ordini non completati</div></div>
+    <div class="kpi"><div class="lab">Recuperati entro 7 giorni</div><div class="val">1,4%</div><div class="sub">41 su 3.004, quasi nessuno riprova</div></div>
+  </div>
+
+  <!-- 01 STATI ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">01</span><h2>Il quadro completo degli stati d'ordine</h2></div>
+    <p class="sintro">Sui 14.614 ordini distinti del segmento, Aborted pesa da solo il 20,50%, con Pending Payment marginale. Un quadro più vicino ai Campioni che ai Nuovi Clienti, e senza il fenomeno Full refund visto in quel segmento.</p>
+    <div class="card">
+      <div class="subttl">Quota di ordini per stato, sul totale</div>
+      <div class="bar-row"><div class="nm">Delivered</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#c4c8cc"></div></div><div class="vl">75,23%</div></div>
+      <div class="bar-row"><div class="nm">Aborted</div><div class="bar-track"><div class="bar-fill" style="width:27%;background:var(--red)"></div></div><div class="vl">20,50%</div></div>
+      <div class="bar-row"><div class="nm">Partial refund</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--r40)"></div></div><div class="vl">2,27%</div></div>
+      <div class="bar-row"><div class="nm">Sent</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:var(--r20)"></div></div><div class="vl">1,33%</div></div>
+      <div class="bar-row"><div class="nm">Closed</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,30%</div></div>
+      <div class="bar-row"><div class="nm">Preparation</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,27%</div></div>
+      <div class="bar-row"><div class="nm">Pending Payment</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,05%</div></div>
+      <div class="bar-row"><div class="nm">Full refund</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r20)"></div></div><div class="vl">0,03%</div></div>
+      <div class="note">Aborted e Pending Payment insieme pesano il 20,56%, un'incidenza a metà strada tra Nuovi Clienti (16,7%) e Campioni (40,7%).</div>
+    </div>
+  </section>
+
+  <!-- 02 TREND ANNUALE -->
+  <section>
+    <div class="shead"><span class="snum">02</span><h2>Un fenomeno in leggero calo, non in crescita</h2></div>
+    <p class="sintro">Come nei Nuovi Clienti, e diversamente dai Campioni, il tasso di fallimento dei Promettenti non peggiora nel tempo, anzi scende leggermente dal 2024 al 2026.</p>
+    <div class="card">
+      <div class="subttl">Quota di ordini Aborted o Pending Payment per anno</div>
+      <div class="bar-row"><div class="nm">2024*</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">21,6%</div></div>
+      <div class="bar-row"><div class="nm">2025</div><div class="bar-track"><div class="bar-fill" style="width:96%;background:var(--r70)"></div></div><div class="vl">20,7%</div></div>
+      <div class="bar-row"><div class="nm">2026*</div><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--r40)"></div></div><div class="vl">19,8%</div></div>
+      <div class="note">* 2024 parziale, dato da fine luglio. 2026 parziale, dato fino al 6 agosto. Calo contenuto ma costante, circa 2 punti percentuali in due anni.</div>
+    </div>
+  </section>
+
+  <!-- 03 VALORE -->
+  <section>
+    <div class="shead"><span class="snum">03</span><h2>Il valore economico in gioco</h2></div>
+    <p class="sintro">Anche per i Promettenti gli ordini falliti hanno uno scontrino più alto della media, coerente con Campioni e Nuovi Clienti.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Valore totale coinvolto</div>
+        <div class="fq"><div class="nm">Ordini validi</div><div class="tr"><div class="ff" style="width:100%;background:#c4c8cc"></div></div><div class="vv">€ 2,24 mln</div></div>
+        <div class="fq"><div class="nm">Aborted / Pending</div><div class="tr"><div class="ff" style="width:29%;background:var(--red)"></div></div><div class="vv">€ 644.790</div></div>
+        <div class="note">Il valore in gioco negli ordini falliti equivale al 28,8% del fatturato effettivamente registrato dal segmento.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Scontrino medio per ordine</div>
+        <div class="fq"><div class="nm">Ordine valido</div><div class="tr"><div class="ff" style="width:90%;background:#c4c8cc"></div></div><div class="vv">€ 193,10</div></div>
+        <div class="fq"><div class="nm">Ordine Aborted / Pending</div><div class="tr"><div class="ff" style="width:100%;background:var(--red)"></div></div><div class="vv">€ 214,64</div></div>
+        <div class="note">+11,2% di valore medio negli ordini falliti rispetto a quelli completati, uno scarto simile ma un poco più contenuto di quello dei Campioni (+14%) e dei Nuovi Clienti (+17,1%).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PRIMO E QUASI UNICO ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">04</span><h2>Anche qui, il primo ordine è quasi sempre l'unico</h2></div>
+    <p class="sintro">Come nei Nuovi Clienti, il campo progressivo ordine risulta sempre "1° ordine" per costruzione del segmento, non per anomalia da correggere. Il 99,2% dei clienti Promettenti ha un solo ordine osservabile in questo file.</p>
+    <div class="card">
+      <div class="subttl">Clienti per numero di ordini osservabili</div>
+      <div class="bar-row"><div class="nm">1 ordine</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#c4c8cc"></div></div><div class="vl">99,20%</div></div>
+      <div class="bar-row"><div class="nm">2 ordini</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:var(--r40)"></div></div><div class="vl">0,79%</div></div>
+      <div class="bar-row"><div class="nm">3 ordini</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--r20)"></div></div><div class="vl">0,01%</div></div>
+      <div class="note">14.381 clienti su 14.497 si fermano a un solo ordine osservabile, 116 arrivano a un secondo, 1 a un terzo. Il tasso di fallimento resta stabile intorno al 20% sia al primo (20,6%) sia al secondo ordine (20,7%), la sequenza in sé non riduce il rischio.</div>
+    </div>
+  </section>
+
+  <!-- 05 STAGIONALITA -->
+  <section>
+    <div class="shead"><span class="snum">05</span><h2>Il fallimento cresce in autunno</h2></div>
+    <p class="sintro">Settembre, ottobre e novembre sono i mesi con il tasso di fallimento più alto, oltre uno su cinque. Giugno è il mese più fluido. Un terzo pattern stagionale diverso sia da Campioni (picco a dicembre) sia da Nuovi Clienti (picco a giugno e settembre).</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per mese, somma 2024-2026</div>
+      <div class="months">
+        <div class="mcol"><div class="msub">20%</div><div class="mbar" style="height:87%"></div><div class="mlab">Gen</div></div>
+        <div class="mcol"><div class="msub">20%</div><div class="mbar" style="height:87%"></div><div class="mlab">Feb</div></div>
+        <div class="mcol"><div class="msub">21%</div><div class="mbar" style="height:93%"></div><div class="mlab">Mar</div></div>
+        <div class="mcol"><div class="msub">21%</div><div class="mbar" style="height:92%"></div><div class="mlab">Apr</div></div>
+        <div class="mcol"><div class="msub">21%</div><div class="mbar" style="height:91%"></div><div class="mlab">Mag</div></div>
+        <div class="mcol"><div class="msub">19%</div><div class="mbar" style="height:82%"></div><div class="mlab">Giu</div></div>
+        <div class="mcol"><div class="msub">19%</div><div class="mbar" style="height:85%"></div><div class="mlab">Lug</div></div>
+        <div class="mcol"><div class="msub">20%</div><div class="mbar" style="height:86%"></div><div class="mlab">Ago</div></div>
+        <div class="mcol"><div class="mbar peak" style="height:100%"></div><div class="msub" style="color:#fff;position:relative;top:14px">23%</div><div class="mlab">Set</div></div>
+        <div class="mcol"><div class="msub">23%</div><div class="mbar" style="height:99%"></div><div class="mlab">Ott</div></div>
+        <div class="mcol"><div class="msub">22%</div><div class="mbar" style="height:98%"></div><div class="mlab">Nov</div></div>
+        <div class="mcol"><div class="msub">21%</div><div class="mbar" style="height:92%"></div><div class="mlab">Dic</div></div>
+      </div>
+      <div class="legend"><span><span class="dot" style="background:var(--red)"></span>Settembre, picco assoluto</span><span><span class="dot" style="background:var(--r40)"></span>Resto dell'anno</span></div>
+    </div>
+  </section>
+
+  <!-- 06 BRAND -->
+  <section>
+    <div class="shead"><span class="snum">06</span><h2>Blauer ed Ea7 si confermano brand a rischio, anche qui</h2></div>
+    <p class="sintro">Il tasso di fallimento varia da oltre il 35% a meno del 6%. Blauer ed Ea7, già ai primi posti nel report Campioni, compaiono di nuovo tra i brand più critici, un segnale cross segmento che punta più al checkout che al profilo cliente.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Brand con il tasso di fallimento più alto (min. 30 ordini)</div>
+        <div class="bar-row"><div class="nm">Dsquared2</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">35,5%</div></div>
+        <div class="bar-row"><div class="nm">Blauer</div><div class="bar-track"><div class="bar-fill" style="width:97%;background:var(--red)"></div></div><div class="vl">34,5%</div></div>
+        <div class="bar-row"><div class="nm">Ea7</div><div class="bar-track"><div class="bar-fill" style="width:87%;background:var(--r70)"></div></div><div class="vl">31,0%</div></div>
+        <div class="bar-row"><div class="nm">Aeronautica Militare</div><div class="bar-track"><div class="bar-fill" style="width:82%;background:var(--r70)"></div></div><div class="vl">28,9%</div></div>
+        <div class="bar-row"><div class="nm">Clarks</div><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--r40)"></div></div><div class="vl">28,6%</div></div>
+        <div class="bar-row"><div class="nm">Sprayground</div><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--r40)"></div></div><div class="vl">27,6%</div></div>
+        <div class="note">Blauer era il brand con il tasso più alto in assoluto nei Campioni, 57,7%. Qui scende ma resta comunque al secondo posto, 34,5%.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Brand con il tasso di fallimento più basso (min. 30 ordini)</div>
+        <div class="bar-row"><div class="nm">Priority House</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:#4aa96c"></div></div><div class="vl">5,4%</div></div>
+        <div class="bar-row"><div class="nm">Cachemire Line</div><div class="bar-track"><div class="bar-fill" style="width:16%;background:#4aa96c"></div></div><div class="vl">5,7%</div></div>
+        <div class="bar-row"><div class="nm">Xacus</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--green)"></div></div><div class="vl">6,4%</div></div>
+        <div class="bar-row"><div class="nm">A.F.F.</div><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--green)"></div></div><div class="vl">6,7%</div></div>
+        <div class="bar-row"><div class="nm">Kids Only</div><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--green)"></div></div><div class="vl">6,7%</div></div>
+        <div class="bar-row"><div class="nm">Ashki.I</div><div class="bar-track"><div class="bar-fill" style="width:21%;background:var(--green)"></div></div><div class="vl">7,4%</div></div>
+        <div class="note">Priority House era già tra i brand più solidi nei Nuovi Clienti, qui si confermano nella stessa fascia.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SPEDIZIONE -->
+  <section>
+    <div class="shead"><span class="snum">07</span><h2>BRT torna a distinguersi in negativo</h2></div>
+    <p class="sintro">Diversamente dai Nuovi Clienti, dove BRT e SDA erano equivalenti, nei Promettenti BRT ha un tasso di fallimento sensibilmente più alto, in linea con la direzione vista nei Campioni.</p>
+    <div class="card">
+      <div class="subttl">Quota Aborted / Pending per metodo di spedizione</div>
+      <div class="bar-row"><div class="nm">BRT</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><div class="vl">23,0%</div></div>
+      <div class="bar-row"><div class="nm">SDA</div><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--r70)"></div></div><div class="vl">18,5%</div></div>
+      <div class="bar-row"><div class="nm">Custom</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:#c4c8cc"></div></div><div class="vl">0,0%</div></div>
+      <div class="note">BRT copre 6.853 ordini con un tasso 4,5 punti sopra SDA, che ne copre 7.715. Custom è marginale, solo 6 ordini. Il pattern BRT più fragile ricorre in due segmenti su tre analizzati finora.</div>
+    </div>
+  </section>
+
+  <!-- 08 RECUPERO -->
+  <section>
+    <div class="shead"><span class="snum">08</span><h2>Anche qui, il fallimento è quasi sempre definitivo</h2></div>
+    <p class="sintro">Come nei Nuovi Clienti, il tasso di recupero entro 7 giorni è molto basso, 1,4%, contro il 53,6% dei Campioni. La spiegazione è la stessa, la maggioranza dei clienti Promettenti ha un solo ordine osservabile in assoluto.</p>
+    <div class="callout">
+      <div class="ct">Cosa succede dopo un ordine fallito, entro 7 giorni</div>
+      <div class="twin">
+        <div class="box hl"><div class="n r">1,4%</div><div class="l">Recuperato<br>41 ordini, € 8.947 di valore riportato a bordo</div></div>
+        <div class="box"><div class="n g">98,6%</div><div class="l">Non recuperato<br>2.963 ordini, € 635.842 di valore realmente perso</div></div>
+      </div>
+      <div class="cnote">Il valore realmente a rischio, circa <b>€ 636 mila</b>, corrisponde praticamente all'intero valore nominale degli ordini falliti. Per i Promettenti, come per i Nuovi Clienti, il problema è acquisire il cliente al primo tentativo, non recuperarlo dopo.</div>
+    </div>
+  </section>
+
+  <!-- 09 FOCUS 1o -> 2o ORDINE -->
+  <section>
+    <div class="shead"><span class="snum">09</span><h2>Dove il retry avviene, il pattern è il più solido finora</h2></div>
+    <p class="sintro">Isolando i 65 clienti il cui primo ordine è Aborted o Pending e che hanno un secondo ordine osservabile, il campione è più ampio di quello dei Nuovi Clienti, 65 casi contro 15, e confirma con più forza il pattern del retry.</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="subttl">Coincidenza tra 1° ordine fallito e 2° ordine (65 casi)</div>
+        <div class="fq"><div class="nm">Stesso giorno</div><div class="tr"><div class="ff" style="width:54%;background:var(--red)"></div></div><div class="vv">53,8%</div></div>
+        <div class="fq"><div class="nm">Paniere identico al 100%</div><div class="tr"><div class="ff" style="width:79%;background:var(--r70)"></div></div><div class="vv">78,5%</div></div>
+        <div class="fq"><div class="nm">Match pieno, entrambi</div><div class="tr"><div class="ff" style="width:49%;background:var(--dark)"></div></div><div class="vv">49,2%</div></div>
+        <div class="note">Il 78,5% ripropone lo stesso identico paniere, la conferma più solida finora che il cliente vuole comprare e trova un ostacolo nel pagamento, non un cambio di intenzione.</div>
+      </div>
+      <div class="card">
+        <div class="subttl">Esito dei 65 tentativi di retry</div>
+        <div class="split">
+          <div class="splitrow"><div class="h"><b>Retry riuscito</b><span>46 casi</span></div><div class="dual"><span style="width:70.8%;background:var(--green)"></span></div></div>
+          <div class="splitrow"><div class="h"><b>Retry fallito di nuovo</b><span>19 casi</span></div><div class="dual"><span style="width:29.2%;background:var(--red)"></span></div></div>
+        </div>
+        <div class="note">Il 70,8% dei retry va a buon fine, un tasso di successo alto che rende ancora più evidente quanto valga la pena spingere il cliente a riprovare subito dopo un fallimento.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLICAZIONI PROMETTENTI -->
+  <section>
+    <div class="shead"><span class="snum">→</span><h2>Implicazioni per il segmento Promettenti</h2></div>
+    <div class="card">
+      <ul class="ins">
+        <li><b>L'incidenza del fallimento è intermedia, ma l'esito è vicino a quello dei Nuovi Clienti.</b> Il 20,6% degli ordini fallisce, tra il 16,7% dei Nuovi Clienti e il 40,7% dei Campioni, ma il tasso di recupero entro 7 giorni resta basso, 1,4%, perché il 99,2% dei clienti ha un solo ordine osservabile.</li>
+        <li><b>Blauer ed Ea7 sono un rischio cross segmento, non specifico del cliente.</b> Compaiono tra i brand più critici sia nei Campioni sia nei Promettenti, un pattern che sposta l'attenzione dal profilo del cliente al checkout o al processo di pagamento legato a questi brand.</li>
+        <li><b>BRT si confema meno affidabile di SDA.</b> Il tasso di fallimento è del 23,0% contro il 18,5%, una differenza di 4,5 punti che ricorre ora in due segmenti su tre, Campioni e Promettenti, ma non nei Nuovi Clienti.</li>
+        <li><b>Il valore realmente perso è quasi tutto il valore nominale.</b> Su € 644.790 di ordini falliti, solo € 8.947 vengono recuperati entro una settimana, circa € 636 mila restano persi in modo definitivo.</li>
+        <li><b>Il retry funziona, quando avviene.</b> Su un campione più ampio e robusto di quello dei Nuovi Clienti, 65 casi, il 70,8% dei tentativi di retry va a buon fine e il 78,5% ripropone lo stesso paniere: un segnale forte che investire su un secondo tentativo di pagamento immediato converrebbe anche qui.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<div class="foot"><span>Moca Interactive per Pellizzari</span><span>Analisi RFM 2026 &nbsp;/&nbsp; Ordini Aborted e Pending Payment, Confronto Multi Segmento</span></div>
+</div>
+</body>
+</html>
